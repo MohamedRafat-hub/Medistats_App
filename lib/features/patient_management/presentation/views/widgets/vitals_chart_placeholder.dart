@@ -1,38 +1,41 @@
 import 'package:flutter/material.dart';
 
-import 'features/patient_management/presentation/views/patients_screen.dart';
-
-void main() => runApp(const MedistatsApp());
-
-class MedistatsApp extends StatelessWidget {
-  const MedistatsApp({super.key});
+class VitalsChartPlaceholder extends StatelessWidget {
+  const VitalsChartPlaceholder({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(fontFamily: 'Roboto'),
-      home: const PatientsView(),
+    return Container(
+      height: 50,
+      padding: const EdgeInsets.symmetric(horizontal: 12),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF2F5F6),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: CustomPaint(
+              size: const Size(double.infinity, 50),
+              painter: _VitalsLinePainter(),
+            ),
+          ),
+          const Text(
+            'ulta',
+            style: TextStyle(
+              fontStyle: FontStyle.italic,
+              color: Colors.black45,
+              fontSize: 14,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
 
 
 
-/// Title at the top of the screen ("Medistats")
-
-/// Section heading ("Patients")
-
-/// Search input field
-
-/// Card displaying a single patient's info
-
-/// Small heart icon badge shown before condition text
-
-
-/// Placeholder widget representing the vitals chart (no logic, static UI only)
-
-/// Simple painter to draw a static heartbeat-like line (UI only, no real data)
 class _VitalsLinePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
@@ -71,5 +74,3 @@ class _VitalsLinePainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
-
-/// Floating action button to add a new patient
