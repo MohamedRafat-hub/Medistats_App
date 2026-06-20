@@ -3,13 +3,14 @@ class Assets {
   Assets._();
 
   static const String generatedAssets = 'lib/generated/assets.dart';
+  static const String helperFunctionsShowAddPatientBottomSheet = 'lib/core/helper_functions/show_add_patient_bottom_sheet.dart';
   static const String libMain = 'lib/main.dart';
-  static const String viewsPatientsScreen = 'lib/features/patient_management/presentation/views/patients_screen.dart';
+  static const String viewsPatientsScreen = 'lib/features/patient_management/presentation/views/patients_view.dart';
   static const String widgetsAddPatientBottomSheet = 'lib/features/patient_management/presentation/views/widgets/add_patient_bottom_sheet.dart';
-  static const String widgetsAddPatientButton = 'lib/features/patient_management/presentation/views/widgets/add_patient_button.dart';
   static const String widgetsAppTitle = 'lib/features/patient_management/presentation/views/widgets/app_title.dart';
   static const String widgetsConditionPage = 'lib/features/patient_management/presentation/views/widgets/condition_page.dart';
-  static const String widgetsCustomActionButton = 'lib/features/patient_management/presentation/views/widgets/custom_action_button.dart';
+  static const String widgetsCustomActionButton = 'lib/core/widgets/custom_action_button.dart';
+  static const String widgetsCustomFloatingActionButton = 'lib/core/widgets/custom_floating_action_button.dart';
   static const String widgetsCustomTextField = 'lib/features/patient_management/presentation/views/widgets/custom_text_field.dart';
   static const String widgetsPatientCard = 'lib/features/patient_management/presentation/views/widgets/patient_card.dart';
   static const String widgetsPatientCardMenueButton = 'lib/features/patient_management/presentation/views/widgets/patient_card_menue_button.dart';

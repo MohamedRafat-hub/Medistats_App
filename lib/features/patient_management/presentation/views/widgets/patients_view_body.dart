@@ -3,7 +3,8 @@ import 'package:medistats/features/patient_management/presentation/views/widgets
 import 'package:medistats/features/patient_management/presentation/views/widgets/search_field.dart';
 import 'package:medistats/features/patient_management/presentation/views/widgets/search_heading.dart';
 
-import 'add_patient_button.dart';
+import '../../../../../core/helper_functions/show_add_patient_bottom_sheet.dart';
+import '../../../../../core/widgets/custom_floating_action_button.dart';
 import 'app_title.dart';
 
 class PatientsViewBody extends StatelessWidget {
@@ -47,10 +48,14 @@ class PatientsViewBody extends StatelessWidget {
               ),
             ],
           ),
-          const Positioned(
+           Positioned(
             right: 8,
             bottom: 24,
-            child: AddPatientButton(),
+            child: AddPatientButton(
+              onTap: (){
+                return showAddPatientBottomSheet(context);
+              },
+            ),
           ),
         ],
       ),

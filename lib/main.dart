@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'features/patient_management/presentation/views/patients_screen.dart';
+import 'features/patient_management/presentation/views/patients_view.dart';
 
 void main() => runApp(const MedistatsApp());
 

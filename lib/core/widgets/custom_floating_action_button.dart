@@ -1,24 +1,14 @@
 import 'package:flutter/material.dart';
-import 'add_patient_bottom_sheet.dart';
+import '../helper_functions/show_add_patient_bottom_sheet.dart';
 
 class AddPatientButton extends StatelessWidget {
-  const AddPatientButton({super.key});
+  const AddPatientButton({super.key, this.onTap});
 
-  void _showAddPatientBottomSheet(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (context) {
-        return const AddPatientBottomSheet();
-      },
-    );
-  }
-
+  final void Function()? onTap;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => _showAddPatientBottomSheet(context),
+      onTap: onTap,
       child: Container(
         width: 56,
         height: 56,
