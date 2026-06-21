@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import '../helper_functions/show_add_patient_bottom_sheet.dart';
 
-class AddPatientButton extends StatelessWidget {
-  const AddPatientButton({super.key, this.onTap});
+class BottomSheetButton extends StatelessWidget {
+  const BottomSheetButton({super.key, this.onTap});
 
   final void Function()? onTap;
   @override

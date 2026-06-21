@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:medistats/features/patient_management/presentation/views/widgets/patient_card_menue_button.dart';
-import 'package:medistats/features/patient_management/presentation/views/widgets/patient_menue_options.dart';
 import 'package:medistats/features/patient_management/presentation/views/widgets/vitals_chart_placeholder.dart';
 import 'condition_page.dart';
 class PatientCard extends StatelessWidget {

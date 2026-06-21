@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'custom_text_field.dart';
-import '../../../../../core/widgets/custom_action_button.dart';
 
-class AddPatientBottomSheet extends StatelessWidget {
-  const AddPatientBottomSheet({super.key});
+import '../../../../../core/widgets/custom_action_button.dart';
+import '../../../../patient_management/presentation/views/widgets/custom_text_field.dart';
+
+class AddSessionBottomSheet extends StatelessWidget {
+  const AddSessionBottomSheet({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +45,7 @@ class AddPatientBottomSheet extends StatelessWidget {
             children: [
               const Spacer(),
               const Text(
-                'Add New Patient',
+                'Add New Session',
                 style: TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
@@ -57,16 +58,16 @@ class AddPatientBottomSheet extends StatelessWidget {
           ),
           const SizedBox(height: 24),
 
-          const CustomTextField(hintText: 'Full Name'),
+          const CustomTextField(hintText: 'Diagnosis'),
           const SizedBox(height: 16),
-          const CustomTextField(hintText: 'Age', keyboardType: TextInputType.number),
+          const CustomTextField(hintText: 'Prescription/Plan' , maxLines: 3),
           const SizedBox(height: 16),
-          const CustomTextField(hintText: 'Phone Number', keyboardType: TextInputType.phone),
+          const CustomTextField(hintText: 'Notes', maxLines: 2),
 
           const SizedBox(height: 24),
 
           CustomActionButton(
-            text: 'SAVE',
+            text: 'Add Session',
             onPressed: () {
               Navigator.pop(context);
             },
