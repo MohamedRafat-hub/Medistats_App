@@ -12,6 +12,7 @@ class AppColors {
   static const Color badgeBackground = Color(0xFFEFE6E0);
   static const Color timelineLine = Color(0xFFBFD3C6);
   static const Color fabGreen = Color(0xFF2F6F5E);
+  static const Color primaryColor = Color(0xFF2C7A8C);
 }
 
 class AppTextStyles {
@@ -21,6 +22,12 @@ class AppTextStyles {
     fontSize: 20,
     fontWeight: FontWeight.w700,
     color: AppColors.textPrimary,
+  );
+
+  static const TextStyle noPatient = TextStyle(
+    fontSize: 20,
+    fontWeight: FontWeight.w700,
+    color: AppColors.primaryColor,
   );
 
   static const TextStyle patientName = TextStyle(

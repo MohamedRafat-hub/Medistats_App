@@ -1,19 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:medistats/features/patient_management/data/models/patient_model.dart';
 import 'package:medistats/features/patient_management/presentation/views/widgets/patient_card_menue_button.dart';
 import 'package:medistats/features/patient_management/presentation/views/widgets/vitals_chart_placeholder.dart';
 import 'condition_page.dart';
 class PatientCard extends StatelessWidget {
-  final String name;
-  final int age;
-  final String phone;
-  final String condition;
+  final PatientModel patientModel;
 
   const PatientCard({
     super.key,
-    required this.name,
-    required this.age,
-    required this.phone,
-    required this.condition,
+    required this.patientModel,
   });
 
   @override
@@ -39,7 +34,7 @@ class PatientCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                name,
+                patientModel.name,
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -49,23 +44,22 @@ class PatientCard extends StatelessWidget {
               const PatientCardMenuButton(),
             ],
           ),
-          const SizedBox(height: 6),
           Text(
-            'Age: $age',
+            'Age: ${patientModel.age}',
             style: const TextStyle(fontSize: 14, color: Colors.black87),
           ),
-          const SizedBox(height: 2),
+          const SizedBox(height: 3),
           Row(
             children: [
               Text(
-                phone,
+                patientModel.phoneNumber,
                 style: const TextStyle(fontSize: 14, color: Colors.black87),
               ),
               const SizedBox(width: 12),
               const ConditionBadge(),
               const SizedBox(width: 4),
               Text(
-                condition,
+                "condition",
                 style: const TextStyle(fontSize: 14, color: Colors.black87),
               ),
             ],

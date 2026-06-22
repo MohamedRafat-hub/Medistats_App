@@ -1,8 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medistats/core/helper_functions/build_show_snack_bar.dart';
+import 'package:medistats/core/utils/app_theme.dart';
 import 'package:medistats/features/patient_management/presentation/managers/add_patient_cubit/add_patient_cubit.dart';
+import 'package:medistats/features/patient_management/presentation/managers/get_all_patients_cubit/get_all_patients_cubit.dart';
 import '../../../../../core/widgets/closed_button_sheet.dart';
 import '../../../data/models/patient_model.dart';
 import 'custom_text_field.dart';
@@ -72,7 +76,11 @@ class _AddPatientBottomSheetState extends State<AddPatientBottomSheet> {
                     ),
                   ),
                   const Spacer(),
-                  buildCloseButton(context),
+                  buildCloseButton(context  , (){
+                    log('close button tapped');
+                    context.read<AddPatientCubit>().cancelAddingPatient();
+                    Navigator.pop(context);
+                  }),
                 ],
               ),
 
@@ -109,14 +117,15 @@ class _AddPatientBottomSheetState extends State<AddPatientBottomSheet> {
               listener: (context, state) {
                 if (state is AddPatientSuccess) {
                   showSnackBar(context, message: 'Patient added successfully');
+                  context.read<GetAllPatientsCubit>().getAllPatients();
                   Navigator.pop(context);
                 } else if (state is AddPatientFailure) {
                   showSnackBar(context, message: state.errorMessage, color: Colors.red);
                 }
               },
               builder: (context, state) {
-                return state is AddPatientLoading ? Center(child: CupertinoActivityIndicator(
-                  radius: 12,
+                return state is AddPatientLoading ? Center(child: CircularProgressIndicator(
+                  color: AppColors.primaryColor,
                 )) : CustomActionButton(
                   text: 'SAVE',
                   onPressed: () {
