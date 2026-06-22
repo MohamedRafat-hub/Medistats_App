@@ -16,4 +16,21 @@ class FireStoreService {
       return documentReference.id;
     }
   }
+
+
+  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>> getCollection({
+    required String collectionName,
+  }) async {
+    QuerySnapshot<Map<String, dynamic>> querySnapshot =
+    await _fireStore.collection(collectionName).get();
+    return querySnapshot.docs;
+  }
+
+
+  Future<DocumentSnapshot<Map<String, dynamic>>> getDocument({
+    required String collectionName,
+    required String docId,
+  }) async {
+    return await _fireStore.collection(collectionName).doc(docId).get();
+  }
 }
