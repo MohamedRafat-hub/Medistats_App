@@ -1,8 +1,16 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import 'features/patient_management/presentation/views/patients_view.dart';
+import 'firebase_options.dart';
 
-void main() => runApp(const MedistatsApp());
+void main()async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(const MedistatsApp());
+}
 
 class MedistatsApp extends StatelessWidget {
   const MedistatsApp({super.key});
