@@ -28,18 +28,20 @@ class PatientRepoImpl implements PatientRepo {
   }
 
   @override
-  Future<Either<Failure, List<PatientModel>>> getAllPatients()async {
-    try {
-      final docs = await fireStoreService.getCollection(collectionName: BackendEndpoint.patients , orderByField: 'createdAt');
+  Stream<Either<Failure, List<PatientModel>>> getAllPatients(){
+    return fireStoreService
+        .getCollection(
+      collectionName: BackendEndpoint.patients,
+      orderByField: 'createdAt',
+    )
+        .map<Either<Failure, List<PatientModel>>>((docs) {
       List<PatientModel> patients = docs.map((doc) => PatientModel.fromJson(doc.data(), doc.id)).toList();
-
       return right(patients);
-    } on FirebaseException catch (e) {
-      return left(ServerFailure(handleFirebaseError(e)));
-    }
-    catch (e) {
-      return left(ServerFailure('عذراً، حدث خطأ غير متوقع في النظام. حاول مرة أخرى.'));
-    }
+    })
+        .handleError((error) {
+      // هندلة الأخطاء لو حصلت جوه الـ Stream
+      return left(ServerFailure('حدث خطأ أثناء تحميل بيانات المرضى.'));
+    });
   }
 
 }

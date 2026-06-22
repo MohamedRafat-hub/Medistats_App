@@ -117,7 +117,7 @@ class _AddPatientBottomSheetState extends State<AddPatientBottomSheet> {
               listener: (context, state) {
                 if (state is AddPatientSuccess) {
                   showSnackBar(context, message: 'Patient added successfully');
-                  context.read<GetAllPatientsCubit>().getAllPatients();
+                  context.read<GetAllPatientsCubit>().startListeningToPatients();
                   Navigator.pop(context);
                 } else if (state is AddPatientFailure) {
                   showSnackBar(context, message: state.errorMessage, color: Colors.red);
