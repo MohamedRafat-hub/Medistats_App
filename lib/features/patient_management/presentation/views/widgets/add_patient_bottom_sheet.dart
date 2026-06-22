@@ -1,10 +1,26 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:medistats/core/helper_functions/build_show_snack_bar.dart';
+import 'package:medistats/features/patient_management/presentation/managers/add_patient_cubit/add_patient_cubit.dart';
+import '../../../../../core/widgets/closed_button_sheet.dart';
+import '../../../data/models/patient_model.dart';
 import 'custom_text_field.dart';
 import '../../../../../core/widgets/custom_action_button.dart';
 
-class AddPatientBottomSheet extends StatelessWidget {
+class AddPatientBottomSheet extends StatefulWidget {
   const AddPatientBottomSheet({super.key});
 
+  @override
+  State<AddPatientBottomSheet> createState() => _AddPatientBottomSheetState();
+}
+
+class _AddPatientBottomSheetState extends State<AddPatientBottomSheet> {
+  late String _fullName;
+  late int _age;
+  late String _phoneNumber;
+  final _formKey = GlobalKey<FormState>();
+  AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
   @override
   Widget build(BuildContext context) {
     final bottomInset = MediaQuery.of(context).viewInsets.bottom;
@@ -23,74 +39,105 @@ class AddPatientBottomSheet extends StatelessWidget {
           topRight: Radius.circular(32),
         ),
       ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Center(
-            child: Container(
-              width: 50,
-              height: 5,
-              decoration: BoxDecoration(
-                color: const Color(0xffD3D3D3),
-                borderRadius: BorderRadius.circular(10),
-              ),
-            ),
-          ),
-          const SizedBox(height: 16),
-
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Spacer(),
-              const Text(
-                'Add New Patient',
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
+      child: Form(
+        key: _formKey,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Center(
+              child: Container(
+                width: 50,
+                height: 5,
+                decoration: BoxDecoration(
+                  color: const Color(0xffD3D3D3),
+                  borderRadius: BorderRadius.circular(10),
                 ),
               ),
-              const Spacer(),
-              _buildCloseButton(context),
-            ],
-          ),
-          const SizedBox(height: 24),
+            ),
+            const SizedBox(height: 16),
 
-          const CustomTextField(hintText: 'Full Name'),
-          const SizedBox(height: 16),
-          const CustomTextField(hintText: 'Age', keyboardType: TextInputType.number),
-          const SizedBox(height: 16),
-          const CustomTextField(hintText: 'Phone Number', keyboardType: TextInputType.phone),
 
-          const SizedBox(height: 24),
 
-          CustomActionButton(
-            text: 'SAVE',
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-        ],
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Spacer(),
+                  const Text(
+                    'Add New Patient',
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                  const Spacer(),
+                  buildCloseButton(context),
+                ],
+              ),
+
+
+            const SizedBox(height: 24),
+
+            CustomTextField(
+              hintText: 'Full Name',
+              keyboardType: TextInputType.name,
+              onSaved: (value) {
+                _fullName = value!;
+              },
+            ),
+            const SizedBox(height: 16),
+            CustomTextField(
+              hintText: 'Age',
+              keyboardType: TextInputType.number,
+              onSaved: (value) {
+                _age = int.parse(value!);
+              },
+            ),
+            const SizedBox(height: 16),
+            CustomTextField(
+              hintText: 'Phone Number',
+              keyboardType: TextInputType.phone,
+              onSaved: (value) {
+                _phoneNumber = value!;
+              },
+            ),
+
+            const SizedBox(height: 24),
+
+            BlocConsumer<AddPatientCubit, AddPatientState>(
+              listener: (context, state) {
+                if (state is AddPatientSuccess) {
+                  showSnackBar(context, message: 'Patient added successfully');
+                  Navigator.pop(context);
+                } else if (state is AddPatientFailure) {
+                  showSnackBar(context, message: state.errorMessage, color: Colors.red);
+                }
+              },
+              builder: (context, state) {
+                return state is AddPatientLoading ? Center(child: CupertinoActivityIndicator(
+                  radius: 12,
+                )) : CustomActionButton(
+                  text: 'SAVE',
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      _formKey.currentState!.save();
+                      final patient = PatientModel(id: '', name: _fullName, age: _age, phoneNumber: _phoneNumber);
+                      context.read<AddPatientCubit>().addPatient(patient);
+                    }
+                    else
+                      {
+                        autovalidateMode = AutovalidateMode.always;
+                        setState(() {});
+                      }
+                  },
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildCloseButton(BuildContext context) {
-    return GestureDetector(
-      onTap: () => Navigator.pop(context),
-      child: Container(
-        padding: const EdgeInsets.all(6),
-        decoration: const BoxDecoration(
-          color: Color(0xffE5E5E5),
-          shape: BoxShape.circle,
-        ),
-        child: const Icon(
-          Icons.close,
-          size: 18,
-          color: Color(0xff5A5A5A),
-        ),
-      ),
-    );
-  }
 }

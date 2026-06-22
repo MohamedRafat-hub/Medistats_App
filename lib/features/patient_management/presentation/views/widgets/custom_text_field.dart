@@ -5,6 +5,7 @@ class CustomTextField extends StatelessWidget {
   final TextInputType? keyboardType;
   final TextEditingController? controller;
   final int maxLines;
+  final void Function(String?)? onSaved;
 
   const CustomTextField({
     super.key,
@@ -12,11 +13,19 @@ class CustomTextField extends StatelessWidget {
     this.keyboardType,
     this.controller,
     this.maxLines  =1,
+    this.onSaved
   });
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'this Field is required';
+        }
+        return null;
+      },
+      onSaved: onSaved,
       maxLines: maxLines,
       controller: controller,
       keyboardType: keyboardType,

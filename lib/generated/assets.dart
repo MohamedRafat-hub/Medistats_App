@@ -6,6 +6,7 @@ class Assets {
   static const String addPatientCubitAddPatientState = 'lib/features/patient_management/presentation/managers/add_patient_cubit/add_patient_state.dart';
   static const String errorsFailure = 'lib/core/errors/failure.dart';
   static const String generatedAssets = 'lib/generated/assets.dart';
+  static const String helperFunctionsBuildShowSnackBar = 'lib/core/helper_functions/build_show_snack_bar.dart';
   static const String helperFunctionsHandleFirestoreErrors = 'lib/core/helper_functions/handle_firestore_errors.dart';
   static const String helperFunctionsShowAddPatientBottomSheet = 'lib/core/helper_functions/show_add_patient_bottom_sheet.dart';
   static const String helperFunctionsShowAddSessionButtonSheet = 'lib/core/helper_functions/show_add_session_button_sheet.dart';
@@ -16,12 +17,14 @@ class Assets {
   static const String reposPatientRepo = 'lib/features/patient_management/data/repos/patient_repo.dart';
   static const String reposPatientRepoImpl = 'lib/features/patient_management/data/repos/patient_repo_impl.dart';
   static const String servicesFirestoreService = 'lib/core/services/firestore_service.dart';
+  static const String servicesGetitService = 'lib/core/services/getit_service.dart';
   static const String utilsAppTheme = 'lib/core/utils/app_theme.dart';
   static const String utilsBackendEndpoint = 'lib/core/utils/backend_endpoint.dart';
   static const String viewsPatientsView = 'lib/features/patient_management/presentation/views/patients_view.dart';
   static const String widgetsAddPatientBottomSheet = 'lib/features/patient_management/presentation/views/widgets/add_patient_bottom_sheet.dart';
   static const String widgetsAddSessionBottomSheet = 'lib/features/sessions/presentation/views/widgets/add_session_bottom_sheet.dart';
   static const String widgetsAppTitle = 'lib/features/patient_management/presentation/views/widgets/app_title.dart';
+  static const String widgetsClosedButtonSheet = 'lib/core/widgets/closed_button_sheet.dart';
   static const String widgetsConditionBadge = 'lib/features/sessions/presentation/views/widgets/condition_badge.dart';
   static const String widgetsConditionPage = 'lib/features/patient_management/presentation/views/widgets/condition_page.dart';
   static const String widgetsCustomActionButton = 'lib/core/widgets/custom_action_button.dart';
