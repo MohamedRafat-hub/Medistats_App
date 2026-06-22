@@ -56,15 +56,15 @@ class AddSessionBottomSheet extends StatelessWidget {
               _buildCloseButton(context),
             ],
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: 20),
 
           const CustomTextField(hintText: 'Diagnosis'),
-          const SizedBox(height: 16),
+          const SizedBox(height: 10),
           const CustomTextField(hintText: 'Prescription/Plan' , maxLines: 3),
-          const SizedBox(height: 16),
+          const SizedBox(height: 10),
           const CustomTextField(hintText: 'Notes', maxLines: 2),
 
-          const SizedBox(height: 24),
+          const SizedBox(height: 18),
 
           CustomActionButton(
             text: 'Add Session',

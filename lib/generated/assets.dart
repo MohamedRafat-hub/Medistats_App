@@ -6,6 +6,7 @@ class Assets {
   static const String helperFunctionsShowAddPatientBottomSheet = 'lib/core/helper_functions/show_add_patient_bottom_sheet.dart';
   static const String helperFunctionsShowAddSessionButtonSheet = 'lib/core/helper_functions/show_add_session_button_sheet.dart';
   static const String libMain = 'lib/main.dart';
+  static const String modelsPatientModel = 'lib/features/patient_management/data/models/patient_model.dart';
   static const String presentationPatientHistoryView = 'lib/features/sessions/presentation/patient_history_view.dart';
   static const String utilsAppTheme = 'lib/core/utils/app_theme.dart';
   static const String viewsPatientsView = 'lib/features/patient_management/presentation/views/patients_view.dart';
