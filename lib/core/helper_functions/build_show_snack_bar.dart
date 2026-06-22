@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:medistats/core/utils/app_theme.dart';
 
 ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showSnackBar(BuildContext context , {required String message , Color? color}) {
   return ScaffoldMessenger.of(context).showSnackBar(
@@ -11,6 +12,6 @@ ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showSnackBar(BuildCont
           fontWeight: FontWeight.w400,
           height: 1.60,
         ),),
-      ), backgroundColor: color ?? Colors.green, duration: Duration(seconds: 2),)
+      ), backgroundColor: color ?? AppColors.primaryColor, duration: Duration(seconds: 2),)
   );
 }

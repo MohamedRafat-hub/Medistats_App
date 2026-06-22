@@ -69,6 +69,14 @@ class PatientsListViewBuilder extends StatelessWidget {
         builder: (context, state) {
           if(state is GetAllPatientsSuccess)
           {
+            if(state.patients.isEmpty)
+              {
+                return const SliverToBoxAdapter(
+                  child: Center(
+                    child: Text('No patients found.' , style: AppTextStyles.noPatient,),
+                  ),
+                );
+              }
             return SliverList.builder(
               itemCount: state.patients.length,
               itemBuilder: (context, index) {

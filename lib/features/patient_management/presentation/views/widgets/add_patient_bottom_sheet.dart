@@ -131,7 +131,7 @@ class _AddPatientBottomSheetState extends State<AddPatientBottomSheet> {
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
-                      final patient = PatientModel(id: '', name: _fullName, age: _age, phoneNumber: _phoneNumber);
+                      final patient = PatientModel(id: '', name: _fullName, age: _age, phoneNumber: _phoneNumber , createdAt: DateTime.now());
                       context.read<AddPatientCubit>().addPatient(patient);
                     }
                     else

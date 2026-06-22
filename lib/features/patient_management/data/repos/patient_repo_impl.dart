@@ -30,7 +30,7 @@ class PatientRepoImpl implements PatientRepo {
   @override
   Future<Either<Failure, List<PatientModel>>> getAllPatients()async {
     try {
-      final docs = await fireStoreService.getCollection(collectionName: BackendEndpoint.patients);
+      final docs = await fireStoreService.getCollection(collectionName: BackendEndpoint.patients , orderByField: 'createdAt');
       List<PatientModel> patients = docs.map((doc) => PatientModel.fromJson(doc.data(), doc.id)).toList();
 
       return right(patients);

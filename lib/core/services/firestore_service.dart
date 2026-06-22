@@ -20,9 +20,15 @@ class FireStoreService {
 
   Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>> getCollection({
     required String collectionName,
+    String? orderByField,
   }) async {
-    QuerySnapshot<Map<String, dynamic>> querySnapshot =
-    await _fireStore.collection(collectionName).get();
+    Query<Map<String, dynamic>> query = _fireStore.collection(collectionName);
+
+    if (orderByField != null && orderByField.isNotEmpty) {
+      query = query.orderBy(orderByField, descending: false);
+    }
+
+    final querySnapshot = await query.get();
     return querySnapshot.docs;
   }
 
