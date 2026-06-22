@@ -4,19 +4,20 @@ class FireStoreService {
   FirebaseFirestore _fireStore = FirebaseFirestore.instance;
 
   Future<String> addData({
-   required String collectionName,
-   required Map<String, dynamic> data,
+    required String collectionName,
+    required Map<String, dynamic> data,
     String? uid,
   }) async {
     if (uid != null && uid.isNotEmpty) {
       await _fireStore.collection(collectionName).doc(uid).set(data);
       return uid;
     } else {
-      DocumentReference documentReference = await _fireStore.collection(collectionName).add(data);
+      DocumentReference documentReference = await _fireStore
+          .collection(collectionName)
+          .add(data);
       return documentReference.id;
     }
   }
-
 
   Stream<List<QueryDocumentSnapshot<Map<String, dynamic>>>> getCollection({
     required String collectionName,
@@ -31,11 +32,17 @@ class FireStoreService {
     return query.snapshots().map((querySnapshot) => querySnapshot.docs);
   }
 
-
   Future<DocumentSnapshot<Map<String, dynamic>>> getDocument({
     required String collectionName,
     required String docId,
   }) async {
     return await _fireStore.collection(collectionName).doc(docId).get();
+  }
+
+  Future<void> deleteDocument({
+    required String collectionName,
+    required String docId,
+  }) async {
+    await _fireStore.collection(collectionName).doc(docId).delete();
   }
 }

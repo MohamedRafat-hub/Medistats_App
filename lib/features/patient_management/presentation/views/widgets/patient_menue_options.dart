@@ -4,12 +4,14 @@ class CustomPatientMenuOption extends StatelessWidget {
   final IconData icon;
   final Color iconColor;
   final String label;
+  final void Function()? onPressed;
 
   const CustomPatientMenuOption({
     super.key,
     required this.icon,
     required this.iconColor,
     required this.label,
+    this.onPressed
   });
 
   @override
@@ -22,7 +24,10 @@ class CustomPatientMenuOption extends StatelessWidget {
             color: iconColor.withOpacity(0.1),
             borderRadius: BorderRadius.circular(8),
           ),
-          child: Icon(icon, size: 18, color: iconColor),
+          child: IconButton(onPressed: onPressed, icon: Icon(icon) ,color: iconColor,
+            iconSize: 18,
+          ),
+          // child: Icon(icon, size: 18, color: iconColor),
         ),
         const SizedBox(width: 10),
         Text(

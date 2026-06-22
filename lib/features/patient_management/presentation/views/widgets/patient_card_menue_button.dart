@@ -23,9 +23,10 @@ class PatientCardMenuButton extends StatelessWidget {
             label: 'Edit',
           ),
         ),
-        const PopupMenuItem<String>(
+         PopupMenuItem<String>(
           value: 'delete',
           child: CustomPatientMenuOption(
+            onPressed: (){},
             icon: Icons.delete_outline,
             iconColor: Colors.redAccent,
             label: 'Delete',

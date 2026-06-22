@@ -44,4 +44,22 @@ class PatientRepoImpl implements PatientRepo {
     });
   }
 
+  @override
+  Future<Either<Failure, void>> deletePatient(String patientId)async {
+    try {
+      await fireStoreService.deleteDocument(
+        collectionName: BackendEndpoint.patients,
+        docId: patientId,
+      );
+      return right(null); // unit تعني عملية ناجحة بدون داتا راجعة
+    } on FirebaseException catch (e) {
+      return left(ServerFailure(handleFirebaseError(e)));
+    } catch (e) {
+      return left(ServerFailure('عذراً، فشل حذف المريض. حاول مرة أخرى.'));
+    }
+  }
+
+
+
+
 }
