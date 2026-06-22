@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medistats/core/services/getit_service.dart';
 import 'package:medistats/features/patient_management/data/repos/patient_repo.dart';
 import 'package:medistats/features/patient_management/presentation/managers/add_patient_cubit/add_patient_cubit.dart';
+import 'package:medistats/features/patient_management/presentation/managers/delete_patient_cubit/delete_patient_cubit.dart';
 import 'package:medistats/features/patient_management/presentation/managers/get_all_patients_cubit/get_all_patients_cubit.dart';
 
 import 'features/patient_management/presentation/views/patients_view.dart';
@@ -29,6 +30,7 @@ class MedistatsApp extends StatelessWidget {
           create: (context) => AddPatientCubit(getIt<PatientRepo>()),
         ),
         BlocProvider(create: (context) => GetAllPatientsCubit(getIt<PatientRepo>())..startListeningToPatients()),
+        BlocProvider(create: (context) => DeletePatientCubit(getIt<PatientRepo>())),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

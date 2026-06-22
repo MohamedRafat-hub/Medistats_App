@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:medistats/features/patient_management/presentation/views/widgets/patient_menue_options.dart';
 
 class PatientCardMenuButton extends StatelessWidget {
-  const PatientCardMenuButton({super.key});
-
+  PatientCardMenuButton({super.key , this.onDeletePressed});
+  void Function()? onDeletePressed;
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<String>(
@@ -25,11 +25,14 @@ class PatientCardMenuButton extends StatelessWidget {
         ),
          PopupMenuItem<String>(
           value: 'delete',
-          child: CustomPatientMenuOption(
-            onPressed: (){},
-            icon: Icons.delete_outline,
-            iconColor: Colors.redAccent,
-            label: 'Delete',
+          child: Padding(
+            padding: const EdgeInsets.only(top: 8.0),
+            child: CustomPatientMenuOption(
+              onPressed:  onDeletePressed,
+              icon: Icons.delete_outline,
+              iconColor: Colors.redAccent,
+              label: 'Delete',
+            ),
           ),
         ),
       ],
