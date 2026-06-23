@@ -6,4 +6,5 @@ abstract class PatientRepo {
   Future<Either<Failure ,String>>addPatient(PatientModel patient);
   Stream<Either<Failure , List<PatientModel>>>getAllPatients();
   Future<Either<Failure ,void>>deletePatient(String patientId);
+  Future<Either<Failure ,void>>updatePatient(PatientModel patient);
 }

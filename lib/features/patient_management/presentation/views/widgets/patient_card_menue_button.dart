@@ -2,42 +2,54 @@ import 'package:flutter/material.dart';
 import 'package:medistats/features/patient_management/presentation/views/widgets/patient_menue_options.dart';
 
 class PatientCardMenuButton extends StatelessWidget {
-  PatientCardMenuButton({super.key , this.onDeletePressed});
-  void Function()? onDeletePressed;
+  const PatientCardMenuButton({super.key, this.onDeletePressed, this.onUpdatePressed});
+
+  final void Function()? onDeletePressed;
+  final void Function()? onUpdatePressed;
+
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<String>(
       icon: const Icon(Icons.more_vert, color: Colors.black45),
-      elevation: 6,
-      offset: const Offset(0, 8),
+      elevation: 4,
+      offset: const Offset(0, 12),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(14),
+        borderRadius: BorderRadius.circular(12),
       ),
       color: Colors.white,
+
+      constraints: const BoxConstraints(
+        maxWidth: 130,
+        minWidth: 110,
+      ),
+
       itemBuilder: (context) => [
         const PopupMenuItem<String>(
           value: 'edit',
+          height: 38,
           child: CustomPatientMenuOption(
             icon: Icons.edit_outlined,
             iconColor: Color(0xFF2C7A8C),
             label: 'Edit',
           ),
         ),
-         PopupMenuItem<String>(
+        const PopupMenuItem<String>(
           value: 'delete',
-          child: Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: CustomPatientMenuOption(
-              onPressed:  onDeletePressed,
-              icon: Icons.delete_outline,
-              iconColor: Colors.redAccent,
-              label: 'Delete',
-            ),
+          height: 38,
+          child: CustomPatientMenuOption(
+            icon: Icons.delete_outline,
+            iconColor: Colors.redAccent,
+            label: 'Delete',
           ),
         ),
       ],
+
       onSelected: (value) {
-        // No logic implemented (UI only)
+        if (value == 'edit' && onUpdatePressed != null) {
+          onUpdatePressed!();
+        } else if (value == 'delete' && onDeletePressed != null) {
+          onDeletePressed!();
+        }
       },
     );
   }

@@ -5,6 +5,7 @@ import 'package:medistats/features/patient_management/data/models/patient_model.
 import 'package:medistats/features/patient_management/presentation/managers/delete_patient_cubit/delete_patient_cubit.dart';
 import 'package:medistats/features/patient_management/presentation/views/widgets/patient_card_menue_button.dart';
 import 'package:medistats/features/patient_management/presentation/views/widgets/vitals_chart_placeholder.dart';
+import 'add_patient_bottom_sheet.dart';
 import 'condition_page.dart';
 
 class PatientCard extends StatelessWidget {
@@ -55,6 +56,13 @@ class PatientCard extends StatelessWidget {
                     context.read<DeletePatientCubit>().deletePatient(
                         patientModel.id);
                   },
+                  onUpdatePressed: (){
+                    showModalBottomSheet(
+                      context: context,
+                      builder: (context) => AddPatientBottomSheet(patientToEdit: patientModel),
+                    );
+                  },
+
                 ),
               ),
             ],

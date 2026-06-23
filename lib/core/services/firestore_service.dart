@@ -45,4 +45,12 @@ class FireStoreService {
   }) async {
     await _fireStore.collection(collectionName).doc(docId).delete();
   }
+
+  Future<void> updateDocument({
+    required String collectionName,
+    required String docId,
+    required Map<String, dynamic> data,
+  }) async {
+    await _fireStore.collection(collectionName).doc(docId).update(data);
+  }
 }

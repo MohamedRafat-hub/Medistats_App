@@ -59,6 +59,22 @@ class PatientRepoImpl implements PatientRepo {
     }
   }
 
+  @override
+  Future<Either<Failure, void>> updatePatient(PatientModel patient)async {
+    try {
+      await fireStoreService.updateDocument(
+        collectionName: BackendEndpoint.patients,
+        docId: patient.id,
+        data: patient.toJson(),
+      );
+      return right(null); // unit تعني عملية ناجحة بدون داتا راجعة
+    } on FirebaseException catch (e) {
+      return left(ServerFailure(handleFirebaseError(e)));
+    } catch (e) {
+      return left(ServerFailure('عذراً، فشل تحديث بيانات المريض. حاول مرة أخرى.'));
+    }
+  }
+
 
 
 

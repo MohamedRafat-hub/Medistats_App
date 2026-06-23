@@ -8,7 +8,7 @@ void showAddPatientBottomSheet(BuildContext context) {
     isScrollControlled: true,
     backgroundColor: Colors.transparent,
     builder: (context) {
-      return const AddPatientBottomSheet();
+      return  AddPatientBottomSheet();
     },
   );
 }

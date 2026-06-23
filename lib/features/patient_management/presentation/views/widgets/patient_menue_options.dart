@@ -4,32 +4,29 @@ class CustomPatientMenuOption extends StatelessWidget {
   final IconData icon;
   final Color iconColor;
   final String label;
-  final void Function()? onPressed;
 
   const CustomPatientMenuOption({
     super.key,
     required this.icon,
     required this.iconColor,
     required this.label,
-    this.onPressed
   });
 
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisSize: MainAxisSize.min,
       children: [
         Container(
-          padding: const EdgeInsets.all(2),
+          padding: const EdgeInsets.all(6),
           decoration: BoxDecoration(
             color: iconColor.withOpacity(0.1),
             borderRadius: BorderRadius.circular(8),
           ),
-          child: IconButton(onPressed: onPressed, icon: Icon(icon) ,color: iconColor,
-            iconSize: 18,
-          ),
-          // child: Icon(icon, size: 18, color: iconColor),
+
+          child: Icon(icon, size: 18, color: iconColor),
         ),
-        const SizedBox(width: 10),
+        const SizedBox(width: 12),
         Text(
           label,
           style: const TextStyle(
