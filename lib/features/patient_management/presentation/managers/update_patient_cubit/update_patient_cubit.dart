@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
-import '../../../data/models/patient_model.dart';
+import '../../../../../core/models/patient_model.dart';
 import '../../../data/repos/patient_repo.dart';
 part 'update_patient_state.dart';
 

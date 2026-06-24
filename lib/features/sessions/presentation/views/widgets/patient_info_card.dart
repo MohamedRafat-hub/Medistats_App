@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:medistats/features/sessions/presentation/views/widgets/patient.dart';
+import 'package:medistats/core/models/patient_model.dart';
 import '../../../../../core/utils/app_theme.dart';
 import 'initials_avatar.dart';
-import 'condition_badge.dart';
 
 /// Green summary card showing patient identity and condition badges.
 /// Uses an initials avatar instead of a profile photo.
 class PatientInfoCard extends StatelessWidget {
-  final Patient patient;
+  final PatientModel patient;
 
   const PatientInfoCard({super.key, required this.patient});
 
@@ -27,8 +26,7 @@ class PatientInfoCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               InitialsAvatar(
-                firstName: patient.firstName,
-                lastName: patient.lastName,
+                name: patient.name,
               ),
               const SizedBox(width: 14),
               Expanded(
@@ -36,7 +34,7 @@ class PatientInfoCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '${patient.firstName} ${patient.lastName}',
+                      patient.name,
                       style: AppTextStyles.patientName,
                     ),
                     const SizedBox(height: 4),
@@ -55,17 +53,17 @@ class PatientInfoCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 16),
-          Wrap(
-            spacing: 10,
-            runSpacing: 10,
-            children: [
-              for (final condition in patient.conditions)
-                ConditionBadge(
-                  label: condition,
-                  icon: _iconForCondition(condition),
-                ),
-            ],
-          ),
+          // Wrap(
+          //   spacing: 10,
+          //   runSpacing: 10,
+          //   children: [
+          //     for (final condition in patient.conditions)
+          //       ConditionBadge(
+          //         label: condition,
+          //         icon: _iconForCondition(condition),
+          //       ),
+          //   ],
+          // ),
         ],
       ),
     );

@@ -33,13 +33,13 @@ class AppTextStyles {
   static const TextStyle patientName = TextStyle(
     fontSize: 18,
     fontWeight: FontWeight.w700,
-    color: AppColors.textPrimary,
+    color: AppColors.white,
   );
 
   static const TextStyle patientSubInfo = TextStyle(
     fontSize: 14,
     fontWeight: FontWeight.w500,
-    color: AppColors.textPrimary,
+    color: AppColors.white,
   );
 
   static const TextStyle badgeText = TextStyle(

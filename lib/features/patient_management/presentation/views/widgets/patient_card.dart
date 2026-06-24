@@ -1,7 +1,7 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:medistats/features/patient_management/data/models/patient_model.dart';
+import 'package:medistats/core/models/patient_model.dart';
 import 'package:medistats/features/patient_management/presentation/managers/delete_patient_cubit/delete_patient_cubit.dart';
 import 'package:medistats/features/patient_management/presentation/views/widgets/patient_card_menue_button.dart';
 import 'package:medistats/features/patient_management/presentation/views/widgets/vitals_chart_placeholder.dart';

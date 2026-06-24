@@ -1,6 +1,6 @@
 import 'package:async/async.dart';
 import 'package:bloc/bloc.dart';
-import 'package:medistats/features/patient_management/data/models/patient_model.dart';
+import 'package:medistats/core/models/patient_model.dart';
 import 'package:meta/meta.dart';
 
 import '../../../data/repos/patient_repo.dart';

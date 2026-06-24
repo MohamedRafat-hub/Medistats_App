@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:medistats/features/patient_management/data/models/patient_model.dart';
+import 'package:medistats/core/models/patient_model.dart';
 import 'package:medistats/features/patient_management/data/repos/patient_repo.dart';
 import 'package:meta/meta.dart';
 

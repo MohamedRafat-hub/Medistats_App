@@ -6,7 +6,7 @@ import 'package:medistats/core/utils/app_theme.dart';
 import 'package:medistats/features/patient_management/presentation/managers/add_patient_cubit/add_patient_cubit.dart';
 import 'package:medistats/features/patient_management/presentation/managers/update_patient_cubit/update_patient_cubit.dart';
 import '../../../../../core/widgets/closed_button_sheet.dart';
-import '../../../data/models/patient_model.dart';
+import '../../../../../core/models/patient_model.dart';
 import 'custom_text_field.dart';
 import '../../../../../core/widgets/custom_action_button.dart';
 

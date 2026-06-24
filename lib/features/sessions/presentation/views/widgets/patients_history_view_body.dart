@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:medistats/features/sessions/presentation/views/widgets/patient.dart';
+import 'package:medistats/core/models/patient_model.dart';
 import 'package:medistats/features/sessions/presentation/views/widgets/patient_info_card.dart';
 import 'package:medistats/features/sessions/presentation/views/widgets/patient_session.dart';
 import 'package:medistats/features/sessions/presentation/views/widgets/session_timeline_tile.dart';
@@ -11,7 +11,7 @@ class PatientsHistoryViewBody extends StatelessWidget {
     required this.sessions,
   });
 
-  final Patient patient;
+  final PatientModel patient;
   final List<PatientSession> sessions;
 
   @override
