@@ -22,6 +22,8 @@ class Assets {
   static const String presentationPatientHistoryView = 'lib/features/sessions/presentation/patient_history_view.dart';
   static const String reposPatientRepo = 'lib/features/patient_management/data/repos/patient_repo.dart';
   static const String reposPatientRepoImpl = 'lib/features/patient_management/data/repos/patient_repo_impl.dart';
+  static const String reposSessionRepoImpl = 'lib/features/sessions/data/repos/sessions_repo_impl.dart';
+  static const String reposSessionsRepo = 'lib/features/sessions/data/repos/sessions_repo.dart';
   static const String servicesFirestoreService = 'lib/core/services/firestore_service.dart';
   static const String servicesGetitService = 'lib/core/services/getit_service.dart';
   static const String updatePatientCubitUpdatePatientCubit = 'lib/features/patient_management/presentation/managers/update_patient_cubit/update_patient_cubit.dart';
