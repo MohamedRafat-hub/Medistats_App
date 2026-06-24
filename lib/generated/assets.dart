@@ -18,6 +18,7 @@ class Assets {
   static const String libFirebaseOptions = 'lib/firebase_options.dart';
   static const String libMain = 'lib/main.dart';
   static const String modelsPatientModel = 'lib/core/models/patient_model.dart';
+  static const String modelsSessionModel = 'lib/features/sessions/data/models/session_model.dart';
   static const String presentationPatientHistoryView = 'lib/features/sessions/presentation/patient_history_view.dart';
   static const String reposPatientRepo = 'lib/features/patient_management/data/repos/patient_repo.dart';
   static const String reposPatientRepoImpl = 'lib/features/patient_management/data/repos/patient_repo_impl.dart';
