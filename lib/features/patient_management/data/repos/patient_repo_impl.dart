@@ -18,43 +18,56 @@ class PatientRepoImpl implements PatientRepo {
   @override
   Future<Either<Failure, String>> addPatient(PatientModel patient) async {
     try {
-      String uid = await fireStoreService.addData(collectionName: BackendEndpoint.patients, data: patient.toJson());
+      String uid = await fireStoreService.addData(
+        collectionName: BackendEndpoint.patients,
+        data: patient.toJson(),
+      );
       return right(uid);
     } on FirebaseException catch (e) {
       return left(ServerFailure(handleFirebaseError(e)));
     } catch (e) {
-      return left(ServerFailure('عذراً، حدث خطأ غير متوقع في النظام. حاول مرة أخرى.'));
+      return left(
+        ServerFailure('عذراً، حدث خطأ غير متوقع في النظام. حاول مرة أخرى.'),
+      );
     }
   }
 
   @override
-  Stream<Either<Failure, List<PatientModel>>> getAllPatients(){
+  Stream<Either<Failure, List<PatientModel>>> getAllPatients() {
     return fireStoreService
         .getCollection(
-      collectionName: BackendEndpoint.patients,
-      orderByField: 'createdAt',
-    )
+          collectionName: BackendEndpoint.patients,
+          orderByField: 'createdAt',
+        )
         .map<Either<Failure, List<PatientModel>>>((docs) {
-      List<PatientModel> patients = docs.map((doc) => PatientModel.fromJson(doc.data(), doc.id)).toList();
-      return right(patients);
-    })
+          List<PatientModel> patients = docs
+              .map((doc) => PatientModel.fromJson(doc.data(), doc.id))
+              .toList();
+          return right(patients);
+        })
         .handleError((error) {
-      if(error is FirebaseException)
-      {
-        return left(ServerFailure(handleFirebaseError(error)));
-      }
-      return left(ServerFailure('حدث خطأ أثناء تحميل بيانات المرضى.'));
-    });
+          if (error is FirebaseException) {
+            return left(ServerFailure(handleFirebaseError(error)));
+          }
+          return left(ServerFailure('حدث خطأ أثناء تحميل بيانات المرضى.'));
+        });
   }
 
   @override
-  Future<Either<Failure, void>> deletePatient(String patientId)async {
+  Future<Either<Failure, void>> deletePatient(String patientId) async {
     try {
-      await fireStoreService.deleteDocument(
-        collectionName: BackendEndpoint.patients,
-        docId: patientId,
+      // await fireStoreService.deleteDocument(
+      //   collectionName: BackendEndpoint.patients,
+      //   docId: patientId,
+      // );
+
+      await fireStoreService.deleteCollectionWithParent(
+        parentCollection: BackendEndpoint.patients,
+        patientId: patientId,
+        childCollection: BackendEndpoint.sessions,
+        childWhereField: 'patientId',
       );
-      return right(null); // unit تعني عملية ناجحة بدون داتا راجعة
+      return right(null);
     } on FirebaseException catch (e) {
       return left(ServerFailure(handleFirebaseError(e)));
     } catch (e) {
@@ -63,22 +76,20 @@ class PatientRepoImpl implements PatientRepo {
   }
 
   @override
-  Future<Either<Failure, void>> updatePatient(PatientModel patient)async {
+  Future<Either<Failure, void>> updatePatient(PatientModel patient) async {
     try {
       await fireStoreService.updateDocument(
         collectionName: BackendEndpoint.patients,
         docId: patient.id,
         data: patient.toJson(),
       );
-      return right(null); // unit تعني عملية ناجحة بدون داتا راجعة
+      return right(null);
     } on FirebaseException catch (e) {
       return left(ServerFailure(handleFirebaseError(e)));
     } catch (e) {
-      return left(ServerFailure('عذراً، فشل تحديث بيانات المريض. حاول مرة أخرى.'));
+      return left(
+        ServerFailure('عذراً، فشل تحديث بيانات المريض. حاول مرة أخرى.'),
+      );
     }
   }
-
-
-
-
 }
