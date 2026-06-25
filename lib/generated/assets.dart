@@ -33,6 +33,8 @@ class Assets {
   static const String servicesGetitService = 'lib/core/services/getit_service.dart';
   static const String updatePatientCubitUpdatePatientCubit = 'lib/features/patient_management/presentation/managers/update_patient_cubit/update_patient_cubit.dart';
   static const String updatePatientCubitUpdatePatientState = 'lib/features/patient_management/presentation/managers/update_patient_cubit/update_patient_state.dart';
+  static const String updateSessionCubitUpdateSessionCubit = 'lib/features/sessions/presentation/managers/update_session_cubit/update_session_cubit.dart';
+  static const String updateSessionCubitUpdateSessionState = 'lib/features/sessions/presentation/managers/update_session_cubit/update_session_state.dart';
   static const String utilsAppTheme = 'lib/core/utils/app_theme.dart';
   static const String utilsBackendEndpoint = 'lib/core/utils/backend_endpoint.dart';
   static const String viewsPatientsView = 'lib/features/patient_management/presentation/views/patients_view.dart';
