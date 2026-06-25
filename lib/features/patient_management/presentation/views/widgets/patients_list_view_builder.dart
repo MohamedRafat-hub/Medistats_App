@@ -1,19 +1,17 @@
-
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:medistats/core/services/getit_service.dart';
 import 'package:medistats/features/patient_management/presentation/views/widgets/patient_card.dart';
-
-import '../../../../../core/models/patient_model.dart';
+import 'package:medistats/features/sessions/data/repos/sessions_repo.dart';
+import 'package:medistats/features/sessions/presentation/managers/get_patient_sessions_cubit/get_patient_sessions_cubit.dart';
 import '../../../../../core/utils/app_theme.dart';
 import '../../../../sessions/presentation/patient_history_view.dart';
-import '../../../../sessions/presentation/views/widgets/patient_session.dart';
 import '../../managers/get_all_patients_cubit/get_all_patients_cubit.dart';
 
 class PatientsListViewBuilder extends StatelessWidget {
   const PatientsListViewBuilder({super.key});
-
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +24,9 @@ class PatientsListViewBuilder extends StatelessWidget {
               return const SliverToBoxAdapter(
                 child: Center(
                   child: Text(
-                    'No patients found.', style: AppTextStyles.noPatient,),
+                    'No patients found.',
+                    style: AppTextStyles.noPatient,
+                  ),
                 ),
               );
             }
@@ -39,61 +39,44 @@ class PatientsListViewBuilder extends StatelessWidget {
                     onTap: () {
                       log(state.patients[index].id.toString());
                       Navigator.push(
-                          context, MaterialPageRoute(builder: (context) =>
-                          PatientHistoryView(patient: state.patients[index], sessions: [
-                            PatientSession(
-                              title: 'متابعة دورية للكشف',
-                              dateLabel: '23 June 2026',
-                              diagnosis: 'التهاب حاد في اللوزتين واحتقان بالحلق رفقة ارتفاع طفيف في درجات الحرارة.',
-                              prescription: '1. شراب مضاد حيوي (Augmentin 457) - 5 مل كل 12 ساعة لمدة أسبوع.\n2. شراب خافض للحرارة (Cetal) - 5 مل عند اللزوم كل 6 ساعات.',
-                              notes: 'يرجى الالتزام التام بجرعات المضاد الحيوي، وعمل كمادات مياه فلو الحرارة زادت عن 38.5، وإعادة الكشف بعد 5 أيام.',
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => BlocProvider(
+                            create: (context) =>
+                                GetPatientSessionsCubit(
+                                  getIt.get<SessionsRepo>(),
+                                )..getPatientSessions(
+                                  patientId: state.patients[index].id,
+                                ),
+                            child: PatientHistoryView(
+                              patient: state.patients[index],
                             ),
-                            PatientSession(
-                              title: 'متابعة دورية للكشف',
-                              dateLabel: '23 June 2026',
-                              diagnosis: 'التهاب حاد في اللوزتين واحتقان بالحلق رفقة ارتفاع طفيف في درجات الحرارة.',
-                              prescription: '1. شراب مضاد حيوي (Augmentin 457) - 5 مل كل 12 ساعة لمدة أسبوع.\n2. شراب خافض للحرارة (Cetal) - 5 مل عند اللزوم كل 6 ساعات.',
-                              notes: 'يرجى الالتزام التام بجرعات المضاد الحيوي، وعمل كمادات مياه فلو الحرارة زادت عن 38.5، وإعادة الكشف بعد 5 أيام.',
-                            ),
-                            PatientSession(
-                              title: 'متابعة دورية للكشف',
-                              dateLabel: '23 June 2026',
-                              diagnosis: 'التهاب حاد في اللوزتين واحتقان بالحلق رفقة ارتفاع طفيف في درجات الحرارة.',
-                              prescription: '1. شراب مضاد حيوي (Augmentin 457) - 5 مل كل 12 ساعة لمدة أسبوع.\n2. شراب خافض للحرارة (Cetal) - 5 مل عند اللزوم كل 6 ساعات.',
-                              notes: 'يرجى الالتزام التام بجرعات المضاد الحيوي، وعمل كمادات مياه فلو الحرارة زادت عن 38.5، وإعادة الكشف بعد 5 أيام.',
-                            ),
-                          ]
-                          )));
+                          ),
+                        ),
+                      );
                     },
-                    child: PatientCard(
-                      patientModel: state.patients[index],
-                    ),
+                    child: PatientCard(patientModel: state.patients[index]),
                   ),
                 );
               },
             );
-          }
-          else if (state is GetAllPatientsLoading) {
+          } else if (state is GetAllPatientsLoading) {
             return const SliverToBoxAdapter(
               child: Center(
-                child: CircularProgressIndicator(
-                  color: AppColors.primaryColor,
-                ),
+                child: CircularProgressIndicator(color: AppColors.primaryColor),
               ),
             );
-          }
-          else if (state is GetAllPatientsError) {
+          } else if (state is GetAllPatientsError) {
             return SliverToBoxAdapter(
-              child: Center(
-                child: Text(state.message),
-              ),
+              child: Center(child: Text(state.message)),
             );
-          }
-          else {
+          } else {
             return const SliverToBoxAdapter(
               child: Center(
                 child: Text(
-                  'No patients found.', style: AppTextStyles.noPatient,),
+                  'No patients found.',
+                  style: AppTextStyles.noPatient,
+                ),
               ),
             );
           }

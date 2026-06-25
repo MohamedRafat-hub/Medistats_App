@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:medistats/features/sessions/presentation/views/widgets/patient_session.dart';
+import 'package:intl/intl.dart';
+import 'package:medistats/features/sessions/data/models/session_model.dart';
 import '../../../../../core/utils/app_theme.dart';
 import 'session_field_row.dart';
 
 /// White rounded card showing a single visit/session summary:
 /// title, date, diagnosis, prescription and notes.
 class SessionCard extends StatelessWidget {
-  final PatientSession session;
+  final SessionModel session;
 
   const SessionCard({super.key, required this.session});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    final formattedDate = DateFormat('dd MMM yyyy - hh:mm a').format(session.createdAt.toLocal());    return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -31,7 +32,7 @@ class SessionCard extends StatelessWidget {
         children: [
           Text(session.title, style: AppTextStyles.sessionTitle),
           const SizedBox(height: 4),
-          Text(session.dateLabel, style: AppTextStyles.sessionDate),
+          Text(formattedDate, style: AppTextStyles.sessionDate),
           if (session.diagnosis.isNotEmpty ||
               session.prescription.isNotEmpty ||
               session.notes.isNotEmpty) ...[

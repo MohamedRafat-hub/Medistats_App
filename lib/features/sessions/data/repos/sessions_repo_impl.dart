@@ -38,7 +38,7 @@ class SessionsRepoImpl implements SessionsRepo {
       orderByField: 'createdAt',
       whereField: 'patientId',
       isEqualTo: patientId,
-      descending: true,
+      descending: false,
     ).map<Either<Failure , List<SessionModel>>>((docs){
       List<SessionModel>sessions = docs.map((doc) => SessionModel.fromJson(doc.data(), doc.id)).toList();
       return right(sessions);

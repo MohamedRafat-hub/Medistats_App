@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:medistats/features/sessions/presentation/views/widgets/patient_session.dart';
+import 'package:medistats/features/sessions/data/models/session_model.dart';
 import 'session_card.dart';
 import 'timeline_indicator.dart';
 
 /// Combines a [TimelineIndicator] with a [SessionCard] to form one
 /// row of the vertical session history timeline.
 class SessionTimelineTile extends StatelessWidget {
-  final PatientSession session;
+  final SessionModel session;
   final bool isLast;
 
   const SessionTimelineTile({
