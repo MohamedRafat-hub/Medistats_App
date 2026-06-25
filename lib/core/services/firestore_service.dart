@@ -27,10 +27,9 @@ class FireStoreService {
     bool descending = false,
   }) {
     Query<Map<String, dynamic>> query = _fireStore.collection(collectionName);
-    if(whereField != null && isEqualTo != null)
-      {
-        query = query.where(whereField , isEqualTo: isEqualTo);
-      }
+    if (whereField != null && isEqualTo != null) {
+      query = query.where(whereField, isEqualTo: isEqualTo);
+    }
     if (orderByField != null && orderByField.isNotEmpty) {
       query = query.orderBy(orderByField, descending: false);
     }
@@ -58,5 +57,27 @@ class FireStoreService {
     required Map<String, dynamic> data,
   }) async {
     await _fireStore.collection(collectionName).doc(docId).update(data);
+  }
+
+  Future<void> deleteCollectionWithParent({
+    required String parentCollection,
+    required String patientId,
+    required String childCollection,
+    required String childWhereField,
+  }) async {
+    final batch = _fireStore.batch();
+
+    final childSnapShot = await _fireStore.collection(childCollection).where(childWhereField , isEqualTo: patientId).get();
+
+    for (var doc in childSnapShot.docs)
+      {
+        batch.delete(doc.reference);
+      }
+
+    final parentRef = _fireStore.collection(parentCollection).doc(patientId);
+
+    batch.delete(parentRef);
+
+    await batch.commit();
   }
 }
