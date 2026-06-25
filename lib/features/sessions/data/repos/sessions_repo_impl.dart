@@ -33,22 +33,43 @@ class SessionsRepoImpl implements SessionsRepo {
   Stream<Either<Failure, List<SessionModel>>> getPatientAllSessions({
     required String patientId,
   }) {
-    return _fireStoreService.getCollection(
-      collectionName: BackendEndpoint.sessions,
-      orderByField: 'createdAt',
-      whereField: 'patientId',
-      isEqualTo: patientId,
-      descending: false,
-    ).map<Either<Failure , List<SessionModel>>>((docs){
-      List<SessionModel>sessions = docs.map((doc) => SessionModel.fromJson(doc.data(), doc.id)).toList();
-      return right(sessions);
-    }).handleError((error){
-      if(error is FirebaseException)
-        {
-          return left(ServerFailure(handleFirebaseError(error)));
-        }
-      return ServerFailure(error.toString());
-    });
+    return _fireStoreService
+        .getCollection(
+          collectionName: BackendEndpoint.sessions,
+          orderByField: 'createdAt',
+          whereField: 'patientId',
+          isEqualTo: patientId,
+          descending: false,
+        )
+        .map<Either<Failure, List<SessionModel>>>((docs) {
+          List<SessionModel> sessions = docs
+              .map((doc) => SessionModel.fromJson(doc.data(), doc.id))
+              .toList();
+          return right(sessions);
+        })
+        .handleError((error) {
+          if (error is FirebaseException) {
+            return left(ServerFailure(handleFirebaseError(error)));
+          }
+          return ServerFailure(error.toString());
+        });
+  }
 
+  @override
+  Future<Either<Failure, void>> deleteSession({
+    required String sessionId,
+  }) async {
+    try {
+      await _fireStoreService.deleteDocument(
+        collectionName: BackendEndpoint.sessions,
+        docId: sessionId,
+      );
+
+      return right(null);
+    } on FirebaseException catch (e) {
+      return left(ServerFailure(handleFirebaseError(e)));
+    } catch (e) {
+      return left(ServerFailure(e.toString()));
     }
   }
+}
