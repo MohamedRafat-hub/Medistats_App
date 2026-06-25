@@ -22,9 +22,15 @@ class FireStoreService {
   Stream<List<QueryDocumentSnapshot<Map<String, dynamic>>>> getCollection({
     required String collectionName,
     String? orderByField,
+    String? whereField,
+    dynamic isEqualTo,
+    bool descending = false,
   }) {
     Query<Map<String, dynamic>> query = _fireStore.collection(collectionName);
-
+    if(whereField != null && isEqualTo != null)
+      {
+        query = query.where(whereField , isEqualTo: isEqualTo);
+      }
     if (orderByField != null && orderByField.isNotEmpty) {
       query = query.orderBy(orderByField, descending: false);
     }

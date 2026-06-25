@@ -39,7 +39,10 @@ class PatientRepoImpl implements PatientRepo {
       return right(patients);
     })
         .handleError((error) {
-      // هندلة الأخطاء لو حصلت جوه الـ Stream
+      if(error is FirebaseException)
+      {
+        return left(ServerFailure(handleFirebaseError(error)));
+      }
       return left(ServerFailure('حدث خطأ أثناء تحميل بيانات المرضى.'));
     });
   }

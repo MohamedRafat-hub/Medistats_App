@@ -22,9 +22,9 @@ class SessionModel {
   factory SessionModel.fromJson(Map<String, dynamic> json, String docId) {
     return SessionModel(
       sessionId: docId,
-      patientId: (json['patient_id'] ?? '') as String,
+      patientId: (json['patientId'] ?? '') as String,
       title: (json['title'] ?? '') as String,
-      createdAt: (json['created_at'] as Timestamp).toDate(),
+      createdAt: (json['createdAt'] as Timestamp).toDate(),
       diagnosis: (json['diagnosis'] ?? '') as String,
       prescription: (json['prescription'] ?? '') as String,
       notes: (json['notes'] ?? '') as String,
@@ -33,9 +33,9 @@ class SessionModel {
 
   Map<String, dynamic> toJson() {
     return {
-      'patient_id': patientId,
+      'patientId': patientId,
       'title': title,
-      'created_at': Timestamp.fromDate(createdAt),
+      'createdAt': Timestamp.fromDate(createdAt),
       'diagnosis': diagnosis,
       'prescription': prescription,
       'notes': notes,

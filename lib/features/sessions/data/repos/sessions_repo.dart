@@ -7,4 +7,6 @@ abstract class SessionsRepo {
   Future<Either<Failure, void>> addSession({
     required SessionModel sessionModel,
   });
+
+  Stream<Either<Failure , List<SessionModel>>>getPatientAllSessions({required String patientId});
 }

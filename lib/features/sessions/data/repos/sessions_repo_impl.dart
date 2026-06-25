@@ -15,18 +15,40 @@ class SessionsRepoImpl implements SessionsRepo {
   @override
   Future<Either<Failure, void>> addSession({
     required SessionModel sessionModel,
-  })async {
+  }) async {
     try {
-     await  _fireStoreService.addData(
+      await _fireStoreService.addData(
         collectionName: BackendEndpoint.sessions,
         data: sessionModel.toJson(),
       );
       return right(null);
     } on FirebaseException catch (e) {
       return left(ServerFailure(handleFirebaseError(e)));
-    }catch(e)
-    {
+    } catch (e) {
       return left(ServerFailure(e.toString()));
     }
   }
-}
+
+  @override
+  Stream<Either<Failure, List<SessionModel>>> getPatientAllSessions({
+    required String patientId,
+  }) {
+    return _fireStoreService.getCollection(
+      collectionName: BackendEndpoint.sessions,
+      orderByField: 'createdAt',
+      whereField: 'patientId',
+      isEqualTo: patientId,
+      descending: true,
+    ).map<Either<Failure , List<SessionModel>>>((docs){
+      List<SessionModel>sessions = docs.map((doc) => SessionModel.fromJson(doc.data(), doc.id)).toList();
+      return right(sessions);
+    }).handleError((error){
+      if(error is FirebaseException)
+        {
+          return left(ServerFailure(handleFirebaseError(error)));
+        }
+      return ServerFailure(error.toString());
+    });
+
+    }
+  }
