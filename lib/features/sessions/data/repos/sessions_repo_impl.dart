@@ -72,4 +72,22 @@ class SessionsRepoImpl implements SessionsRepo {
       return left(ServerFailure(e.toString()));
     }
   }
+
+  @override
+  Future<Either<Failure, void>> updateSession({
+    required SessionModel sessionModel,
+  })async {
+   try {
+     await _fireStoreService.updateDocument(
+        collectionName: BackendEndpoint.sessions,
+        docId: sessionModel.sessionId,
+        data: sessionModel.toJson(),
+      );
+     return right(null);
+   } on FirebaseException catch (e) {
+     return left(ServerFailure(handleFirebaseError(e)));
+   } catch(e){
+     return left(ServerFailure(e.toString()));
+   }
+  }
 }
