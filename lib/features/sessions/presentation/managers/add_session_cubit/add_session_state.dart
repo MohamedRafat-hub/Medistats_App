@@ -1,4 +1,4 @@
-part of 'addsesion_cubit.dart';
+part of 'add_session_cubit.dart';
 
 @immutable
 sealed class AddSessionState {}

@@ -4,8 +4,8 @@ class Assets {
 
   static const String addPatientCubitAddPatientCubit = 'lib/features/patient_management/presentation/managers/add_patient_cubit/add_patient_cubit.dart';
   static const String addPatientCubitAddPatientState = 'lib/features/patient_management/presentation/managers/add_patient_cubit/add_patient_state.dart';
-  static const String addSessionCubitAddsesionCubit = 'lib/features/sessions/presentation/managers/add_session_cubit/addsesion_cubit.dart';
-  static const String addSessionCubitAddsesionState = 'lib/features/sessions/presentation/managers/add_session_cubit/addsesion_state.dart';
+  static const String addSessionCubitAddsesionCubit = 'lib/features/sessions/presentation/managers/add_session_cubit/add_session_cubit.dart';
+  static const String addSessionCubitAddsesionState = 'lib/features/sessions/presentation/managers/add_session_cubit/add_session_state.dart';
   static const String deletePatientCubitDeletePatientCubit = 'lib/features/patient_management/presentation/managers/delete_patient_cubit/delete_patient_cubit.dart';
   static const String deletePatientCubitDeletePatientState = 'lib/features/patient_management/presentation/managers/delete_patient_cubit/delete_patient_state.dart';
   static const String errorsFailure = 'lib/core/errors/failure.dart';
@@ -16,7 +16,6 @@ class Assets {
   static const String helperFunctionsGetInitials = 'lib/core/helper_functions/get_initials.dart';
   static const String helperFunctionsHandleFirestoreErrors = 'lib/core/helper_functions/handle_firestore_errors.dart';
   static const String helperFunctionsShowAddPatientBottomSheet = 'lib/core/helper_functions/show_add_patient_bottom_sheet.dart';
-  static const String helperFunctionsShowAddSessionButtonSheet = 'lib/core/helper_functions/show_add_session_button_sheet.dart';
   static const String libFirebaseOptions = 'lib/firebase_options.dart';
   static const String libMain = 'lib/main.dart';
   static const String modelsPatientModel = 'lib/core/models/patient_model.dart';
