@@ -8,6 +8,8 @@ class Assets {
   static const String addSessionCubitAddSessionState = 'lib/features/sessions/presentation/managers/add_session_cubit/add_session_state.dart';
   static const String deletePatientCubitDeletePatientCubit = 'lib/features/patient_management/presentation/managers/delete_patient_cubit/delete_patient_cubit.dart';
   static const String deletePatientCubitDeletePatientState = 'lib/features/patient_management/presentation/managers/delete_patient_cubit/delete_patient_state.dart';
+  static const String deleteSessionCubitDeleteSessionCubit = 'lib/features/sessions/presentation/managers/delete_session_cubit/delete_session_cubit.dart';
+  static const String deleteSessionCubitDeleteSessionState = 'lib/features/sessions/presentation/managers/delete_session_cubit/delete_session_state.dart';
   static const String errorsFailure = 'lib/core/errors/failure.dart';
   static const String generatedAssets = 'lib/generated/assets.dart';
   static const String getAllPatientsCubitGetAllPatientsCubit = 'lib/features/patient_management/presentation/managers/get_all_patients_cubit/get_all_patients_cubit.dart';

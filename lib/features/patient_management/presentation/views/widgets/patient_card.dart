@@ -52,7 +52,7 @@ class PatientCard extends StatelessWidget {
                   onDeletePressed: () {
                     log("Delete button pressed for patient: ${patientModel
                         .name}");
-                    Navigator.pop(context);
+                    // Navigator.pop(context);
                     context.read<DeletePatientCubit>().deletePatient(
                         patientModel.id);
                   },
@@ -69,22 +69,22 @@ class PatientCard extends StatelessWidget {
           ),
           Text(
             'Age: ${patientModel.age}',
-            style: const TextStyle(fontSize: 14, color: Colors.black87),
+            style: const TextStyle(fontSize: 16, color: Colors.black87),
           ),
           const SizedBox(height: 3),
           Row(
             children: [
               Text(
-                patientModel.phoneNumber,
-                style: const TextStyle(fontSize: 14, color: Colors.black87),
+                'phone: ${patientModel.phoneNumber}',
+                style: const TextStyle(fontSize: 16, color: Colors.black87),
               ),
               const SizedBox(width: 12),
-              const ConditionBadge(),
-              const SizedBox(width: 4),
-              Text(
-                "condition",
-                style: const TextStyle(fontSize: 14, color: Colors.black87),
-              ),
+              // const ConditionBadge(),
+              // const SizedBox(width: 4),
+              // Text(
+              //   "hypertension",
+              //   style: const TextStyle(fontSize: 14, color: Colors.black87),
+              // ),
             ],
           ),
           const SizedBox(height: 12),

@@ -11,6 +11,7 @@ class DeleteSessionCubit extends Cubit<DeleteSessionState> {
     emit(DeleteSessionLoading());
     var result =await _sessionsRepo.deleteSession(sessionId: sessionId);
 
+    if(isClosed) return;
     result.fold((error){
       emit(DeleteSessionFailure(error.toString()));
     }, (success) => emit(DeleteSessionSuccess()));

@@ -5,6 +5,7 @@ import 'package:medistats/core/services/getit_service.dart';
 import 'package:medistats/core/widgets/custom_floating_action_button.dart';
 import 'package:medistats/features/sessions/data/repos/sessions_repo.dart';
 import 'package:medistats/features/sessions/presentation/managers/add_session_cubit/add_session_cubit.dart';
+import 'package:medistats/features/sessions/presentation/managers/delete_session_cubit/delete_session_cubit.dart';
 import 'package:medistats/features/sessions/presentation/views/widgets/add_session_bottom_sheet.dart';
 import 'package:medistats/features/sessions/presentation/views/widgets/patient_history_app_bar.dart';
 import 'package:medistats/features/sessions/presentation/views/widgets/patients_history_view_body.dart';
@@ -25,29 +26,33 @@ class PatientHistoryView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: PatientHistoryAppBar(
-        title: "${patient.name}'s History",
+    return BlocProvider(
+      create: (context) => DeleteSessionCubit(getIt.get<SessionsRepo>()),
+      child: Scaffold(
+        backgroundColor: AppColors.background,
+        appBar: PatientHistoryAppBar(
+          title: "${patient.name}'s History",
+        ),
+        floatingActionButton: BottomSheetButton(
+          onTap: () {
+            showModalBottomSheet(
+              context: context,
+              isScrollControlled: true,
+              backgroundColor: Colors.transparent,
+              builder: (bottomSheetContext) {
+                return BlocProvider(
+                  create: (context) =>
+                  (AddSessionCubit(getIt.get<SessionsRepo>())),
+                  child: AddSessionBottomSheet(
+                    patientId: patient.id,
+                  ),
+                );
+              },
+            );
+          },
+        ),
+        body: PatientsHistoryViewBody(patient: patient),
       ),
-      floatingActionButton: BottomSheetButton(
-        onTap: () {
-          showModalBottomSheet(
-            context: context,
-            isScrollControlled: true,
-            backgroundColor: Colors.transparent,
-            builder: (bottomSheetContext) {
-              return BlocProvider(
-                create: (context) => (AddSessionCubit(getIt.get<SessionsRepo>())),
-                child: AddSessionBottomSheet(
-                  patientId: patient.id,
-                ),
-              );
-            },
-          );
-        },
-      ),
-      body: PatientsHistoryViewBody(patient: patient),
     );
   }
 }
