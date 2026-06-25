@@ -4,14 +4,16 @@ class Assets {
 
   static const String addPatientCubitAddPatientCubit = 'lib/features/patient_management/presentation/managers/add_patient_cubit/add_patient_cubit.dart';
   static const String addPatientCubitAddPatientState = 'lib/features/patient_management/presentation/managers/add_patient_cubit/add_patient_state.dart';
-  static const String addSessionCubitAddsesionCubit = 'lib/features/sessions/presentation/managers/add_session_cubit/add_session_cubit.dart';
-  static const String addSessionCubitAddsesionState = 'lib/features/sessions/presentation/managers/add_session_cubit/add_session_state.dart';
+  static const String addSessionCubitAddSessionCubit = 'lib/features/sessions/presentation/managers/add_session_cubit/add_session_cubit.dart';
+  static const String addSessionCubitAddSessionState = 'lib/features/sessions/presentation/managers/add_session_cubit/add_session_state.dart';
   static const String deletePatientCubitDeletePatientCubit = 'lib/features/patient_management/presentation/managers/delete_patient_cubit/delete_patient_cubit.dart';
   static const String deletePatientCubitDeletePatientState = 'lib/features/patient_management/presentation/managers/delete_patient_cubit/delete_patient_state.dart';
   static const String errorsFailure = 'lib/core/errors/failure.dart';
   static const String generatedAssets = 'lib/generated/assets.dart';
   static const String getAllPatientsCubitGetAllPatientsCubit = 'lib/features/patient_management/presentation/managers/get_all_patients_cubit/get_all_patients_cubit.dart';
   static const String getAllPatientsCubitGetAllPatientsState = 'lib/features/patient_management/presentation/managers/get_all_patients_cubit/get_all_patients_state.dart';
+  static const String getPatientSessionsCubitGetPatientSessionsCubit = 'lib/features/sessions/presentation/managers/get_patient_sessions_cubit/get_patient_sessions_cubit.dart';
+  static const String getPatientSessionsCubitGetPatientSessionsState = 'lib/features/sessions/presentation/managers/get_patient_sessions_cubit/get_patient_sessions_state.dart';
   static const String helperFunctionsBuildShowSnackBar = 'lib/core/helper_functions/build_show_snack_bar.dart';
   static const String helperFunctionsGetInitials = 'lib/core/helper_functions/get_initials.dart';
   static const String helperFunctionsHandleFirestoreErrors = 'lib/core/helper_functions/handle_firestore_errors.dart';
