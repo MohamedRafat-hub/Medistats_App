@@ -31,6 +31,8 @@ class Assets {
   static const String reposSessionsRepoImpl = 'lib/features/sessions/data/repos/sessions_repo_impl.dart';
   static const String servicesFirestoreService = 'lib/core/services/firestore_service.dart';
   static const String servicesGetitService = 'lib/core/services/getit_service.dart';
+  static const String splashCubitSplashCubit = 'lib/features/splash/presentation/manager/splash_cubit/splash_cubit.dart';
+  static const String splashCubitSplashState = 'lib/features/splash/presentation/manager/splash_cubit/splash_state.dart';
   static const String updatePatientCubitUpdatePatientCubit = 'lib/features/patient_management/presentation/managers/update_patient_cubit/update_patient_cubit.dart';
   static const String updatePatientCubitUpdatePatientState = 'lib/features/patient_management/presentation/managers/update_patient_cubit/update_patient_state.dart';
   static const String updateSessionCubitUpdateSessionCubit = 'lib/features/sessions/presentation/managers/update_session_cubit/update_session_cubit.dart';
@@ -38,6 +40,7 @@ class Assets {
   static const String utilsAppTheme = 'lib/core/utils/app_theme.dart';
   static const String utilsBackendEndpoint = 'lib/core/utils/backend_endpoint.dart';
   static const String viewsPatientsView = 'lib/features/patient_management/presentation/views/patients_view.dart';
+  static const String viewsSplashView = 'lib/features/splash/presentation/views/splash_view.dart';
   static const String widgetsAddPatientBottomSheet = 'lib/features/patient_management/presentation/views/widgets/add_patient_bottom_sheet.dart';
   static const String widgetsAddSessionBottomSheet = 'lib/features/sessions/presentation/views/widgets/add_session_bottom_sheet.dart';
   static const String widgetsAppTitle = 'lib/features/patient_management/presentation/views/widgets/app_title.dart';
@@ -62,6 +65,13 @@ class Assets {
   static const String widgetsSessionCard = 'lib/features/sessions/presentation/views/widgets/session_card.dart';
   static const String widgetsSessionFieldRow = 'lib/features/sessions/presentation/views/widgets/session_field_row.dart';
   static const String widgetsSessionTimelineTile = 'lib/features/sessions/presentation/views/widgets/session_timeline_tile.dart';
+  static const String widgetsSplahLoadingIndicator = 'lib/features/splash/presentation/views/widgets/splah_loading_indicator.dart';
+  static const String widgetsSplashAcgLine = 'lib/features/splash/presentation/views/widgets/splash_acg_line.dart';
+  static const String widgetsSplashAcgPrinter = 'lib/features/splash/presentation/views/widgets/splash_acg_printer.dart';
+  static const String widgetsSplashAppName = 'lib/features/splash/presentation/views/widgets/splash_app_name.dart';
+  static const String widgetsSplashLogoIcon = 'lib/features/splash/presentation/views/widgets/splash_logo_icon.dart';
+  static const String widgetsSplashTegline = 'lib/features/splash/presentation/views/widgets/splash_tegline.dart';
+  static const String widgetsSplashViewBody = 'lib/features/splash/presentation/views/widgets/splash_view_body.dart';
   static const String widgetsTimelineIndicator = 'lib/features/sessions/presentation/views/widgets/timeline_indicator.dart';
   static const String widgetsVitalsChartPlaceholder = 'lib/features/patient_management/presentation/views/widgets/vitals_chart_placeholder.dart';
 

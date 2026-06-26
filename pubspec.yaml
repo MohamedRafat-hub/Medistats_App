@@ -97,4 +97,6 @@ flutter:
   assets:
     - lib/features/patient_management/presentation/views/widgets/
     - lib/features/sessions/presentation/managers/delete_session_cubit/
+    - lib/features/splash/presentation/views/widgets/
+    - lib/features/splash/presentation/manager/
 

@@ -7,6 +7,7 @@ import 'package:medistats/features/patient_management/presentation/managers/add_
 import 'package:medistats/features/patient_management/presentation/managers/delete_patient_cubit/delete_patient_cubit.dart';
 import 'package:medistats/features/patient_management/presentation/managers/get_all_patients_cubit/get_all_patients_cubit.dart';
 import 'package:medistats/features/patient_management/presentation/managers/update_patient_cubit/update_patient_cubit.dart';
+import 'package:medistats/features/splash/presentation/views/splash_view.dart';
 
 import 'features/patient_management/presentation/views/patients_view.dart';
 import 'firebase_options.dart';
@@ -37,7 +38,7 @@ class MedistatsApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(fontFamily: 'Roboto'),
-        home: const PatientsView(),
+        home: const SplashView(),
       ),
     );
   }
