@@ -41,6 +41,7 @@ dependencies:
   get_it: ^9.2.1
   async: ^2.13.1
   intl: ^0.20.2
+  flutter_native_splash: ^2.4.7
 
 dev_dependencies:
   flutter_test:
@@ -100,3 +101,16 @@ flutter:
     - lib/features/splash/presentation/views/widgets/
     - lib/features/splash/presentation/manager/
 
+
+
+flutter_native_splash:
+  color: "#2C7A8C"
+  color_dark: "#1A5568"
+  image: assets/splash_logo_stethoscope.png
+  image_dark: assets/splash_logo_stethoscope_dark.png
+  android_12:
+    color: "#2C7A8C"
+    color_dark: "#1A5568"
+    image: assets/splash_logo_stethoscope.png
+    image_dark: assets/splash_logo_stethoscope_dark.png
+  fullscreen: true
