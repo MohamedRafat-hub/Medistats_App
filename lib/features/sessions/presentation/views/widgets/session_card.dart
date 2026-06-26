@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:medistats/core/helper_functions/build_show_snack_bar.dart';
 import 'package:medistats/core/services/getit_service.dart';
+import 'package:medistats/core/widgets/show_deleted_confirmation_bottom_sheet.dart';
 import 'package:medistats/features/patient_management/presentation/views/widgets/patient_card_menue_button.dart';
 import 'package:medistats/features/sessions/data/models/session_model.dart';
 import 'package:medistats/features/sessions/presentation/managers/add_session_cubit/add_session_cubit.dart';
@@ -71,9 +72,9 @@ class SessionCard extends StatelessWidget {
                   },
                   child: PatientCardMenuButton(
                     onDeletePressed: () {
-                      log('Delete Session');
-                      context.read<DeleteSessionCubit>().deleteSession(
-                          session.sessionId);
+                      showDeleteConfirmationBottomSheet(context, isPatientDelete: false, onConfirm: (){
+                        context.read<DeleteSessionCubit>().deleteSession(session.sessionId);
+                      });
                     },
                     onUpdatePressed: () {
                       log("Update Session");

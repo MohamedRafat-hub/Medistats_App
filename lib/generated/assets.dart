@@ -65,6 +65,7 @@ class Assets {
   static const String widgetsSessionCard = 'lib/features/sessions/presentation/views/widgets/session_card.dart';
   static const String widgetsSessionFieldRow = 'lib/features/sessions/presentation/views/widgets/session_field_row.dart';
   static const String widgetsSessionTimelineTile = 'lib/features/sessions/presentation/views/widgets/session_timeline_tile.dart';
+  static const String widgetsShowDeletedConfirmationBottomSheet = 'lib/core/widgets/show_deleted_confirmation_bottom_sheet.dart';
   static const String widgetsSplahLoadingIndicator = 'lib/features/splash/presentation/views/widgets/splah_loading_indicator.dart';
   static const String widgetsSplashAcgLine = 'lib/features/splash/presentation/views/widgets/splash_acg_line.dart';
   static const String widgetsSplashAcgPrinter = 'lib/features/splash/presentation/views/widgets/splash_acg_printer.dart';

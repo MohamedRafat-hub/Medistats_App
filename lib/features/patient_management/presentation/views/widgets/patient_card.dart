@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medistats/core/models/patient_model.dart';
+import 'package:medistats/core/widgets/show_deleted_confirmation_bottom_sheet.dart';
 import 'package:medistats/features/patient_management/presentation/managers/delete_patient_cubit/delete_patient_cubit.dart';
 import 'package:medistats/features/patient_management/presentation/views/widgets/patient_card_menue_button.dart';
 import 'package:medistats/features/patient_management/presentation/views/widgets/vitals_chart_placeholder.dart';
@@ -11,10 +12,7 @@ import 'condition_page.dart';
 class PatientCard extends StatelessWidget {
   final PatientModel patientModel;
 
-  const PatientCard({
-    super.key,
-    required this.patientModel,
-  });
+  const PatientCard({super.key, required this.patientModel});
 
   @override
   Widget build(BuildContext context) {
@@ -50,19 +48,27 @@ class PatientCard extends StatelessWidget {
                 listener: (context, state) {},
                 child: PatientCardMenuButton(
                   onDeletePressed: () {
-                    log("Delete button pressed for patient: ${patientModel
-                        .name}");
+                    showDeleteConfirmationBottomSheet(
+                      isPatientDelete: true,
+                      context,
+                      onConfirm: () {
+                        context.read<DeletePatientCubit>().deletePatient(
+                          patientModel.id,
+                        );
+                      },
+                    );
+                    log(
+                      "Delete button pressed for patient: ${patientModel.name}",
+                    );
                     // Navigator.pop(context);
-                    context.read<DeletePatientCubit>().deletePatient(
-                        patientModel.id);
                   },
-                  onUpdatePressed: (){
+                  onUpdatePressed: () {
                     showModalBottomSheet(
                       context: context,
-                      builder: (context) => AddPatientBottomSheet(patientToEdit: patientModel),
+                      builder: (context) =>
+                          AddPatientBottomSheet(patientToEdit: patientModel),
                     );
                   },
-
                 ),
               ),
             ],
@@ -94,6 +100,3 @@ class PatientCard extends StatelessWidget {
     );
   }
 }
-
-
-
