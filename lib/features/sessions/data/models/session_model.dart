@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class SessionModel {
   final String sessionId;
   final String patientId;
-  final String title;
   final DateTime createdAt;
   final String diagnosis;
   final String prescription;
@@ -12,7 +11,6 @@ class SessionModel {
   SessionModel({
     required this.sessionId,
     required this.patientId,
-    required this.title,
     required this.createdAt,
     required this.diagnosis,
     required this.prescription,
@@ -23,7 +21,6 @@ class SessionModel {
     return SessionModel(
       sessionId: docId,
       patientId: (json['patientId'] ?? '') as String,
-      title: (json['title'] ?? '') as String,
       createdAt: (json['createdAt'] as Timestamp).toDate(),
       diagnosis: (json['diagnosis'] ?? '') as String,
       prescription: (json['prescription'] ?? '') as String,
@@ -34,7 +31,6 @@ class SessionModel {
   Map<String, dynamic> toJson() {
     return {
       'patientId': patientId,
-      'title': title,
       'createdAt': Timestamp.fromDate(createdAt),
       'diagnosis': diagnosis,
       'prescription': prescription,
