@@ -44,6 +44,9 @@ class Assets {
   static const String widgetsAddPatientBottomSheet = 'lib/features/patient_management/presentation/views/widgets/add_patient_bottom_sheet.dart';
   static const String widgetsAddSessionBottomSheet = 'lib/features/sessions/presentation/views/widgets/add_session_bottom_sheet.dart';
   static const String widgetsAppTitle = 'lib/features/patient_management/presentation/views/widgets/app_title.dart';
+  static const String widgetsChronicDiseaseBadge = 'lib/features/patient_management/presentation/views/widgets/chronic_disease_badge.dart';
+  static const String widgetsChronicDiseaseItem = 'lib/features/patient_management/presentation/views/widgets/chronic_disease_item.dart';
+  static const String widgetsChronicDiseasesSection = 'lib/features/patient_management/presentation/views/widgets/chronic_diseases_section.dart';
   static const String widgetsClosedButtonSheet = 'lib/core/widgets/closed_button_sheet.dart';
   static const String widgetsConditionBadge = 'lib/features/sessions/presentation/views/widgets/condition_badge.dart';
   static const String widgetsConditionPage = 'lib/features/patient_management/presentation/views/widgets/condition_page.dart';

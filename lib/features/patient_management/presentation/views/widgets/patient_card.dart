@@ -7,7 +7,7 @@ import 'package:medistats/features/patient_management/presentation/managers/dele
 import 'package:medistats/features/patient_management/presentation/views/widgets/patient_card_menue_button.dart';
 import 'package:medistats/features/patient_management/presentation/views/widgets/vitals_chart_placeholder.dart';
 import 'add_patient_bottom_sheet.dart';
-import 'condition_page.dart';
+import 'chronic_disease_badge.dart';
 
 class PatientCard extends StatelessWidget {
   final PatientModel patientModel;
@@ -16,6 +16,10 @@ class PatientCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool hasDiabetes = patientModel.hasDiabetes ?? false;
+    final bool hasHypertension = patientModel.hasHighBloodPressure ?? false;
+    final bool hasAnyChronicDisease = hasDiabetes || hasHypertension;
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -57,16 +61,12 @@ class PatientCard extends StatelessWidget {
                         );
                       },
                     );
-                    log(
-                      "Delete button pressed for patient: ${patientModel.name}",
-                    );
-                    // Navigator.pop(context);
+                    log("Delete button pressed for patient: ${patientModel.name}");
                   },
                   onUpdatePressed: () {
                     showModalBottomSheet(
                       context: context,
-                      builder: (context) =>
-                          AddPatientBottomSheet(patientToEdit: patientModel),
+                      builder: (context) => AddPatientBottomSheet(patientToEdit: patientModel),
                     );
                   },
                 ),
@@ -81,18 +81,30 @@ class PatientCard extends StatelessWidget {
           Row(
             children: [
               Text(
-                'phone: ${patientModel.phoneNumber}',
+                'Phone: ${patientModel.phoneNumber}',
                 style: const TextStyle(fontSize: 16, color: Colors.black87),
               ),
               const SizedBox(width: 12),
-              // const ConditionBadge(),
-              // const SizedBox(width: 4),
-              // Text(
-              //   "hypertension",
-              //   style: const TextStyle(fontSize: 14, color: Colors.black87),
-              // ),
             ],
           ),
+          if (hasAnyChronicDisease) ...[
+            const SizedBox(height: 10),
+            Row(
+              children: [
+                if (hasDiabetes)
+                  const ChronicDiseaseBadge(
+                    label: 'Diabetes',
+                    icon: Icons.opacity,
+                  ),
+                if (hasDiabetes && hasHypertension) const SizedBox(width: 8),
+                if (hasHypertension)
+                  const ChronicDiseaseBadge(
+                    label: 'Hypertension',
+                    icon: Icons.favorite, // أيقونة قلب معبرة عن الضغط
+                  ),
+              ],
+            ),
+          ],
           const SizedBox(height: 12),
           const VitalsChartPlaceholder(),
         ],

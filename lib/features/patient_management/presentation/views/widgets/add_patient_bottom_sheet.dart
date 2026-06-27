@@ -7,12 +7,15 @@ import 'package:medistats/features/patient_management/presentation/managers/add_
 import 'package:medistats/features/patient_management/presentation/managers/update_patient_cubit/update_patient_cubit.dart';
 import '../../../../../core/widgets/closed_button_sheet.dart';
 import '../../../../../core/models/patient_model.dart';
+import 'chronic_diseases_section.dart';
 import 'custom_text_field.dart';
 import '../../../../../core/widgets/custom_action_button.dart';
 
 class AddPatientBottomSheet extends StatefulWidget {
   const AddPatientBottomSheet({super.key, this.patientToEdit});
+
   final PatientModel? patientToEdit;
+
   @override
   State<AddPatientBottomSheet> createState() => _AddPatientBottomSheetState();
 }
@@ -21,8 +24,21 @@ class _AddPatientBottomSheetState extends State<AddPatientBottomSheet> {
   late String _fullName;
   late int _age;
   late String _phoneNumber;
+
+  bool _hasDiabetes = false;
+  bool _hasHighBloodPressure = false;
+
   final _formKey = GlobalKey<FormState>();
   AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.patientToEdit != null) {
+      _hasDiabetes = widget.patientToEdit?.hasDiabetes ?? false;
+      _hasHighBloodPressure = widget.patientToEdit?.hasHighBloodPressure ?? false;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -120,92 +136,85 @@ class _AddPatientBottomSheetState extends State<AddPatientBottomSheet> {
 
                 const SizedBox(height: 24),
 
-                // 🔄 3. دمجنا الـ Consumers بترتيب نظيف ومنطقي جداً
+                ChronicDiseasesSection(
+                  hasDiabetes: _hasDiabetes,
+                  hasHighBloodPressure: _hasHighBloodPressure,
+                  onDiabetesChanged: (value) {
+                    setState(() => _hasDiabetes = value);
+                  },
+                  onHypertensionChanged: (value) {
+                    setState(() => _hasHighBloodPressure = value);
+                  },
+                ),
+
+                const SizedBox(height: 24),
+
                 BlocConsumer<UpdatePatientCubit, UpdatePatientState>(
                   listener: (context, state) {
                     if (state is UpdatePatientSuccess) {
-                      showSnackBar(
-                        context,
-                        message: 'Patient updated successfully',
-                      );
+                      showSnackBar(context, message: 'Patient updated successfully');
                       Navigator.pop(context);
                     } else if (state is UpdatePatientFailure) {
-                      showSnackBar(
-                        context,
-                        message: state.errorMessage,
-                        color: Colors.red,
-                      );
+                      showSnackBar(context, message: state.errorMessage, color: Colors.red);
                     }
                   },
                   builder: (context, updateState) {
                     return BlocConsumer<AddPatientCubit, AddPatientState>(
                       listener: (context, state) {
                         if (state is AddPatientSuccess) {
-                          showSnackBar(
-                            context,
-                            message: 'Patient added successfully',
-                          );
+                          showSnackBar(context, message: 'Patient added successfully');
                           Navigator.pop(context);
                         } else if (state is AddPatientFailure) {
-                          showSnackBar(
-                            context,
-                            message: state.errorMessage,
-                            color: Colors.red,
-                          );
+                          showSnackBar(context, message: state.errorMessage, color: Colors.red);
                         }
                       },
                       builder: (context, addState) {
-                        // 🧠 لو أي كوبيت فيهم شغال Loading، اعرض الـ Indicator فوراً
-                        final isLoading =
-                            addState is AddPatientLoading ||
-                            updateState is UpdatePatientLoading;
+                        final isLoading = addState is AddPatientLoading || updateState is UpdatePatientLoading;
 
                         return isLoading
-                            ? Center(
-                                child: CircularProgressIndicator(
-                                  color: AppColors.primaryColor,
-                                ),
-                              )
+                            ? const Center(
+                          child: CircularProgressIndicator(
+                            color: AppColors.primaryColor,
+                          ),
+                        )
                             : CustomActionButton(
-                                text: isEditing ? 'UPDATE' : 'SAVE',
-                                onPressed: () {
-                                  if (_formKey.currentState!.validate()) {
-                                    _formKey.currentState!.save();
-                                    if (isEditing) {
-                                      final updatedPatient = PatientModel(
-                                        id: widget.patientToEdit!.id,
-                                        name: _fullName,
-                                        age: _age,
-                                        phoneNumber: _phoneNumber,
-                                        createdAt:
-                                            widget.patientToEdit!.createdAt,
-                                      );
-                                      context
-                                          .read<UpdatePatientCubit>()
-                                          .updatePatient(
-                                            patient: updatedPatient,
-                                          );
-                                      log(
-                                        'Updating patient: ${updatedPatient.name}',
-                                      );
-                                    } else {
-                                      final patient = PatientModel(
-                                        id: '',
-                                        name: _fullName,
-                                        age: _age,
-                                        phoneNumber: _phoneNumber,
-                                        createdAt: DateTime.now(),
-                                      );
-                                      context
-                                          .read<AddPatientCubit>()
-                                          .addPatient(patient);
-                                    }
-                                  } else {
-                                    autovalidateMode = AutovalidateMode.always;
-                                    setState(() {});
-                                  }
-                                },
-                              );
+                          text: isEditing ? 'UPDATE' : 'SAVE',
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              _formKey.currentState!.save();
+
+                              if (isEditing) {
+                                final updatedPatient = PatientModel(
+                                  id: widget.patientToEdit!.id,
+                                  name: _fullName,
+                                  age: _age,
+                                  phoneNumber: _phoneNumber,
+                                  createdAt: widget.patientToEdit!.createdAt,
+                                  hasDiabetes: _hasDiabetes,
+                                  hasHighBloodPressure: _hasHighBloodPressure,
+                                );
+                                context.read<UpdatePatientCubit>().updatePatient(
+                                  patient: updatedPatient,
+                                );
+                              } else {
+                                final patient = PatientModel(
+                                  id: '',
+                                  name: _fullName,
+                                  age: _age,
+                                  phoneNumber: _phoneNumber,
+                                  createdAt: DateTime.now(),
+                                  hasDiabetes: _hasDiabetes,
+                                  hasHighBloodPressure: _hasHighBloodPressure,
+                                );
+                                context.read<AddPatientCubit>().addPatient(patient);
+                              }
+                            } else {
+                              setState(() {
+                                autovalidateMode = AutovalidateMode.always;
+                              });
+                            }
+                          },
+                        );
                       },
                     );
                   },
