@@ -13,6 +13,7 @@ class AppColors {
   static const Color timelineLine = Color(0xFFBFD3C6);
   static const Color fabGreen = Color(0xFF2F6F5E);
   static const Color primaryColor = Color(0xFF2C7A8C);
+  static const Color secondaryColor = Color(0xFF0E7C7C);
 }
 
 class AppTextStyles {
