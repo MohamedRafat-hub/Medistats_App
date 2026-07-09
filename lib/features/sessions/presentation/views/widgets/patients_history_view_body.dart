@@ -69,12 +69,13 @@ class PatientsHistoryViewBody extends StatelessWidget {
                     padding: const EdgeInsets.only(top: 60),
                     child: Center(
                       child: Text(
-                        '.لا توجد جلسات مسجلة لهذا المريض بعد',
+                        'There are no recorded sessions for this patient yet.',
                         style: TextStyle(
                           color: AppColors.primaryColor,
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
+                        textAlign: TextAlign.center,
                       ),
                     ),
                   )
