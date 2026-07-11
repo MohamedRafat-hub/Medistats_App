@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:medistats/core/models/patient_model.dart';
 import 'package:medistats/core/utils/constants.dart';
 import 'package:medistats/features/patient_details_directing/presentation/views/directing_view.dart';
+import 'package:medistats/features/patient_details_directing/presentation/views/radiology_view.dart';
 import 'package:medistats/features/sessions/presentation/patient_history_view.dart';
 
 import '../../features/sessions/data/repos/sessions_repo.dart';
@@ -46,6 +47,11 @@ class AppRouter {
           ),
         );
 
+        case '/radiology':
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (context) => RadiologyView(),
+        );
       // Fallback 404 Route
       default:
         return MaterialPageRoute(

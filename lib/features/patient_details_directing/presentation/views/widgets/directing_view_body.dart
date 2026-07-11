@@ -48,6 +48,13 @@ class DirectingViewBody extends StatelessWidget {
         ),
         Expanded(
           child: DirectingWidget(
+            onTap: (){
+              Navigator.pushNamed(
+                context,
+                '/radiology',
+                arguments: patientModel,
+              );
+            },
             image: 'assets/Icons/xRay.svg',
             title: 'Radiology Gallery',
             subTitle: "Images",

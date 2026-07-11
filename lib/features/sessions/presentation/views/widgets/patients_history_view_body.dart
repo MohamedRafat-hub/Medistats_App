@@ -73,7 +73,7 @@ class _PatientsHistoryViewBodyState extends State<PatientsHistoryViewBody> {
               padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
               physics: const BouncingScrollPhysics(),
               children: [
-                PatientInfoCard(patient: widget.patient),
+                // PatientInfoCard(patient: widget.patient),
                 const SizedBox(height: 24),
 
                 if (sessions.isEmpty)
