@@ -5,8 +5,9 @@ import '../../../../sessions/presentation/views/widgets/patient_info_card.dart';
 import 'directing_widget.dart';
 
 class DirectingViewBody extends StatelessWidget {
-  const DirectingViewBody({super.key});
+  const DirectingViewBody({super.key, required this.patientModel});
 
+  final PatientModel patientModel;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -15,15 +16,7 @@ class DirectingViewBody extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: PatientInfoCard(
-            patient: PatientModel(
-                id: "10",
-                name: "Mohamed Rafat",
-                age: 21,
-                phoneNumber: "01011938448",
-                createdAt: DateTime.now(),
-                hasDiabetes: true,
-                hasHighBloodPressure: true
-            ),
+            patient: patientModel,
           ),
         ),
         Expanded(

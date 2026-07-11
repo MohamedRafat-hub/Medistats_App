@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medistats/core/services/getit_service.dart';
+import 'package:medistats/features/patient_details_directing/presentation/views/directing_view.dart';
 import 'package:medistats/features/patient_management/presentation/views/widgets/patient_card.dart';
 import 'package:medistats/features/sessions/data/repos/sessions_repo.dart';
 import 'package:medistats/features/sessions/presentation/managers/get_patient_sessions_cubit/get_patient_sessions_cubit.dart';
@@ -41,16 +42,8 @@ class PatientsListViewBuilder extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => BlocProvider(
-                            create: (context) =>
-                                GetPatientSessionsCubit(
-                                  getIt.get<SessionsRepo>(),
-                                )..getPatientSessions(
-                                  patientId: state.patients[index].id,
-                                ),
-                            child: PatientHistoryView(
-                              patient: state.patients[index],
-                            ),
+                          builder: (context) => DirectingView(
+                            patientModel: state.patients[index],
                           ),
                         ),
                       );
