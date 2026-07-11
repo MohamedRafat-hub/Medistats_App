@@ -2,7 +2,9 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:medistats/core/services/getit_service.dart';
+import 'package:medistats/core/utils/constants.dart';
 import 'package:medistats/features/patient_details_directing/presentation/views/directing_view.dart';
 import 'package:medistats/features/patient_management/presentation/views/widgets/patient_card.dart';
 import 'package:medistats/features/sessions/data/repos/sessions_repo.dart';
@@ -39,14 +41,7 @@ class PatientsListViewBuilder extends StatelessWidget {
                   child: GestureDetector(
                     onTap: () {
                       log(state.patients[index].id.toString());
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => DirectingView(
-                            patientModel: state.patients[index],
-                          ),
-                        ),
-                      );
+                      context.pushNamed(Constants.directingView , extra: state.patients[index]);
                     },
                     child: PatientCard(patientModel: state.patients[index]),
                   ),

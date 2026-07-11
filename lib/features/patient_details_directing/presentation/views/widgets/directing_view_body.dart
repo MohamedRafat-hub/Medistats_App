@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:medistats/core/utils/constants.dart';
 
 import '../../../../../core/models/patient_model.dart';
 import '../../../../sessions/presentation/views/widgets/patient_info_card.dart';
@@ -24,6 +26,8 @@ class DirectingViewBody extends StatelessWidget {
             image: 'assets/Icons/sessions.svg',
             title: 'Clinical Sessions',
             subTitle: "Sessions",
+            onTap: (){
+            },
           ),
         ),
         Expanded(

@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medistats/core/services/getit_service.dart';
+import 'package:medistats/core/utils/app_routes.dart';
 import 'package:medistats/features/patient_management/data/repos/patient_repo.dart';
 import 'package:medistats/features/patient_management/presentation/managers/add_patient_cubit/add_patient_cubit.dart';
 import 'package:medistats/features/patient_management/presentation/managers/delete_patient_cubit/delete_patient_cubit.dart';
@@ -35,10 +36,10 @@ class MedistatsApp extends StatelessWidget {
         BlocProvider(create: (context) => DeletePatientCubit(getIt<PatientRepo>())),
         BlocProvider(create: (context) => UpdatePatientCubit(getIt<PatientRepo>())),
       ],
-      child: MaterialApp(
+      child: MaterialApp.router(
+        routerConfig: router,
         debugShowCheckedModeBanner: false,
         theme: ThemeData(fontFamily: 'Roboto'),
-        home: const SplashView(),
       ),
     );
   }
