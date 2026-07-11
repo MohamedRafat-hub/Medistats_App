@@ -36,8 +36,9 @@ class MedistatsApp extends StatelessWidget {
         BlocProvider(create: (context) => DeletePatientCubit(getIt<PatientRepo>())),
         BlocProvider(create: (context) => UpdatePatientCubit(getIt<PatientRepo>())),
       ],
-      child: MaterialApp.router(
-        routerConfig: router,
+      child: MaterialApp(
+        initialRoute: '/',
+        onGenerateRoute: AppRouter.onGenerateRoute,
         debugShowCheckedModeBanner: false,
         theme: ThemeData(fontFamily: 'Roboto'),
       ),

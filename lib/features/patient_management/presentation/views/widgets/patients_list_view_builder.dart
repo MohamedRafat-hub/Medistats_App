@@ -41,7 +41,11 @@ class PatientsListViewBuilder extends StatelessWidget {
                   child: GestureDetector(
                     onTap: () {
                       log(state.patients[index].id.toString());
-                      context.pushNamed(Constants.directingView , extra: state.patients[index]);
+                      Navigator.pushNamed(
+                        context,
+                        '/directing',
+                        arguments: state.patients[index], // Passes your PatientModel
+                      );
                     },
                     child: PatientCard(patientModel: state.patients[index]),
                   ),

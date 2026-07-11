@@ -13,6 +13,7 @@ class GetPatientSessionsCubit extends Cubit<GetPatientSessionsState> {
 
   final SessionsRepo _sessionsRepo;
   StreamSubscription? _sessionsSubscription;
+  int sessionsLength = 0 ;
 
   void getPatientSessions({required String patientId}) {
     emit(GetPatientSessionsLoading());
@@ -30,7 +31,10 @@ class GetPatientSessionsCubit extends Cubit<GetPatientSessionsState> {
           if (!isClosed) emit(GetPatientSessionsFailure(error.toString()));
         },
             (sessions) {
-          if (!isClosed) emit(GetPatientSessionsSuccess(sessions));
+          if (!isClosed) {
+            sessionsLength = sessions.length;
+            emit(GetPatientSessionsSuccess(sessions));
+          };
         },
       );
     });
