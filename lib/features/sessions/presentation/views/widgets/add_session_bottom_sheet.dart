@@ -141,7 +141,12 @@ class _AddSessionBottomSheetState extends State<AddSessionBottomSheet> {
             ? Center(
                 child: CircularProgressIndicator(color: AppColors.primaryColor),
               )
-            : CustomActionButton(text: 'Add Session', onPressed: _onAddPressed);
+            : CustomActionButton(widget: Text("Add Session" , style: const TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+          letterSpacing: 1.2,
+        ),), onPressed: _onAddPressed);
       },
     );
   }
@@ -162,7 +167,14 @@ class _AddSessionBottomSheetState extends State<AddSessionBottomSheet> {
                 child: CircularProgressIndicator(color: AppColors.primaryColor),
               )
             : CustomActionButton(
-                text: 'Update Session',
+                widget: Text(
+                  "Update Session",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
                 onPressed: _onUpdatePressed,
               );
       },

@@ -178,7 +178,12 @@ class _AddPatientBottomSheetState extends State<AddPatientBottomSheet> {
                           ),
                         )
                             : CustomActionButton(
-                          text: isEditing ? 'UPDATE' : 'SAVE',
+                          widget: Text(isEditing ? 'UPDATE' : 'SAVE', style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            letterSpacing: 1.2,
+                          ),),
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
                               _formKey.currentState!.save();
