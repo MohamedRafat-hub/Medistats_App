@@ -4,6 +4,7 @@ import 'package:medistats/core/models/patient_model.dart';
 import 'package:medistats/core/utils/constants.dart';
 import 'package:medistats/features/patient_details_directing/presentation/views/directing_view.dart';
 import 'package:medistats/features/radiology/presentation/views/radiology_history_view.dart';
+import 'package:medistats/features/radiology/presentation/views/xray_session_view.dart';
 import 'package:medistats/features/reports/presentation/views/reports_view.dart';
 import 'package:medistats/features/sessions/presentation/patient_history_view.dart';
 
@@ -59,6 +60,9 @@ class AppRouter {
           settings: settings,
           builder: (context) => ReportsView()
         );
+
+        case '/xray_session':
+          return MaterialPageRoute(builder: (context) => const XraySessionView());
       // Fallback 404 Route
       default:
         return MaterialPageRoute(

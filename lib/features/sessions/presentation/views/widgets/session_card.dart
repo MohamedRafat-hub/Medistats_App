@@ -150,10 +150,7 @@ class SessionCard extends StatelessWidget {
           ],
           CustomActionButton(
             onPressed: () {
-              Navigator.pushNamed(
-                context,
-                '/radiology',
-              );
+              Navigator.pushNamed(context, '/xray_session');
             },
             widget: Row(
               mainAxisAlignment: MainAxisAlignment.center,
