@@ -10,6 +10,8 @@ abstract class SessionsRepo {
 
   Stream<Either<Failure , List<SessionModel>>>getPatientAllSessions({required String patientId});
 
+  Future<Either<Failure , int>> getPatientSessionsCount({required String patientId});
+
   Future<Either<Failure , void>> deleteSession({required String sessionId});
 
   Future<Either<Failure , void>>updateSession({required SessionModel sessionModel});

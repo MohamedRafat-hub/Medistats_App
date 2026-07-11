@@ -15,16 +15,16 @@ import 'package:flutter/material.dart';
 class AppRouter {
   static Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
-    // 1. Splash View (initialLocation: '/')
+      // 1. Splash View (initialLocation: '/')
       case '/':
         return MaterialPageRoute(
           settings: settings,
           builder: (context) => const SplashView(),
         );
 
-    // 2. Directing View
+      // 2. Directing View
       case '/directing':
-      // Safe cast: settings.arguments replaces state.extra
+        // Safe cast: settings.arguments replaces state.extra
         final patient = settings.arguments as PatientModel;
 
         return MaterialPageRoute(
@@ -32,28 +32,26 @@ class AppRouter {
           builder: (context) => DirectingView(patientModel: patient),
         );
 
-    // 3. Sessions View (With BlocProvider Injection)
+      // 3. Sessions View (With BlocProvider Injection)
       case '/sessions':
         final patient = settings.arguments as PatientModel;
 
         return MaterialPageRoute(
           settings: settings,
           builder: (context) => BlocProvider(
-            create: (_) => GetPatientSessionsCubit(
-              getIt.get<SessionsRepo>(),
-            )..getPatientSessions(patientId: patient.id),
+            create: (_) =>
+                GetPatientSessionsCubit(getIt.get<SessionsRepo>())
+                  ..getPatientSessions(patientId: patient.id),
             child: PatientHistoryView(patient: patient),
           ),
         );
 
-    // Fallback 404 Route
+      // Fallback 404 Route
       default:
         return MaterialPageRoute(
           settings: settings,
           builder: (context) => Scaffold(
-            body: Center(
-              child: Text('No route defined for ${settings.name}'),
-            ),
+            body: Center(child: Text('No route defined for ${settings.name}')),
           ),
         );
     }

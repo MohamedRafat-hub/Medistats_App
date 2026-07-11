@@ -35,24 +35,24 @@ class SessionsRepoImpl implements SessionsRepo {
   }) {
     return _fireStoreService
         .getCollection(
-          collectionName: BackendEndpoint.sessions,
-          orderByField: 'createdAt',
-          whereField: 'patientId',
-          isEqualTo: patientId,
-          descending: false,
-        )
+      collectionName: BackendEndpoint.sessions,
+      orderByField: 'createdAt',
+      whereField: 'patientId',
+      isEqualTo: patientId,
+      descending: false,
+    )
         .map<Either<Failure, List<SessionModel>>>((docs) {
-          List<SessionModel> sessions = docs
-              .map((doc) => SessionModel.fromJson(doc.data(), doc.id))
-              .toList();
-          return right(sessions);
-        })
+      List<SessionModel> sessions = docs
+          .map((doc) => SessionModel.fromJson(doc.data(), doc.id))
+          .toList();
+      return right(sessions);
+    })
         .handleError((error) {
-          if (error is FirebaseException) {
-            return left(ServerFailure(handleFirebaseError(error)));
-          }
-          return ServerFailure(error.toString());
-        });
+      if (error is FirebaseException) {
+        return left(ServerFailure(handleFirebaseError(error)));
+      }
+      return ServerFailure(error.toString());
+    });
   }
 
   @override
@@ -76,18 +76,41 @@ class SessionsRepoImpl implements SessionsRepo {
   @override
   Future<Either<Failure, void>> updateSession({
     required SessionModel sessionModel,
-  })async {
-   try {
-     await _fireStoreService.updateDocument(
+  }) async {
+    try {
+      await _fireStoreService.updateDocument(
         collectionName: BackendEndpoint.sessions,
         docId: sessionModel.sessionId,
         data: sessionModel.toJson(),
       );
-     return right(null);
-   } on FirebaseException catch (e) {
-     return left(ServerFailure(handleFirebaseError(e)));
-   } catch(e){
-     return left(ServerFailure(e.toString()));
-   }
+      return right(null);
+    } on FirebaseException catch (e) {
+      return left(ServerFailure(handleFirebaseError(e)));
+    } catch (e) {
+      return left(ServerFailure(e.toString()));
+    }
   }
+
+  @override
+  Future<Either<Failure, int>> getPatientSessionsCount({
+    required String patientId,
+  }) async {
+    try {
+      final sessions = await _fireStoreService
+          .getCollection(
+        collectionName: BackendEndpoint.sessions,
+        whereField: 'patientId',
+        isEqualTo: patientId,
+      )
+          .first;
+
+      return right(sessions.length);
+    } on FirebaseException catch (e) {
+      return left(ServerFailure(handleFirebaseError(e)));
+    } catch (e) {
+      return left(ServerFailure(e.toString()));
+    }
+  }
+
+
 }

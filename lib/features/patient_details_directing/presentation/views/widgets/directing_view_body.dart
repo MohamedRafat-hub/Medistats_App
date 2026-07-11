@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:medistats/core/utils/constants.dart';
+import 'package:medistats/features/patient_details_directing/presentation/managers/get_sessions_count_cubit/get_sessions_count_cubit.dart';
 import 'package:medistats/features/sessions/presentation/managers/get_patient_sessions_cubit/get_patient_sessions_cubit.dart';
 
 import '../../../../../core/models/patient_model.dart';
@@ -17,7 +18,6 @@ class DirectingViewBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    log("DirectingViewBody: patientModel: ${patientModel.toJson()}");
     return Column(
       // spacing: 12,
       children: [
@@ -26,15 +26,22 @@ class DirectingViewBody extends StatelessWidget {
           child: PatientInfoCard(patient: patientModel),
         ),
         Expanded(
-          child: DirectingWidget(
-            image: 'assets/Icons/sessions.svg',
-            title: 'Clinical Sessions',
-            subTitle: "Sessions",
-            onTap: () {
-              Navigator.pushNamed(
-                context,
-                '/sessions',
-                arguments: patientModel,
+          child: BlocBuilder<GetSessionsCountCubit, GetSessionsCountState>(
+            builder: (context, state) {
+              log(state.toString());
+              log('The sessions count is ${state is GetSessionsCountSuccess ? state.count : 0}');
+              return DirectingWidget(
+                itemNumbers: state is GetSessionsCountSuccess ? state.count : 0,
+                image: 'assets/Icons/sessions.svg',
+                title: 'Clinical Sessions',
+                subTitle: "Sessions",
+                onTap: () {
+                  Navigator.pushNamed(
+                    context,
+                    '/sessions',
+                    arguments: patientModel,
+                  );
+                },
               );
             },
           ),
