@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:medistats/features/radiology/presentation/views/widgets/views/widgets/add_xray_button.dart';
 import 'package:medistats/features/radiology/presentation/views/widgets/views/widgets/xray_session_app_bar.dart';
 
@@ -17,7 +18,10 @@ class XraySessionView extends StatelessWidget {
       ),
       body: const XraySessionViewBody(),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: AddXrayButton(onPressed: () {}),
+      floatingActionButton: AddXrayButton(onPressed: ()async {
+        final ImagePicker picker = ImagePicker();
+        await picker.pickImage(source: ImageSource.camera);
+      }),
     );
   }
 }
