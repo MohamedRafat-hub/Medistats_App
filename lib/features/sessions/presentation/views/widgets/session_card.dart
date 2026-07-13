@@ -22,8 +22,9 @@ import 'session_field_row.dart';
 /// title, date, diagnosis, prescription and notes.
 class SessionCard extends StatelessWidget {
   final SessionModel session;
+  final String patientName;
 
-  const SessionCard({super.key, required this.session});
+  const SessionCard({super.key, required this.session, required this.patientName});
 
   @override
   Widget build(BuildContext context) {
@@ -153,6 +154,7 @@ class SessionCard extends StatelessWidget {
               Navigator.pushNamed(context, '/xray_session' , arguments: {
                 'patientId': session.patientId,
                 'sessionId': session.sessionId,
+                'patientName': patientName,
               });
             },
             widget: Row(

@@ -70,6 +70,7 @@ class AppRouter {
         final args = settings.arguments as Map<String, String>;
         return MaterialPageRoute(
           builder: (context) => XraySessionView(
+            patientName: args['patientName']!,
             patientId: args['patientId']!,
             sessionId: args['sessionId']!,
           ),

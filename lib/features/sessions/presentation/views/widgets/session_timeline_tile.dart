@@ -8,11 +8,12 @@ import 'timeline_indicator.dart';
 class SessionTimelineTile extends StatelessWidget {
   final SessionModel session;
   final bool isLast;
+  final String patientName;
 
   const SessionTimelineTile({
     super.key,
     required this.session,
-    this.isLast = false,
+    this.isLast = false, required this.patientName,
   });
 
   @override
@@ -25,7 +26,7 @@ class SessionTimelineTile extends StatelessWidget {
           children: [
             TimelineIndicator(showLine: !isLast),
             const SizedBox(width: 12),
-            Expanded(child: SessionCard(session: session)),
+            Expanded(child: SessionCard(session: session , patientName: patientName,)),
           ],
         ),
       ),

@@ -10,10 +10,11 @@ import 'xray_session_view_body.dart';
 
 class XraySessionView extends StatelessWidget {
   const XraySessionView(
-      {super.key, required this.patientId, required this.sessionId});
+      {super.key, required this.patientId, required this.sessionId, required this.patientName});
 
   final String patientId;
   final String sessionId;
+  final String patientName;
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +23,8 @@ class XraySessionView extends StatelessWidget {
           UploadXrayCubit(radiologyRepo: getIt.get<RadiologyRepo>()),
       child: Scaffold(
         backgroundColor: const Color(0xFFF5F6FA),
-        appBar: const XraySessionAppBar(
-          patientName: 'Ahmed Mohamed',
+        appBar:  XraySessionAppBar(
+          patientName: patientName,
           subtitle: 'Session X-ray Images',
         ),
         body: const XraySessionViewBody(),

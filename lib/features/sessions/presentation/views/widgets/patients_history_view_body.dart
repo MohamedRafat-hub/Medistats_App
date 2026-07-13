@@ -96,6 +96,7 @@ class _PatientsHistoryViewBodyState extends State<PatientsHistoryViewBody> {
                     SessionTimelineTile(
                       session: sessions[i],
                       isLast: i == sessions.length - 1,
+                      patientName: widget.patient.name,
                     ),
               ],
             );
