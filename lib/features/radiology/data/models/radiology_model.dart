@@ -2,7 +2,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RadiologyModel {
-  final String? id;
+  final String id;
   final String imageUrl;
   final DateTime uploadedAt;
   final String patientId;
@@ -11,7 +11,7 @@ class RadiologyModel {
   final String sessionId;
 
   RadiologyModel({
-    this.id,
+    required this.id,
     required this.imageUrl,
     required this.uploadedAt,
     required this.patientId,

@@ -20,6 +20,6 @@ void setupServiceLocator() {
   );
   getIt.registerSingleton<CloudinaryService>(CloudinaryService());
   getIt.registerSingleton<RadiologyRepo>(
-    RadiologyRepoImpl(cloudinaryService: getIt.get<CloudinaryService>()),
+    RadiologyRepoImpl(cloudinaryService: getIt.get<CloudinaryService>(), fireStoreService: getIt.get<FireStoreService>()),
   );
 }

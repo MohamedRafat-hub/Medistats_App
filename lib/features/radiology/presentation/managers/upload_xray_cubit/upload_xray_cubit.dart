@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
+import 'package:medistats/features/radiology/data/models/radiology_model.dart';
 import 'package:meta/meta.dart';
 
 import '../../../data/repos/radiology_repo.dart';
@@ -12,7 +13,7 @@ class UploadXrayCubit extends Cubit<UploadXrayState> {
   UploadXrayCubit({required this.radiologyRepo}) : super(UploadXrayInitial());
 
 
-  void uploadXRay() async
+  Future<void> uploadXRay(RadiologyModel radiologyModel) async
   {
     try {
       File? file =await radiologyRepo.captureXRay();
@@ -24,8 +25,15 @@ class UploadXrayCubit extends Cubit<UploadXrayState> {
 
       result.fold((error){
         emit(UploadXrayFailure(error.message));
-      },(success){
-        emit(UploadXraySuccess());
+      },(imageUrl) async{
+        final updatedModelWithUrl = radiologyModel.copyWith(imageUrl: imageUrl);
+        var result = await radiologyRepo.uploadRadiology(radiologyModel: updatedModelWithUrl);
+        result.fold((error){
+          emit(UploadXrayFailure(error));
+        }, (id){
+          final finalModel = updatedModelWithUrl.copyWith(id: id);
+          emit(UploadXraySuccess(finalModel));
+        });
       });
     } catch (e) {
       emit(UploadXrayFailure(e.toString()));
