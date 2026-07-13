@@ -7,7 +7,6 @@ import 'package:medistats/core/errors/failure.dart';
 import 'package:medistats/core/services/cloudinary_storage_service.dart';
 import 'package:medistats/core/services/firestore_service.dart';
 import 'package:medistats/core/utils/backend_endpoint.dart';
-import 'package:medistats/core/utils/constants.dart';
 import 'package:medistats/features/radiology/data/models/radiology_model.dart';
 import 'package:medistats/features/radiology/data/repos/radiology_repo.dart';
 
