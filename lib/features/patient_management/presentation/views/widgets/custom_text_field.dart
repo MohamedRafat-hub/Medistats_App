@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:medistats/core/utils/app_theme.dart';
 
 class CustomTextField extends StatelessWidget {
   final String hintText;
@@ -21,6 +22,7 @@ class CustomTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      cursorColor: AppColors.primaryColor,
       initialValue: initialValue,
       validator: (value) {
         if (value == null || value.isEmpty) {

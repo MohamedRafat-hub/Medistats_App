@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medistats/core/services/getit_service.dart';
 import 'package:medistats/features/radiology/presentation/managers/upload_xray_cubit/upload_xray_cubit.dart';
 import 'package:medistats/features/radiology/presentation/views/widgets/upload_xray_bloc_listner.dart';
-import 'package:medistats/features/radiology/presentation/views/widgets/views/widgets/xray_session_app_bar.dart';
+import 'package:medistats/features/radiology/presentation/views/widgets/xray_session_app_bar.dart';
 
 import '../../data/repos/radiology_repo.dart';
 import 'xray_session_view_body.dart';

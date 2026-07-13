@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:medistats/features/radiology/presentation/views/widgets/views/widgets/latest_xray_card.dart';
-import 'package:medistats/features/radiology/presentation/views/widgets/views/widgets/previous_xrays_list.dart';
-import 'package:medistats/features/radiology/presentation/views/widgets/views/widgets/xray_summary_card.dart';
+import 'package:medistats/features/radiology/presentation/views/widgets/latest_xray_card.dart';
+import 'package:medistats/features/radiology/presentation/views/widgets/previous_xrays_list.dart';
+import 'package:medistats/features/radiology/presentation/views/widgets/xray_summary_card.dart';
 
 class XraySessionViewBody extends StatelessWidget {
   const XraySessionViewBody({super.key});
