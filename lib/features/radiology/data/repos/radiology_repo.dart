@@ -8,5 +8,7 @@ abstract class RadiologyRepo {
   Future<File?> captureXRay();
   Future<Either<Failure , String? >> uploadXRayImage(File imageFile);
 
-  Future<Either<String , String>>uploadRadiology({required RadiologyModel radiologyModel});
+  Future<Either<Failure , String>>uploadRadiology({required RadiologyModel radiologyModel});
+
+  Future<Either<Failure , void>> updateRadiologyData({required RadiologyModel radiologyModel});
 }

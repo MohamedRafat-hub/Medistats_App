@@ -12,13 +12,18 @@ import 'package:medistats/features/radiology/data/repos/radiology_repo.dart';
 
 import '../../../../core/helper_functions/handle_firestore_errors.dart';
 
-class RadiologyRepoImpl implements RadiologyRepo{
+class RadiologyRepoImpl implements RadiologyRepo {
   final CloudinaryService cloudinaryService;
   final FireStoreService fireStoreService;
   final ImagePicker _picker = ImagePicker();
-  RadiologyRepoImpl({required this.cloudinaryService, required this.fireStoreService});
+
+  RadiologyRepoImpl({
+    required this.cloudinaryService,
+    required this.fireStoreService,
+  });
+
   @override
-  Future<File?> captureXRay() async{
+  Future<File?> captureXRay() async {
     final XFile? pickedFile = await _picker.pickImage(
       source: ImageSource.camera,
       imageQuality: 85,
@@ -27,32 +32,55 @@ class RadiologyRepoImpl implements RadiologyRepo{
   }
 
   @override
-  Future<Either<Failure, String?>> uploadXRayImage(File imageFile)async {
+  Future<Either<Failure, String?>> uploadXRayImage(File imageFile) async {
     try {
-      String? url =  await cloudinaryService.uploadXRayImage(imageFile);
-      if(url != null) {
+      String? url = await cloudinaryService.uploadXRayImage(imageFile);
+      if (url != null) {
         return right(url);
+      } else {
+        return left(ServerFailure("Failed to upload image to Cloudinary"));
       }
-      else
-        {
-          return left(ServerFailure("Failed to upload image to Cloudinary"));
-        }
     } catch (e) {
       return left(ServerFailure(e.toString()));
     }
   }
 
   @override
-  Future<Either<String, String>> uploadRadiology({required RadiologyModel radiologyModel})async {
+  Future<Either<Failure, String>> uploadRadiology({
+    required RadiologyModel radiologyModel,
+  }) async {
     try {
-      String uid = await fireStoreService.addData(collectionName: BackendEndpoint.radiology, data: radiologyModel.toJson());
+      String uid = await fireStoreService.addData(
+        collectionName: BackendEndpoint.radiology,
+        data: radiologyModel.toJson(),
+      );
       return right(uid);
     } on FirebaseException catch (e) {
-      return left(handleFirebaseError(e));
+      return left(ServerFailure(handleFirebaseError(e)));
     } catch (e) {
-      return left('عذراً، حدث خطأ غير متوقع في النظام. حاول مرة أخرى.');
+      return left(
+        ServerFailure('An error occurred while uploading radiology.'),
+      );
     }
   }
 
-
+  @override
+  Future<Either<Failure, void>> updateRadiologyData({
+    required RadiologyModel radiologyModel,
+  }) async {
+    try {
+      await fireStoreService.updateDocument(
+        collectionName: BackendEndpoint.radiology,
+        docId: radiologyModel.id,
+        data: radiologyModel.toJson(),
+      );
+      return right(null);
+    } on FirebaseException catch (e) {
+      return left(ServerFailure(handleFirebaseError(e)));
+    } catch (e) {
+      return left(
+        ServerFailure('An error occurred while updating radiology data.'),
+      );
+    }
+  }
 }

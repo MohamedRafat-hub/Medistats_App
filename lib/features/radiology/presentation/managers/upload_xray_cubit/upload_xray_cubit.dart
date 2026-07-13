@@ -35,7 +35,7 @@ class UploadXrayCubit extends Cubit<UploadXrayState> {
           );
           result.fold(
             (error) {
-              emit(UploadXrayFailure(error));
+              emit(UploadXrayFailure(error.message));
             },
             (id) {
               final finalModel = updatedModelWithUrl.copyWith(id: id);
