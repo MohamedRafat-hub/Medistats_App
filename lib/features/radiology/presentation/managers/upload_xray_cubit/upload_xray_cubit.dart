@@ -12,13 +12,21 @@ class UploadXrayCubit extends Cubit<UploadXrayState> {
   UploadXrayCubit({required this.radiologyRepo}) : super(UploadXrayInitial());
 
 
-  void captureXRay() async
+  void uploadXRay() async
   {
     try {
       File? file =await radiologyRepo.captureXRay();
 
       if(file == null) return;
-      emit(UploadXraySuccess(file));
+
+      emit(UploadXrayLoading());
+      var result = await radiologyRepo.uploadXRayImage(file);
+
+      result.fold((error){
+        emit(UploadXrayFailure(error.message));
+      },(success){
+        emit(UploadXraySuccess());
+      });
     } catch (e) {
       emit(UploadXrayFailure(e.toString()));
     }

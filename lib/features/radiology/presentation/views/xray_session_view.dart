@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medistats/core/helper_functions/build_show_snack_bar.dart';
 import 'package:medistats/core/services/getit_service.dart';
+import 'package:medistats/core/utils/app_theme.dart';
 import 'package:medistats/features/radiology/presentation/managers/upload_xray_cubit/upload_xray_cubit.dart';
 import 'package:medistats/features/radiology/presentation/views/widgets/views/widgets/add_xray_button.dart';
 import 'package:medistats/features/radiology/presentation/views/widgets/views/widgets/xray_session_app_bar.dart';
@@ -24,8 +25,7 @@ class XraySessionView extends StatelessWidget {
           subtitle: 'Session X-ray Images',
         ),
         body: const XraySessionViewBody(),
-        floatingActionButtonLocation: FloatingActionButtonLocation
-            .endFloat,
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         floatingActionButton: UploadXrayBlocListener(),
       ),
     );
@@ -33,25 +33,28 @@ class XraySessionView extends StatelessWidget {
 }
 
 class UploadXrayBlocListener extends StatelessWidget {
-  const UploadXrayBlocListener({
-    super.key,
-  });
+  const UploadXrayBlocListener({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<UploadXrayCubit, UploadXrayState>(
+    return BlocConsumer<UploadXrayCubit, UploadXrayState>(
       listener: (context, state) {
-        if(state is UploadXraySuccess)
-          {
-            showSnackBar(context, message: "Upload photo successfully");
-          }
-        else if(state is UploadXrayFailure) {
-          showSnackBar(context, message: state.errorMessage);
+        if (state is UploadXrayFailure) {
+          showSnackBar(context, message: state.errorMessage, color: Colors.red);
+        } else if (state is UploadXraySuccess) {
+          showSnackBar(context, message: 'X-ray uploaded successfully');
         }
       },
-      child: AddXrayButton(onPressed: () {
-        context.read<UploadXrayCubit>().captureXRay();
-      }),
+      builder: (context, state) {
+        return AddXrayButton(
+          child: state is UploadXrayLoading
+              ? CircularProgressIndicator(color: Colors.white)
+              : const Icon(Icons.camera_alt_outlined, size: 24),
+          onPressed: state is UploadXrayLoading ? (){} : () {
+            context.read<UploadXrayCubit>().uploadXRay();
+          },
+        );
+      },
     );
   }
 }
