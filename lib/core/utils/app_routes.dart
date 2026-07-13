@@ -1,13 +1,18 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:http/http.dart';
 import 'package:medistats/core/models/patient_model.dart';
 import 'package:medistats/core/utils/constants.dart';
 import 'package:medistats/features/patient_details_directing/presentation/views/directing_view.dart';
+import 'package:medistats/features/radiology/presentation/managers/update_radiology_details_cubit/update_radiology_details_cubit.dart';
+import 'package:medistats/features/radiology/presentation/views/radiology_details_edit_view.dart';
 import 'package:medistats/features/radiology/presentation/views/radiology_history_view.dart';
 import 'package:medistats/features/radiology/presentation/views/xray_session_view.dart';
 import 'package:medistats/features/reports/presentation/views/reports_view.dart';
 import 'package:medistats/features/sessions/presentation/patient_history_view.dart';
 
+import '../../features/radiology/data/models/radiology_model.dart';
+import '../../features/radiology/data/repos/radiology_repo.dart';
 import '../../features/sessions/data/repos/sessions_repo.dart';
 import '../../features/sessions/presentation/managers/get_patient_sessions_cubit/get_patient_sessions_cubit.dart';
 import '../../features/splash/presentation/views/splash_view.dart';
@@ -68,6 +73,18 @@ class AppRouter {
             patientId: args['patientId']!,
             sessionId: args['sessionId']!,
           ),
+        );
+
+      case '/radiology_details':
+        final radiologyModel = settings.arguments as RadiologyModel;
+        return MaterialPageRoute(
+          builder: (context) {
+            return BlocProvider(
+              create: (context) =>
+                  UpdateRadiologyDetailsCubit(getIt.get<RadiologyRepo>()),
+              child: RadiologyDetailsEditView(radiologyModel: radiologyModel),
+            );
+          },
         );
       // Fallback 404 Route
       default:

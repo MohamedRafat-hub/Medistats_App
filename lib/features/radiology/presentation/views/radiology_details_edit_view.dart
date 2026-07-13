@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:medistats/core/utils/app_theme.dart';
+import 'package:medistats/features/radiology/presentation/managers/update_radiology_details_cubit/update_radiology_details_cubit.dart';
 import 'package:medistats/features/radiology/presentation/views/widgets/radiology_image_preview.dart';
 import 'package:medistats/features/radiology/presentation/views/widgets/section_label.dart';
 
+import '../../../../core/helper_functions/build_show_snack_bar.dart';
 import '../../../../core/widgets/custom_action_button.dart';
 import '../../../patient_management/presentation/views/widgets/custom_text_field.dart';
 import '../../data/models/radiology_model.dart';
 
-
 class RadiologyDetailsEditView extends StatefulWidget {
   final RadiologyModel radiologyModel;
 
-  const RadiologyDetailsEditView({
-    super.key,
-    required this.radiologyModel,
-  });
+  const RadiologyDetailsEditView({super.key, required this.radiologyModel});
 
   @override
-  State<RadiologyDetailsEditView> createState() => _RadiologyDetailsEditViewState();
+  State<RadiologyDetailsEditView> createState() =>
+      _RadiologyDetailsEditViewState();
 }
 
 class _RadiologyDetailsEditViewState extends State<RadiologyDetailsEditView> {
@@ -28,8 +29,12 @@ class _RadiologyDetailsEditViewState extends State<RadiologyDetailsEditView> {
   @override
   void initState() {
     super.initState();
-    _nameController = TextEditingController(text: widget.radiologyModel.xrayType);
-    _detailsController = TextEditingController(text: widget.radiologyModel.notes);
+    _nameController = TextEditingController(
+      text: widget.radiologyModel.xrayType,
+    );
+    _detailsController = TextEditingController(
+      text: widget.radiologyModel.notes,
+    );
   }
 
   @override
@@ -72,17 +77,46 @@ class _RadiologyDetailsEditViewState extends State<RadiologyDetailsEditView> {
                 ),
                 const SizedBox(height: 40),
 
-                CustomActionButton(
-                  onPressed: _onSavePressed,
-                  widget: const Text(
-                    'Save Details',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      letterSpacing: 0.5,
-                    ),
-                  ),
+                BlocConsumer<
+                  UpdateRadiologyDetailsCubit,
+                  UpdateRadiologyDetailsState
+                >(
+                  listener: (context, state) {
+                    if (state is UpdateRadiologyDetailsSuccess) {
+                      showSnackBar(
+                        context,
+                        message: 'Radiology details updated successfully',
+                      );
+                      Navigator.pop(context);
+                    } else if(state is UpdateRadiologyDetailsFailure) {
+                      showSnackBar(
+                        context,
+                        message:
+                            'Failed to update radiology details please try again later ${state.errorMessage}',
+                        color: Colors.red,
+                      );
+                    }
+                  },
+                  builder: (context, state) {
+                    return state is UpdateRadiologyDetailsLoading
+                        ? Center(
+                          child: CircularProgressIndicator(
+                              color: AppColors.primaryColor,
+                            ),
+                        )
+                        : CustomActionButton(
+                            onPressed: _onSavePressed,
+                            widget: const Text(
+                              'Save Details',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                letterSpacing: 0.5,
+                              ),
+                            ),
+                          );
+                  },
                 ),
               ],
             ),
@@ -91,7 +125,6 @@ class _RadiologyDetailsEditViewState extends State<RadiologyDetailsEditView> {
       ),
     );
   }
-
 
   AppBar _buildAppBar() {
     return AppBar(
@@ -112,11 +145,14 @@ class _RadiologyDetailsEditViewState extends State<RadiologyDetailsEditView> {
 
   void _onSavePressed() {
     if (_formKey.currentState!.validate()) {
+      context.read<UpdateRadiologyDetailsCubit>().updateRadiologyDetails(
+        radiologyModel: widget.radiologyModel.copyWith(
+          xrayType: _nameController.text,
+          notes: _detailsController.text,
+        ),
+      );
       debugPrint('Name: ${_nameController.text}');
       debugPrint('Details: ${_detailsController.text}');
     }
   }
 }
-
-
-
