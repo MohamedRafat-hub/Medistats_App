@@ -4,7 +4,7 @@ import 'package:dartz/dartz.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:medistats/core/errors/failure.dart';
 import 'package:medistats/core/services/cloudinary_storage_service.dart';
-import 'package:medistats/features/radiology/data/radiology_repo.dart';
+import 'package:medistats/features/radiology/data/repos/radiology_repo.dart';
 
 class RadiologyRepoImpl implements RadiologyRepo{
   final CloudinaryService cloudinaryService;

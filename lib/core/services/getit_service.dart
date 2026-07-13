@@ -3,8 +3,8 @@ import 'package:medistats/core/services/cloudinary_storage_service.dart';
 import 'package:medistats/core/services/firestore_service.dart';
 import 'package:medistats/features/patient_management/data/repos/patient_repo.dart';
 import 'package:medistats/features/patient_management/data/repos/patient_repo_impl.dart';
-import 'package:medistats/features/radiology/data/radiology_repo.dart';
-import 'package:medistats/features/radiology/data/radiology_repo_impl.dart';
+import 'package:medistats/features/radiology/data/repos/radiology_repo.dart';
+import 'package:medistats/features/radiology/data/repos/radiology_repo_impl.dart';
 import 'package:medistats/features/sessions/data/repos/sessions_repo.dart';
 import 'package:medistats/features/sessions/data/repos/sessions_repo_impl.dart';
 

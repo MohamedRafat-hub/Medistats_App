@@ -7,7 +7,7 @@ import 'package:medistats/features/radiology/presentation/managers/upload_xray_c
 import 'package:medistats/features/radiology/presentation/views/widgets/views/widgets/add_xray_button.dart';
 import 'package:medistats/features/radiology/presentation/views/widgets/views/widgets/xray_session_app_bar.dart';
 
-import '../../data/radiology_repo.dart';
+import '../../data/repos/radiology_repo.dart';
 import 'xray_session_view_body.dart';
 
 class XraySessionView extends StatelessWidget {

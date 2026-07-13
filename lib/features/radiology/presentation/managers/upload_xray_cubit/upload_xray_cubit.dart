@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
-import '../../../data/radiology_repo.dart';
+import '../../../data/repos/radiology_repo.dart';
 
 part 'upload_xray_state.dart';
 
