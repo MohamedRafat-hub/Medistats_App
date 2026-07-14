@@ -3,15 +3,18 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 import 'package:medistats/core/helper_functions/build_show_snack_bar.dart';
 import 'package:medistats/core/services/getit_service.dart';
 import 'package:medistats/core/widgets/custom_action_button.dart';
 import 'package:medistats/core/widgets/show_deleted_confirmation_bottom_sheet.dart';
 import 'package:medistats/features/patient_management/presentation/views/widgets/patient_card_menue_button.dart';
+import 'package:medistats/features/radiology/presentation/managers/get_all_session_radiology_cubit/get_patient_radiologies_session_cubit.dart';
 import 'package:medistats/features/sessions/data/models/session_model.dart';
 import 'package:medistats/features/sessions/presentation/managers/add_session_cubit/add_session_cubit.dart';
 import 'package:medistats/features/sessions/presentation/managers/delete_session_cubit/delete_session_cubit.dart';
+import 'package:medistats/features/sessions/presentation/managers/get_patient_sessions_cubit/get_patient_sessions_cubit.dart';
 import 'package:medistats/features/sessions/presentation/managers/update_session_cubit/update_session_cubit.dart';
 import '../../../../../core/utils/app_theme.dart';
 import '../../../data/repos/sessions_repo.dart';
@@ -24,7 +27,11 @@ class SessionCard extends StatelessWidget {
   final SessionModel session;
   final String patientName;
 
-  const SessionCard({super.key, required this.session, required this.patientName});
+  const SessionCard({
+    super.key,
+    required this.session,
+    required this.patientName,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -151,16 +158,25 @@ class SessionCard extends StatelessWidget {
           ],
           CustomActionButton(
             onPressed: () {
-              Navigator.pushNamed(context, '/xray_session' , arguments: {
-                'patientId': session.patientId,
-                'sessionId': session.sessionId,
-                'patientName': patientName,
-              });
+              context.read<GetPatientRadiologiesSessionCubit>().getPatientRadiologiesSession(sessionId: session.sessionId);
+              Navigator.pushNamed(
+                context,
+                '/xray_session',
+                arguments: {
+                  'patientId': session.patientId,
+                  'sessionId': session.sessionId,
+                  'patientName': patientName,
+                },
+              );
             },
             widget: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SvgPicture.asset('assets/Icons/xRay.svg' , height: 25, width: 25,),
+                SvgPicture.asset(
+                  'assets/Icons/xRay.svg',
+                  height: 25,
+                  width: 25,
+                ),
                 SizedBox(width: 8),
                 Text(
                   "View Radiology",
@@ -175,7 +191,6 @@ class SessionCard extends StatelessWidget {
           ),
           SizedBox(height: 12),
           CustomActionButton(
-
             onPressed: () {},
             widget: Row(
               mainAxisAlignment: MainAxisAlignment.center,
