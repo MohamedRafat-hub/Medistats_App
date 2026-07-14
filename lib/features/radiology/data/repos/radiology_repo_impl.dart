@@ -83,4 +83,29 @@ class RadiologyRepoImpl implements RadiologyRepo {
       );
     }
   }
+
+  @override
+  Stream<Either<Failure, List<RadiologyModel>>> getPatientRadiologiesSession({
+    required String sessionId,
+  }) {
+    return fireStoreService
+        .getCollection(
+          collectionName: BackendEndpoint.radiology,
+          whereField: sessionId,
+          isEqualTo: 'sessionId',
+          orderByField: 'uploadedAt',
+        )
+        .map<Either<Failure, List<RadiologyModel>>>((docs) {
+          List<RadiologyModel> radiologies = docs
+              .map((doc) => RadiologyModel.fromJson(doc.data(), doc.id))
+              .toList();
+          return right(radiologies);
+        })
+        .handleError((error) {
+          if (error is FirebaseException) {
+            return left(ServerFailure(handleFirebaseError(error)));
+          }
+          return left(ServerFailure('Failed to get radiologies'));
+        });
+  }
 }
