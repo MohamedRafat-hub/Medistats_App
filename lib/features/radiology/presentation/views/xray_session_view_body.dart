@@ -2,6 +2,9 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
+import 'package:medistats/core/utils/app_theme.dart';
+import 'package:medistats/features/radiology/data/models/radiology_model.dart';
 import 'package:medistats/features/radiology/presentation/managers/get_all_session_radiology_cubit/get_patient_radiologies_session_cubit.dart';
 import 'package:medistats/features/radiology/presentation/views/widgets/latest_xray_card.dart';
 import 'package:medistats/features/radiology/presentation/views/widgets/previous_xrays_list.dart';
@@ -24,50 +27,82 @@ class XraySessionViewBody extends StatelessWidget {
 }
 
 class DisplayRadiologySessionData extends StatelessWidget {
-  const DisplayRadiologySessionData({
-    super.key,
-  });
+  const DisplayRadiologySessionData({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<GetPatientRadiologiesSessionCubit, GetPatientRadiologiesSessionState>(
+    return BlocBuilder<
+      GetPatientRadiologiesSessionCubit,
+      GetPatientRadiologiesSessionState
+    >(
       builder: (context, state) {
-        if (state is GetPatientSessionsLoading) {
-          return const Center(child: CircularProgressIndicator());
-        } else if (state is GetPatientSessionsSuccess) {
-          log("Get radiologies success");
-        }
-        else
-          {
-            log('Get radiologies failure');
+        if (state is GetPatientRadiologiesSessionLoading) {
+          return SizedBox(
+            height: MediaQuery.of(context).size.height * .7,
+            child: Center(
+              child: CircularProgressIndicator(color: AppColors.primaryColor),
+            ),
+          );
+        } else if (state is GetPatientRadiologiesSessionSuccess) {
+          int lengthOfList = state.radiologies.length;
+          RadiologyModel? lastRediologyModel;
+          if (lengthOfList > 1) {
+            lastRediologyModel = state.radiologies.last;
+            log(lastRediologyModel.uploadedAt.toString());
           }
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const XraySummaryCard(
-              imagesCount: 4,
-              lastUpdated: '12 Jul 2026',
-            ),
-            const SizedBox(height: 20),
-            const LatestXrayCard(
-              imageUrl:
-              'https://images.unsplash.com/photo-1516069677018-378515003435?w=600',
-              title: 'Chest X-Ray',
-              dateLabel: 'Today',
-            ),
-            const SizedBox(height: 28),
-            const Text(
-              'Previous X-rays',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Colors.black87,
-              ),
-            ),
-            const SizedBox(height: 14),
-            const PreviousXraysList(),
-          ],
-        );
+          if(lengthOfList>1) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                XraySummaryCard(imagesCount: state.radiologies.length,
+                    lastUpdated: '12 Jul'),
+                const SizedBox(height: 20),
+                 lengthOfList > 0 ?LatestXrayCard(
+                  imageUrl:
+                  lastRediologyModel!.imageUrl,
+                  title: lastRediologyModel!.xrayType ?? "No title",
+                  dateLabel: DateFormat('dd MMMM yyyy').format(lastRediologyModel.uploadedAt),
+                ) : SizedBox(),
+                const SizedBox(height: 28),
+                const Text(
+                  'Previous X-rays',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                  ),
+                ),
+                const SizedBox(height: 14),
+                state.radiologies.isEmpty
+                    ? Center(
+                  child: Text(
+                    'No previous X-rays Found',
+                    style: TextStyle(color: AppColors.primaryColor,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold),
+                  ),
+                )
+                    : PreviousXraysList(previousXrays: state.radiologies),
+              ],
+            );
+          }
+          else
+            {
+              return Center(
+                child: Text(
+                  'No previous X-rays Found',
+                  style: TextStyle(color: AppColors.primaryColor,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold),
+                ),
+              );
+            }
+        } else if (state is GetPatientRadiologiesSessionFailure) {
+          log('Get radiologies failure ${state.errorMessage}');
+          return Center(child: Text(state.errorMessage));
+        } else {
+          return const Center(child: Text('Something went wrong'));
+        }
       },
     );
   }

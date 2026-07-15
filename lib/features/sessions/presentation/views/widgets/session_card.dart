@@ -10,7 +10,9 @@ import 'package:medistats/core/services/getit_service.dart';
 import 'package:medistats/core/widgets/custom_action_button.dart';
 import 'package:medistats/core/widgets/show_deleted_confirmation_bottom_sheet.dart';
 import 'package:medistats/features/patient_management/presentation/views/widgets/patient_card_menue_button.dart';
+import 'package:medistats/features/radiology/data/repos/radiology_repo.dart';
 import 'package:medistats/features/radiology/presentation/managers/get_all_session_radiology_cubit/get_patient_radiologies_session_cubit.dart';
+import 'package:medistats/features/radiology/presentation/views/xray_session_view.dart';
 import 'package:medistats/features/sessions/data/models/session_model.dart';
 import 'package:medistats/features/sessions/presentation/managers/add_session_cubit/add_session_cubit.dart';
 import 'package:medistats/features/sessions/presentation/managers/delete_session_cubit/delete_session_cubit.dart';
@@ -108,22 +110,25 @@ class SessionCard extends StatelessWidget {
                             top: Radius.circular(32),
                           ),
                         ),
-                        builder: (modalContext) => MultiBlocProvider(
-                          providers: [
-                            BlocProvider(
-                              create: (context) =>
-                                  UpdateSessionCubit(getIt.get<SessionsRepo>()),
+                        builder: (modalContext) =>
+                            MultiBlocProvider(
+                              providers: [
+                                BlocProvider(
+                                  create: (context) =>
+                                      UpdateSessionCubit(
+                                          getIt.get<SessionsRepo>()),
+                                ),
+                                BlocProvider(
+                                  create: (context) =>
+                                      AddSessionCubit(
+                                          getIt.get<SessionsRepo>()),
+                                ),
+                              ],
+                              child: AddSessionBottomSheet(
+                                patientId: session.patientId,
+                                sessionModel: session,
+                              ),
                             ),
-                            BlocProvider(
-                              create: (context) =>
-                                  AddSessionCubit(getIt.get<SessionsRepo>()),
-                            ),
-                          ],
-                          child: AddSessionBottomSheet(
-                            patientId: session.patientId,
-                            sessionModel: session,
-                          ),
-                        ),
                       );
                     },
                   ),
@@ -158,15 +163,28 @@ class SessionCard extends StatelessWidget {
           ],
           CustomActionButton(
             onPressed: () {
-              context.read<GetPatientRadiologiesSessionCubit>().getPatientRadiologiesSession(sessionId: session.sessionId);
-              Navigator.pushNamed(
+              // 1. شيلنا السطر اللي كان بينادي الـ Cubit هنا مباشرة قبل الـ Navigation
+
+              Navigator.push(
                 context,
-                '/xray_session',
-                arguments: {
-                  'patientId': session.patientId,
-                  'sessionId': session.sessionId,
-                  'patientName': patientName,
-                },
+                MaterialPageRoute(
+                  builder: (context) {
+                    return BlocProvider(
+                      create: (context) =>
+                      GetPatientRadiologiesSessionCubit(
+                        getIt.get<RadiologyRepo>(),
+                      )
+                        ..getPatientRadiologiesSession( // 2. بنناديها هنا والـ Provider لسه بيتبني بشكل آمن جداً
+                          sessionId: session.sessionId,
+                        ),
+                      child: XraySessionView(
+                        patientId: session.patientId,
+                        sessionId: session.sessionId,
+                        patientName: patientName,
+                      ),
+                    );
+                  },
+                ),
               );
             },
             widget: Row(
@@ -177,8 +195,8 @@ class SessionCard extends StatelessWidget {
                   height: 25,
                   width: 25,
                 ),
-                SizedBox(width: 8),
-                Text(
+                const SizedBox(width: 8),
+                const Text(
                   "View Radiology",
                   style: TextStyle(
                     color: Colors.white,

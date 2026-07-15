@@ -38,8 +38,7 @@ class MedistatsApp extends StatelessWidget {
         ),
         BlocProvider(create: (context) => GetAllPatientsCubit(getIt<PatientRepo>())..startListeningToPatients()),
         BlocProvider(create: (context) => DeletePatientCubit(getIt<PatientRepo>())),
-        BlocProvider(create: (context) => UpdatePatientCubit(getIt<PatientRepo>())),
-        BlocProvider(create: (context) => GetPatientRadiologiesSessionCubit(getIt.get<RadiologyRepo>()))
+        BlocProvider(create: (context) => UpdatePatientCubit(getIt<PatientRepo>()))
       ],
       child: MaterialApp(
         initialRoute: '/',

@@ -91,21 +91,23 @@ class RadiologyRepoImpl implements RadiologyRepo {
     return fireStoreService
         .getCollection(
           collectionName: BackendEndpoint.radiology,
-          whereField: sessionId,
-          isEqualTo: 'sessionId',
+          whereField: 'sessionId',
+          isEqualTo: sessionId,
           orderByField: 'uploadedAt',
+      descending: false,
         )
-        .map<Either<Failure, List<RadiologyModel>>>((docs) {
-          List<RadiologyModel> radiologies = docs
-              .map((doc) => RadiologyModel.fromJson(doc.data(), doc.id))
-              .toList();
+        .map<Either<Failure, List<RadiologyModel>>>(
+        (docs) {
+          List<RadiologyModel> radiologies = docs.map((doc)=> RadiologyModel.fromJson(doc.data(), doc.id)).toList();
+
           return right(radiologies);
         })
         .handleError((error) {
           if (error is FirebaseException) {
-            return left(ServerFailure(handleFirebaseError(error)));
+            return left(ServerFailure(error.message.toString()));
+          } else {
+            return left(ServerFailure(error));
           }
-          return left(ServerFailure('Failed to get radiologies'));
         });
   }
 }
