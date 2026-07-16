@@ -5,7 +5,7 @@ import 'package:medistats/features/radiology/data/models/radiology_model.dart';
 import 'package:medistats/features/radiology/data/repos/radiology_repo.dart';
 import 'package:meta/meta.dart';
 
-part 'get_patient_radiologies_session_state.dart';
+part 'get_patient_radiologies_state.dart';
 
 class GetRadiologiesCubit extends Cubit<GetRadiologiesState> {
   GetRadiologiesCubit(this.radiologyRepo) : super(GetRadiologiesInitial());
@@ -13,6 +13,8 @@ class GetRadiologiesCubit extends Cubit<GetRadiologiesState> {
   final RadiologyRepo radiologyRepo;
 
   StreamSubscription? _streamSubscription;
+
+  int numOfRadiologies = 0;
   void getPatientRadiologiesSession({required String sessionId})
   {
     emit(GetRadiologiesLoading());
@@ -42,6 +44,7 @@ class GetRadiologiesCubit extends Cubit<GetRadiologiesState> {
       log("🔴 Radiology Stream Error: ${error.message}");
       emit(GetPatientRadiologiesSessionFailure(error.message));
     }, (radiologies){
+      numOfRadiologies = radiologies.length;
       log("🟢 Radiology Stream Success! Items count: ${radiologies.length}");
       emit(GetRadiologiesSuccess(radiologies));
     });

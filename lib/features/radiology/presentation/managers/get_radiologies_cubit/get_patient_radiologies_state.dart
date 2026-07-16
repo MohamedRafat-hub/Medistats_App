@@ -1,4 +1,4 @@
-part of 'get_patient_radiologies_session_cubit.dart';
+part of 'get_patient_radiologies_cubit.dart';
 
 @immutable
 sealed class GetRadiologiesState {}

@@ -5,14 +5,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:medistats/core/utils/app_theme.dart';
 import 'package:medistats/features/radiology/data/models/radiology_model.dart';
-import 'package:medistats/features/radiology/presentation/managers/get_all_session_radiology_cubit/get_patient_radiologies_session_cubit.dart';
 import 'package:medistats/features/radiology/presentation/views/widgets/latest_xray_card.dart';
 import 'package:medistats/features/radiology/presentation/views/widgets/previous_xrays_list.dart';
 import 'package:medistats/features/radiology/presentation/views/widgets/xray_summary_card.dart';
-import 'package:medistats/features/sessions/data/repos/sessions_repo.dart';
-import 'package:medistats/features/sessions/presentation/managers/get_patient_sessions_cubit/get_patient_sessions_cubit.dart';
 
-import '../../../../core/services/getit_service.dart';
+import '../managers/get_radiologies_cubit/get_patient_radiologies_cubit.dart';
+
 
 class XraySessionViewBody extends StatelessWidget {
   const XraySessionViewBody({super.key});
