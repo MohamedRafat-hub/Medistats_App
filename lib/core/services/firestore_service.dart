@@ -19,13 +19,14 @@ class FireStoreService {
     }
   }
 
-  Stream<List<QueryDocumentSnapshot<Map<String, dynamic>>>> getCollection({
-    required String collectionName,
-    String? orderByField,
-    String? whereField,
-    dynamic isEqualTo,
-    bool descending = false,
-  }) {
+  Stream<List<QueryDocumentSnapshot<Map<String, dynamic>>>> getStreamCollection(
+      {
+        required String collectionName,
+        String? orderByField,
+        String? whereField,
+        dynamic isEqualTo,
+        bool descending = false,
+      }) {
     Query<Map<String, dynamic>> query = _fireStore.collection(collectionName);
     if (whereField != null && isEqualTo != null) {
       query = query.where(whereField, isEqualTo: isEqualTo);
@@ -67,12 +68,12 @@ class FireStoreService {
   }) async {
     final batch = _fireStore.batch();
 
-    final childSnapShot = await _fireStore.collection(childCollection).where(childWhereField , isEqualTo: patientId).get();
+    final childSnapShot = await _fireStore.collection(childCollection).where(
+        childWhereField, isEqualTo: patientId).get();
 
-    for (var doc in childSnapShot.docs)
-      {
-        batch.delete(doc.reference);
-      }
+    for (var doc in childSnapShot.docs) {
+      batch.delete(doc.reference);
+    }
 
     final parentRef = _fireStore.collection(parentCollection).doc(patientId);
 
@@ -80,4 +81,19 @@ class FireStoreService {
 
     await batch.commit();
   }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getFutureCollection({required String collectionName , String? whereField , dynamic isEqualTo , String? orderByField })async{
+    Query<Map<String, dynamic>> query = _fireStore.collection(collectionName);
+
+    if(whereField != null && isEqualTo != null)
+      {
+        query =  query.where(whereField, isEqualTo: isEqualTo);
+      }
+    if(orderByField != null && orderByField.isNotEmpty)
+      {
+        query =  query.orderBy(orderByField);
+      }
+    return await query.get();
+  }
+
 }
