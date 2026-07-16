@@ -32,18 +32,18 @@ class DisplayRadiologySessionData extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<
-      GetPatientRadiologiesSessionCubit,
-      GetPatientRadiologiesSessionState
+      GetRadiologiesCubit,
+      GetRadiologiesState
     >(
       builder: (context, state) {
-        if (state is GetPatientRadiologiesSessionLoading) {
+        if (state is GetRadiologiesLoading) {
           return SizedBox(
             height: MediaQuery.of(context).size.height * .7,
             child: Center(
               child: CircularProgressIndicator(color: AppColors.primaryColor),
             ),
           );
-        } else if (state is GetPatientRadiologiesSessionSuccess) {
+        } else if (state is GetRadiologiesSuccess) {
           int lengthOfList = state.radiologies.length;
           RadiologyModel? lastRediologyModel;
           if (lengthOfList > 1) {

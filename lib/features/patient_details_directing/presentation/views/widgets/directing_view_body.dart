@@ -3,8 +3,12 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:medistats/core/services/getit_service.dart';
 import 'package:medistats/core/utils/constants.dart';
 import 'package:medistats/features/patient_details_directing/presentation/managers/get_sessions_count_cubit/get_sessions_count_cubit.dart';
+import 'package:medistats/features/radiology/data/repos/radiology_repo.dart';
+import 'package:medistats/features/radiology/presentation/managers/get_all_session_radiology_cubit/get_patient_radiologies_session_cubit.dart';
+import 'package:medistats/features/radiology/presentation/views/radiology_history_view.dart';
 import 'package:medistats/features/sessions/presentation/managers/get_patient_sessions_cubit/get_patient_sessions_cubit.dart';
 
 import '../../../../../core/models/patient_model.dart';
@@ -29,7 +33,9 @@ class DirectingViewBody extends StatelessWidget {
           child: BlocBuilder<GetSessionsCountCubit, GetSessionsCountState>(
             builder: (context, state) {
               log(state.toString());
-              log('The sessions count is ${state is GetSessionsCountSuccess ? state.count : 0}');
+              log('The sessions count is ${state is GetSessionsCountSuccess
+                  ? state.count
+                  : 0}');
               return DirectingWidget(
                 itemNumbers: state is GetSessionsCountSuccess ? state.count : 0,
                 image: 'assets/Icons/sessions.svg',
@@ -48,11 +54,13 @@ class DirectingViewBody extends StatelessWidget {
         ),
         Expanded(
           child: DirectingWidget(
-            onTap: (){
-              Navigator.pushNamed(
-                context,
-                '/radiology',
-              );
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return BlocProvider(
+                  create: (context) => GetRadiologiesCubit(getIt.get<RadiologyRepo>())..getAllPatientRadiologies(patientId: patientModel.id),
+                  child: RadiologyHistoryView(),
+                );
+              }));
             },
             image: 'assets/Icons/xRay.svg',
             title: 'Radiology Gallery',
@@ -61,7 +69,7 @@ class DirectingViewBody extends StatelessWidget {
         ),
         Expanded(
           child: DirectingWidget(
-            onTap: (){
+            onTap: () {
               Navigator.pushNamed(
                 context,
                 '/reports',

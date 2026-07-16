@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medistats/features/radiology/data/models/radiology_model.dart';
 import 'package:medistats/features/radiology/data/repos/radiology_repo.dart';
@@ -6,15 +7,15 @@ import 'package:meta/meta.dart';
 
 part 'get_patient_radiologies_session_state.dart';
 
-class GetPatientRadiologiesSessionCubit extends Cubit<GetPatientRadiologiesSessionState> {
-  GetPatientRadiologiesSessionCubit(this.radiologyRepo) : super(GetPatientRadiologiesSessionInitial());
+class GetRadiologiesCubit extends Cubit<GetRadiologiesState> {
+  GetRadiologiesCubit(this.radiologyRepo) : super(GetRadiologiesInitial());
 
   final RadiologyRepo radiologyRepo;
 
   StreamSubscription? _streamSubscription;
   void getPatientRadiologiesSession({required String sessionId})
   {
-    emit(GetPatientRadiologiesSessionLoading());
+    emit(GetRadiologiesLoading());
 
     _streamSubscription?.cancel();
 
@@ -22,14 +23,31 @@ class GetPatientRadiologiesSessionCubit extends Cubit<GetPatientRadiologiesSessi
 
    _streamSubscription =  request.listen((result){
       result.fold((error){
-        print("🔴 Radiology Stream Error: ${error.message}");
+        log("🔴 Radiology Stream Error: ${error.message}");
         emit(GetPatientRadiologiesSessionFailure(error.message));
       }, (radiologies){
-        print("🟢 Radiology Stream Success! Items count: ${radiologies.length}"); // 👈 وضيف ده
-        emit(GetPatientRadiologiesSessionSuccess(radiologies));
+        log("🟢 Radiology Stream Success! Items count: ${radiologies.length}"); // 👈 وضيف ده
+        emit(GetRadiologiesSuccess(radiologies));
       });
     });
   }
+
+  Future<void> getAllPatientRadiologies({required String patientId}) async
+  {
+    emit(GetRadiologiesLoading());
+
+    var result =await radiologyRepo.getPatientRadiologies(patientId: patientId);
+
+    result.fold((error){
+      log("🔴 Radiology Stream Error: ${error.message}");
+      emit(GetPatientRadiologiesSessionFailure(error.message));
+    }, (radiologies){
+      log("🟢 Radiology Stream Success! Items count: ${radiologies.length}");
+      emit(GetRadiologiesSuccess(radiologies));
+    });
+  }
+
+
 
   @override
   Future<void> close() {

@@ -34,7 +34,7 @@ class SessionsRepoImpl implements SessionsRepo {
     required String patientId,
   }) {
     return _fireStoreService
-        .getCollection(
+        .getStreamCollection(
       collectionName: BackendEndpoint.sessions,
       orderByField: 'createdAt',
       whereField: 'patientId',
@@ -97,7 +97,7 @@ class SessionsRepoImpl implements SessionsRepo {
   }) async {
     try {
       final sessions = await _fireStoreService
-          .getCollection(
+          .getStreamCollection(
         collectionName: BackendEndpoint.sessions,
         whereField: 'patientId',
         isEqualTo: patientId,

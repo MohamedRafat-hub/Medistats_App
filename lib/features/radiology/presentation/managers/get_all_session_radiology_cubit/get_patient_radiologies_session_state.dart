@@ -1,15 +1,15 @@
 part of 'get_patient_radiologies_session_cubit.dart';
 
 @immutable
-sealed class GetPatientRadiologiesSessionState {}
+sealed class GetRadiologiesState {}
 
-final class GetPatientRadiologiesSessionInitial extends GetPatientRadiologiesSessionState {}
-final class GetPatientRadiologiesSessionLoading extends GetPatientRadiologiesSessionState {}
-final class GetPatientRadiologiesSessionSuccess extends GetPatientRadiologiesSessionState {
+final class GetRadiologiesInitial extends GetRadiologiesState {}
+final class GetRadiologiesLoading extends GetRadiologiesState {}
+final class GetRadiologiesSuccess extends GetRadiologiesState {
   final List<RadiologyModel> radiologies;
-  GetPatientRadiologiesSessionSuccess(this.radiologies);
+  GetRadiologiesSuccess(this.radiologies);
 }
-final class GetPatientRadiologiesSessionFailure extends GetPatientRadiologiesSessionState {
+final class GetPatientRadiologiesSessionFailure extends GetRadiologiesState {
   final String errorMessage;
 
   GetPatientRadiologiesSessionFailure(this.errorMessage);

@@ -171,7 +171,7 @@ class SessionCard extends StatelessWidget {
                   builder: (context) {
                     return BlocProvider(
                       create: (context) =>
-                      GetPatientRadiologiesSessionCubit(
+                      GetRadiologiesCubit(
                         getIt.get<RadiologyRepo>(),
                       )
                         ..getPatientRadiologiesSession( // 2. بنناديها هنا والـ Provider لسه بيتبني بشكل آمن جداً

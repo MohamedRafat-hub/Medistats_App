@@ -35,7 +35,7 @@ class PatientRepoImpl implements PatientRepo {
   @override
   Stream<Either<Failure, List<PatientModel>>> getAllPatients() {
     return fireStoreService
-        .getCollection(
+        .getStreamCollection(
           collectionName: BackendEndpoint.patients,
           orderByField: 'createdAt',
         )
