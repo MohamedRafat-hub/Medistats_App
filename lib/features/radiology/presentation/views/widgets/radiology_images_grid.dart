@@ -7,6 +7,8 @@ class RadiologyImagesGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GridView(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         mainAxisSpacing: 16,

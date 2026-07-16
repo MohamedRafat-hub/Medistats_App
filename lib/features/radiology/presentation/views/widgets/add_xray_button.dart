@@ -6,18 +6,31 @@ class AddXrayButton extends StatelessWidget {
 
   final VoidCallback? onPressed;
   final Widget child;
+
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: onPressed,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: AppColors.primaryColor,
-        foregroundColor: Colors.white,
-        shape: const CircleBorder(),
-        padding: const EdgeInsets.all(16),
-        elevation: 4,
+    return Container(
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.primaryColor.withOpacity(0.35),
+            blurRadius: 18,
+            offset: const Offset(0, 8),
+          ),
+        ],
       ),
-      child: child,
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: AppColors.primaryColor,
+          foregroundColor: Colors.white,
+          shape: const CircleBorder(),
+          padding: const EdgeInsets.all(18),
+          elevation: 0,
+        ),
+        child: child,
+      ),
     );
   }
 }

@@ -9,8 +9,12 @@ import '../../data/repos/radiology_repo.dart';
 import 'xray_session_view_body.dart';
 
 class XraySessionView extends StatelessWidget {
-  const XraySessionView(
-      {super.key, required this.patientId, required this.sessionId, required this.patientName});
+  const XraySessionView({
+    super.key,
+    required this.patientId,
+    required this.sessionId,
+    required this.patientName,
+  });
 
   final String patientId;
   final String sessionId;
@@ -22,8 +26,8 @@ class XraySessionView extends StatelessWidget {
       create: (context) =>
           UploadXrayCubit(radiologyRepo: getIt.get<RadiologyRepo>()),
       child: Scaffold(
-        backgroundColor: const Color(0xFFF5F6FA),
-        appBar:  XraySessionAppBar(
+        backgroundColor: const Color(0xFFF8FAFC),
+        appBar: XraySessionAppBar(
           patientName: patientName,
           subtitle: 'Session X-ray Images',
         ),
@@ -37,5 +41,3 @@ class XraySessionView extends StatelessWidget {
     );
   }
 }
-
-

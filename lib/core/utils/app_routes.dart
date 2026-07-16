@@ -57,7 +57,9 @@ class AppRouter {
       case '/radiology':
         return MaterialPageRoute(
           settings: settings,
-          builder: (context) => RadiologyHistoryView(),
+          builder: (context) => RadiologyHistoryView(
+            patientName: settings.arguments as String,
+          ),
         );
 
       case '/reports':

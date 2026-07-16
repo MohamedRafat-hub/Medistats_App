@@ -58,7 +58,9 @@ class DirectingViewBody extends StatelessWidget {
                       create: (context) =>
                       GetRadiologiesCubit(getIt.get<RadiologyRepo>())
                         ..getAllPatientRadiologies(patientId: patientModel.id),
-                      child: RadiologyHistoryView(),
+                      child: RadiologyHistoryView(
+                        patientName: patientModel.name,
+                      ),
                     );
                   }));
                 },

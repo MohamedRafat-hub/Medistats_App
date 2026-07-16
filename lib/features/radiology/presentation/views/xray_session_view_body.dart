@@ -11,14 +11,13 @@ import 'package:medistats/features/radiology/presentation/views/widgets/xray_sum
 
 import '../managers/get_radiologies_cubit/get_patient_radiologies_cubit.dart';
 
-
 class XraySessionViewBody extends StatelessWidget {
   const XraySessionViewBody({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.fromLTRB(20, 16, 20, 100),
+    return const SingleChildScrollView(
+      padding: EdgeInsets.fromLTRB(20, 16, 20, 100),
       child: DisplayRadiologySessionData(),
     );
   }
@@ -39,68 +38,170 @@ class DisplayRadiologySessionData extends StatelessWidget {
             ),
           );
         } else if (state is GetRadiologiesSuccess) {
-          int lengthOfList = state.radiologies.length;
-          RadiologyModel? lastRediologyModel;
-          if (lengthOfList >= 1) {
-            lastRediologyModel = state.radiologies.last;
-            log(lastRediologyModel.uploadedAt.toString());
+          final radiologies = state.radiologies;
+          final int total = radiologies.length;
+
+          if (total == 0) {
+            return const _NoXraysYetState();
           }
+
+          final RadiologyModel latest = radiologies.last;
+          // Everything except the latest, so it isn't shown twice.
+          final previousXrays = radiologies.sublist(0, total - 1);
+          log(latest.uploadedAt.toString());
 
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               XraySummaryCard(
-                imagesCount: state.radiologies.length,
-                lastUpdated: '12 Jul',
+                imagesCount: total,
+                lastUpdated: DateFormat('dd MMM').format(latest.uploadedAt),
               ),
               const SizedBox(height: 20),
-              lengthOfList > 0 ?LatestXrayCard(
-                imageUrl: lastRediologyModel!.imageUrl,
-                title: lastRediologyModel?.xrayType ?? "No title",
+              LatestXrayCard(
+                imageUrl: latest.imageUrl,
+                title: latest.xrayType ?? 'No title',
                 dateLabel: DateFormat(
                   'dd MMMM yyyy',
-                ).format(lastRediologyModel.uploadedAt),
-              ) : SizedBox(),
+                ).format(latest.uploadedAt),
+              ),
               const SizedBox(height: 28),
-              lengthOfList > 1 ? Text(
+              const Text(
                 'Previous X-rays',
                 style: TextStyle(
-                  fontSize: 20,
+                  fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  color: AppColors.primaryColor,
-                ),
-              ) : Text(
-                'No Previous X-rays Found',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.primaryColor,
+                  color: Color(0xFF1E293B),
                 ),
               ),
               const SizedBox(height: 14),
-              state.radiologies.isEmpty
-                  ? Center(
-                      child: Text(
-                        'No previous X-rays Found',
-                        style: TextStyle(
-                          color: AppColors.primaryColor,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    )
-                  : lengthOfList > 1
-                  ? PreviousXraysList(previousXrays: state.radiologies)
-                  : SizedBox(),
+              previousXrays.isEmpty
+                  ? const _NoPreviousXraysState()
+                  : PreviousXraysList(previousXrays: previousXrays),
             ],
           );
         } else if (state is GetPatientRadiologiesSessionFailure) {
           log('Get radiologies failure ${state.errorMessage}');
-          return Center(child: Text(state.errorMessage));
+          return _SessionErrorState(errorMessage: state.errorMessage);
         } else {
-          return const Center(child: Text('Something went wrong'));
+          return const _SessionErrorState(
+            errorMessage: 'Something went wrong',
+          );
         }
       },
+    );
+  }
+}
+
+class _NoXraysYetState extends StatelessWidget {
+  const _NoXraysYetState();
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: MediaQuery.of(context).size.height * .6,
+      child: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: AppColors.primaryColor.withOpacity(0.08),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                Icons.camera_alt_outlined,
+                size: 40,
+                color: AppColors.primaryColor,
+              ),
+            ),
+            const SizedBox(height: 18),
+            const Text(
+              'No X-rays in This Session',
+              style: TextStyle(
+                fontSize: 17,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF1E293B),
+              ),
+            ),
+            const SizedBox(height: 6),
+            Text(
+              'Tap the camera button to upload the first one',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 13.5, color: Colors.grey.shade500),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _NoPreviousXraysState extends StatelessWidget {
+  const _NoPreviousXraysState();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(vertical: 28),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: const Color(0xFFE2E8F0)),
+      ),
+      child: Center(
+        child: Text(
+          'No previous X-rays for this session yet',
+          style: TextStyle(
+            color: Colors.grey.shade500,
+            fontSize: 13.5,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _SessionErrorState extends StatelessWidget {
+  const _SessionErrorState({required this.errorMessage});
+
+  final String errorMessage;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 300,
+      child: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(18),
+              decoration: BoxDecoration(
+                color: Colors.red.withOpacity(0.08),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(
+                Icons.error_outline_rounded,
+                size: 32,
+                color: Colors.redAccent,
+              ),
+            ),
+            const SizedBox(height: 14),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Text(
+                errorMessage,
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 13.5, color: Colors.grey.shade600),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

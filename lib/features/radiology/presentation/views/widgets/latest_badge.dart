@@ -11,19 +11,26 @@ class LatestBadge extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.primaryColor,
         borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.primaryColor.withOpacity(0.4),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: const Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.verified, size: 16, color: Colors.white),
+          Icon(Icons.verified_rounded, size: 15, color: Colors.white),
           SizedBox(width: 6),
           Text(
             'LATEST',
             style: TextStyle(
               color: Colors.white,
-              fontSize: 12,
+              fontSize: 11.5,
               fontWeight: FontWeight.bold,
-              letterSpacing: 0.5,
+              letterSpacing: 0.6,
             ),
           ),
         ],

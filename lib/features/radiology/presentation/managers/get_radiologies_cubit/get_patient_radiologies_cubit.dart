@@ -13,7 +13,6 @@ class GetRadiologiesCubit extends Cubit<GetRadiologiesState> {
   final RadiologyRepo radiologyRepo;
 
   StreamSubscription? _streamSubscription;
-
   int numOfRadiologies = 0;
   void getPatientRadiologiesSession({required String sessionId})
   {

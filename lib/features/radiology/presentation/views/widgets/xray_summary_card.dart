@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:medistats/core/utils/app_theme.dart';
 
 class XraySummaryCard extends StatelessWidget {
   const XraySummaryCard({
@@ -13,24 +14,36 @@ class XraySummaryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 18),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(30),
-        border: Border.all(color: Colors.grey.shade300),
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.04),
+            blurRadius: 16,
+            offset: const Offset(0, 6),
+          ),
+        ],
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          _SummaryItem(
-            icon: Icons.badge_outlined,
-            label: '$imagesCount Images',
-            iconColor: const Color(0xFF4361EE),
+          Expanded(
+            child: _SummaryItem(
+              icon: Icons.image_outlined,
+              value: '$imagesCount',
+              label: imagesCount == 1 ? 'Image' : 'Images',
+              iconColor: AppColors.primaryColor,
+            ),
           ),
-          _SummaryItem(
-            icon: Icons.calendar_today_outlined,
-            label: 'Last Updated: $lastUpdated',
-            iconColor: Colors.black54,
+          Container(width: 1, height: 36, color: const Color(0xFFE2E8F0)),
+          Expanded(
+            child: _SummaryItem(
+              icon: Icons.calendar_today_outlined,
+              value: lastUpdated,
+              label: 'Last Updated',
+              iconColor: const Color(0xFF0EA5A5),
+            ),
           ),
         ],
       ),
@@ -41,27 +54,54 @@ class XraySummaryCard extends StatelessWidget {
 class _SummaryItem extends StatelessWidget {
   const _SummaryItem({
     required this.icon,
+    required this.value,
     required this.label,
     required this.iconColor,
   });
 
   final IconData icon;
+  final String value;
   final String label;
   final Color iconColor;
 
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Icon(icon, size: 18, color: iconColor),
-        const SizedBox(width: 8),
-        Text(
-          label,
-          style: const TextStyle(
-            fontSize: 13,
-            fontWeight: FontWeight.w600,
-            color: Colors.black87,
+        Container(
+          padding: const EdgeInsets.all(9),
+          decoration: BoxDecoration(
+            color: iconColor.withOpacity(0.1),
+            shape: BoxShape.circle,
+          ),
+          child: Icon(icon, size: 17, color: iconColor),
+        ),
+        const SizedBox(width: 10),
+        Flexible(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                value,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontSize: 14.5,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF1E293B),
+                ),
+              ),
+              Text(
+                label,
+                style: TextStyle(
+                  fontSize: 11.5,
+                  color: Colors.grey.shade500,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
           ),
         ),
       ],

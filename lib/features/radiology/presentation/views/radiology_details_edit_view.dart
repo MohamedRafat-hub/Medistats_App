@@ -58,28 +58,45 @@ class _RadiologyDetailsEditViewState extends State<RadiologyDetailsEditView> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 RadiologyImagePreview(imageUrl: widget.radiologyModel.imageUrl),
-                const SizedBox(height: 28),
-
-                const SectionLabel(label: 'Radiology Name'),
-                const SizedBox(height: 8),
-                CustomTextField(
-                  controller: _nameController,
-                  hintText: 'e.g., Chest X-Ray, Panoramic',
+                const SizedBox(height: 24),
+                Container(
+                  padding: const EdgeInsets.all(18),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.03),
+                        blurRadius: 14,
+                        offset: const Offset(0, 6),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SectionLabel(label: 'Radiology Name'),
+                      const SizedBox(height: 8),
+                      CustomTextField(
+                        controller: _nameController,
+                        hintText: 'e.g., Chest X-Ray, Panoramic',
+                      ),
+                      const SizedBox(height: 20),
+                      const SectionLabel(label: 'Radiology Details / Notes'),
+                      const SizedBox(height: 8),
+                      CustomTextField(
+                        controller: _detailsController,
+                        hintText: 'Write clinical findings or notes here...',
+                        maxLines: 5,
+                      ),
+                    ],
+                  ),
                 ),
-                const SizedBox(height: 20),
-
-                const SectionLabel(label: 'Radiology Details / Notes'),
-                const SizedBox(height: 8),
-                CustomTextField(
-                  controller: _detailsController,
-                  hintText: 'Write clinical findings or notes here...',
-                  maxLines: 5,
-                ),
-                const SizedBox(height: 40),
+                const SizedBox(height: 32),
 
                 BlocConsumer<
-                  UpdateRadiologyDetailsCubit,
-                  UpdateRadiologyDetailsState
+                    UpdateRadiologyDetailsCubit,
+                    UpdateRadiologyDetailsState
                 >(
                   listener: (context, state) {
                     if (state is UpdateRadiologyDetailsSuccess) {
@@ -88,34 +105,37 @@ class _RadiologyDetailsEditViewState extends State<RadiologyDetailsEditView> {
                         message: 'Radiology details updated successfully',
                       );
                       Navigator.pop(context);
-                    } else if(state is UpdateRadiologyDetailsFailure) {
+                    } else if (state is UpdateRadiologyDetailsFailure) {
                       showSnackBar(
                         context,
                         message:
-                            'Failed to update radiology details please try again later ${state.errorMessage}',
+                        'Failed to update radiology details please try again later ${state.errorMessage}',
                         color: Colors.red,
                       );
                     }
                   },
                   builder: (context, state) {
-                    return state is UpdateRadiologyDetailsLoading
-                        ? Center(
-                          child: CircularProgressIndicator(
-                              color: AppColors.primaryColor,
-                            ),
-                        )
-                        : CustomActionButton(
-                            onPressed: _onSavePressed,
-                            widget: const Text(
-                              'Save Details',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                                letterSpacing: 0.5,
-                              ),
-                            ),
-                          );
+                    return SizedBox(
+                      width: double.infinity,
+                      child: state is UpdateRadiologyDetailsLoading
+                          ? Center(
+                        child: CircularProgressIndicator(
+                          color: AppColors.primaryColor,
+                        ),
+                      )
+                          : CustomActionButton(
+                        onPressed: _onSavePressed,
+                        widget: const Text(
+                          'Save Details',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            letterSpacing: 0.5,
+                          ),
+                        ),
+                      ),
+                    );
                   },
                 ),
               ],
@@ -130,12 +150,19 @@ class _RadiologyDetailsEditViewState extends State<RadiologyDetailsEditView> {
     return AppBar(
       backgroundColor: Colors.white,
       elevation: 0,
-      leading: const BackButton(color: Color(0xFF1E293B)),
+      scrolledUnderElevation: 0,
+      surfaceTintColor: Colors.transparent,
+      shape: Border(bottom: BorderSide(color: Colors.grey.shade200, width: 1)),
+      leading: IconButton(
+        icon: const Icon(Icons.arrow_back_ios_new_outlined, size: 18),
+        color: const Color(0xFF1E293B),
+        onPressed: () => Navigator.of(context).maybePop(),
+      ),
       title: const Text(
         'Radiology Details',
         style: TextStyle(
           color: Color(0xFF1E293B),
-          fontSize: 18,
+          fontSize: 17,
           fontWeight: FontWeight.bold,
         ),
       ),
@@ -151,8 +178,6 @@ class _RadiologyDetailsEditViewState extends State<RadiologyDetailsEditView> {
           notes: _detailsController.text,
         ),
       );
-      debugPrint('Name: ${_nameController.text}');
-      debugPrint('Details: ${_detailsController.text}');
     }
   }
 }
