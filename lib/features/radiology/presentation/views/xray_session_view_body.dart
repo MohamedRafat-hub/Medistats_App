@@ -31,10 +31,7 @@ class DisplayRadiologySessionData extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<
-      GetRadiologiesCubit,
-      GetRadiologiesState
-    >(
+    return BlocBuilder<GetRadiologiesCubit, GetRadiologiesState>(
       builder: (context, state) {
         if (state is GetRadiologiesLoading) {
           return SizedBox(
@@ -46,57 +43,59 @@ class DisplayRadiologySessionData extends StatelessWidget {
         } else if (state is GetRadiologiesSuccess) {
           int lengthOfList = state.radiologies.length;
           RadiologyModel? lastRediologyModel;
-          if (lengthOfList > 1) {
+          if (lengthOfList >= 1) {
             lastRediologyModel = state.radiologies.last;
             log(lastRediologyModel.uploadedAt.toString());
           }
-          if(lengthOfList>1) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                XraySummaryCard(imagesCount: state.radiologies.length,
-                    lastUpdated: '12 Jul'),
-                const SizedBox(height: 20),
-                 lengthOfList > 0 ?LatestXrayCard(
-                  imageUrl:
-                  lastRediologyModel!.imageUrl,
-                  title: lastRediologyModel!.xrayType ?? "No title",
-                  dateLabel: DateFormat('dd MMMM yyyy').format(lastRediologyModel.uploadedAt),
-                ) : SizedBox(),
-                const SizedBox(height: 28),
-                const Text(
-                  'Previous X-rays',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black87,
-                  ),
+
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              XraySummaryCard(
+                imagesCount: state.radiologies.length,
+                lastUpdated: '12 Jul',
+              ),
+              const SizedBox(height: 20),
+              lengthOfList > 0 ?LatestXrayCard(
+                imageUrl: lastRediologyModel!.imageUrl,
+                title: lastRediologyModel?.xrayType ?? "No title",
+                dateLabel: DateFormat(
+                  'dd MMMM yyyy',
+                ).format(lastRediologyModel.uploadedAt),
+              ) : SizedBox(),
+              const SizedBox(height: 28),
+              lengthOfList > 1 ? Text(
+                'Previous X-rays',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.primaryColor,
                 ),
-                const SizedBox(height: 14),
-                state.radiologies.isEmpty
-                    ? Center(
-                  child: Text(
-                    'No previous X-rays Found',
-                    style: TextStyle(color: AppColors.primaryColor,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold),
-                  ),
-                )
-                    : PreviousXraysList(previousXrays: state.radiologies),
-              ],
-            );
-          }
-          else
-            {
-              return Center(
-                child: Text(
-                  'No previous X-rays Found',
-                  style: TextStyle(color: AppColors.primaryColor,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold),
+              ) : Text(
+                'No Previous X-rays Found',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.primaryColor,
                 ),
-              );
-            }
+              ),
+              const SizedBox(height: 14),
+              state.radiologies.isEmpty
+                  ? Center(
+                      child: Text(
+                        'No previous X-rays Found',
+                        style: TextStyle(
+                          color: AppColors.primaryColor,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    )
+                  : lengthOfList > 1
+                  ? PreviousXraysList(previousXrays: state.radiologies)
+                  : SizedBox(),
+            ],
+          );
         } else if (state is GetPatientRadiologiesSessionFailure) {
           log('Get radiologies failure ${state.errorMessage}');
           return Center(child: Text(state.errorMessage));
