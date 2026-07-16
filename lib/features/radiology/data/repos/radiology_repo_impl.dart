@@ -89,16 +89,17 @@ class RadiologyRepoImpl implements RadiologyRepo {
     required String sessionId,
   }) {
     return fireStoreService
-        .getCollection(
+        .getStreamCollection(
           collectionName: BackendEndpoint.radiology,
           whereField: 'sessionId',
           isEqualTo: sessionId,
           orderByField: 'uploadedAt',
-      descending: false,
+          descending: false,
         )
-        .map<Either<Failure, List<RadiologyModel>>>(
-        (docs) {
-          List<RadiologyModel> radiologies = docs.map((doc)=> RadiologyModel.fromJson(doc.data(), doc.id)).toList();
+        .map<Either<Failure, List<RadiologyModel>>>((docs) {
+          List<RadiologyModel> radiologies = docs
+              .map((doc) => RadiologyModel.fromJson(doc.data(), doc.id))
+              .toList();
 
           return right(radiologies);
         })
@@ -109,5 +110,30 @@ class RadiologyRepoImpl implements RadiologyRepo {
             return left(ServerFailure(error));
           }
         });
+  }
+
+  @override
+  Future<Either<Failure, List<RadiologyModel>>> getPatientRadiologies({
+    required String patientId,
+  }) async {
+    try {
+      final query = await fireStoreService.getFutureCollection(
+        collectionName: BackendEndpoint.radiology,
+        whereField: 'patientId',
+        isEqualTo: patientId,
+        orderByField: 'uploadedAt',
+      );
+
+      List<RadiologyModel> radiologies = query.docs.map<RadiologyModel>((doc){
+       return RadiologyModel.fromJson(doc.data() as Map<String , dynamic>, doc.id);
+      }).toList();
+
+      return right(radiologies);
+    } on FirebaseException catch (e) {
+      return left(ServerFailure(handleFirebaseError(e)));
+    }catch(e)
+    {
+      return left(ServerFailure(e.toString()));
+    }
   }
 }

@@ -13,4 +13,6 @@ abstract class RadiologyRepo {
   Future<Either<Failure , void>> updateRadiologyData({required RadiologyModel radiologyModel});
 
   Stream<Either<Failure , List<RadiologyModel>>>getPatientRadiologiesSession({required String sessionId});
+
+  Future<Either<Failure , List<RadiologyModel>>>getPatientRadiologies({required String patientId});
 }
