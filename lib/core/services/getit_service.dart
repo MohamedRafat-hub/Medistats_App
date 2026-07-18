@@ -28,6 +28,6 @@ void setupServiceLocator() {
   );
 
   getIt.registerSingleton<SupabaseStorageService>(SupabaseStorageService());
-  getIt.registerSingleton<LabReportRepo>(LabReportRepoImpl(getIt.get<SupabaseStorageService>()));
+  getIt.registerSingleton<LabReportRepo>(LabReportRepoImpl(getIt.get<SupabaseStorageService>() , getIt.get<FireStoreService>()));
 
 }
