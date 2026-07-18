@@ -77,7 +77,7 @@ class DisplayRadiologySessionData extends StatelessWidget {
               const SizedBox(height: 14),
               previousXrays.isEmpty
                   ? const _NoPreviousXraysState()
-                  : PreviousXraysList(previousXrays: previousXrays),
+                  : PreviousXraysList(previousXrays: previousXrays , isScrollable: false),
             ],
           );
         } else if (state is GetPatientRadiologiesSessionFailure) {

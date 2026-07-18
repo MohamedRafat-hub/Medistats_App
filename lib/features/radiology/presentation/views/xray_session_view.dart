@@ -29,7 +29,7 @@ class XraySessionView extends StatelessWidget {
         backgroundColor: const Color(0xFFF8FAFC),
         appBar: XraySessionAppBar(
           patientName: patientName,
-          subtitle: 'Session X-ray Images',
+          subtitle: 'Session Radio Images',
         ),
         body: const XraySessionViewBody(),
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,

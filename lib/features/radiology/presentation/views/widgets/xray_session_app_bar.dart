@@ -77,22 +77,22 @@ class XraySessionAppBar extends StatelessWidget
           ),
         ],
       ),
-      actions: [
-        Padding(
-          padding: const EdgeInsets.only(right: 12),
-          child: Container(
-            decoration: BoxDecoration(
-              color: const Color(0xFFF1F5F9),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: IconButton(
-              icon: const Icon(Icons.more_vert, size: 20),
-              color: const Color(0xFF475569),
-              onPressed: () {},
-            ),
-          ),
-        ),
-      ],
+      // actions: [
+      //   Padding(
+      //     padding: const EdgeInsets.only(right: 12),
+      //     child: Container(
+      //       decoration: BoxDecoration(
+      //         color: const Color(0xFFF1F5F9),
+      //         borderRadius: BorderRadius.circular(10),
+      //       ),
+      //       child: IconButton(
+      //         icon: const Icon(Icons.more_vert, size: 20),
+      //         color: const Color(0xFF475569),
+      //         onPressed: () {},
+      //       ),
+      //     ),
+      //   ),
+      // ],
     );
   }
 
