@@ -8,12 +8,14 @@ import 'package:medistats/features/radiology/presentation/managers/update_radiol
 import 'package:medistats/features/radiology/presentation/views/radiology_details_edit_view.dart';
 import 'package:medistats/features/radiology/presentation/views/radiology_history_view.dart';
 import 'package:medistats/features/radiology/presentation/views/xray_session_view.dart';
+import 'package:medistats/features/reports/presentation/managers/upload_lab_report_cubit/upload_lab_report_cubit.dart';
 import 'package:medistats/features/reports/presentation/views/reports_session_view.dart';
 import 'package:medistats/features/reports/presentation/views/reports_view.dart';
 import 'package:medistats/features/sessions/presentation/patient_history_view.dart';
 
 import '../../features/radiology/data/models/radiology_model.dart';
 import '../../features/radiology/data/repos/radiology_repo.dart';
+import '../../features/reports/data/repos/lab_report_repo.dart';
 import '../../features/sessions/data/repos/sessions_repo.dart';
 import '../../features/sessions/presentation/managers/get_patient_sessions_cubit/get_patient_sessions_cubit.dart';
 import '../../features/splash/presentation/views/splash_view.dart';
@@ -91,9 +93,17 @@ class AppRouter {
         );
 
       case '/reports_session_view':
+        final args = settings.arguments as Map<String, String>;
         return MaterialPageRoute(
           builder: (context) {
-            return ReportsSessionView();
+            return BlocProvider(
+              create: (context) =>
+                  UploadLabReportCubit(getIt.get<LabReportRepo>()),
+              child: ReportsSessionView(
+                patientName: args['patientName']!,
+                patientId: args['patientId']!,
+              ),
+            );
           },
         );
       // Fallback 404 Route

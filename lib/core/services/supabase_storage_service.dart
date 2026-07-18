@@ -10,10 +10,23 @@ class SupabaseStorageService {
     required String path,
   }) async {
     try {
+
+      final String extension = file.path.split('.').last.toLowerCase();
+      String contentType = 'application/octet-stream';
+
+      if (extension == 'pdf') {
+        contentType = 'application/pdf';
+      } else if (extension == 'png') {
+        contentType = 'image/png';
+      } else if (extension == 'jpg' || extension == 'jpeg') {
+        contentType = 'image/jpeg';
+      }
+
       await _supabaseClient.storage.from(bucketName).upload(
         path,
         file,
-        fileOptions: const FileOptions(
+        fileOptions:  FileOptions(
+          contentType: contentType,
           cacheControl: '3600',
           upsert: true,
         ),
@@ -23,7 +36,7 @@ class SupabaseStorageService {
 
       return publicUrl;
     } catch (e) {
-      throw Exception('Failed to upload file to Supabase Storage: ${e.toString()}');
+      throw Exception('Failed to upload file: $e');
     }
   }
 }

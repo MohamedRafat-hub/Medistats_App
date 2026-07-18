@@ -7,6 +7,8 @@ import 'package:medistats/features/patient_management/data/repos/patient_repo.da
 import 'package:medistats/features/patient_management/data/repos/patient_repo_impl.dart';
 import 'package:medistats/features/radiology/data/repos/radiology_repo.dart';
 import 'package:medistats/features/radiology/data/repos/radiology_repo_impl.dart';
+import 'package:medistats/features/reports/data/repos/lab_report_repo.dart';
+import 'package:medistats/features/reports/data/repos/lab_report_repo_impl.dart';
 import 'package:medistats/features/sessions/data/repos/sessions_repo.dart';
 import 'package:medistats/features/sessions/data/repos/sessions_repo_impl.dart';
 
@@ -26,4 +28,6 @@ void setupServiceLocator() {
   );
 
   getIt.registerSingleton<SupabaseStorageService>(SupabaseStorageService());
+  getIt.registerSingleton<LabReportRepo>(LabReportRepoImpl(getIt.get<SupabaseStorageService>()));
+
 }

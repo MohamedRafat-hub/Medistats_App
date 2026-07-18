@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:medistats/core/errors/failure.dart';
 import 'package:medistats/core/services/supabase_storage_service.dart';
+import 'lab_report_repo.dart';
 
 class LabReportRepoImpl implements LabReportRepo{
   final SupabaseStorageService supabaseStorageService;

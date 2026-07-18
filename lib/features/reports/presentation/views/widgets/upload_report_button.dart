@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:medistats/core/utils/app_theme.dart';
 
 class UploadReportButton extends StatelessWidget {
-  const UploadReportButton({super.key, this.onPressed});
+  const UploadReportButton({super.key, this.onPressed, this.widget});
 
   final VoidCallback? onPressed;
-
+  final Widget? widget;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -28,7 +28,7 @@ class UploadReportButton extends StatelessWidget {
           padding: const EdgeInsets.all(18),
           elevation: 0,
         ),
-        child: const Icon(Icons.upload_file_outlined, size: 24),
+        child: widget,
       ),
     );
   }

@@ -213,7 +213,10 @@ class SessionCard extends StatelessWidget {
               Navigator.pushNamed(
                 context,
                 '/reports_session_view',
-                arguments: patientName,
+                arguments: {
+                  'patientName': patientName,
+                  'patientId': session.patientId,
+                },
               );
             },
             widget: Row(
