@@ -209,7 +209,13 @@ class SessionCard extends StatelessWidget {
           ),
           SizedBox(height: 12),
           CustomActionButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(
+                context,
+                '/reports_session_view',
+                arguments: patientName,
+              );
+            },
             widget: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

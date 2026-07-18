@@ -8,6 +8,7 @@ import 'package:medistats/features/radiology/presentation/managers/update_radiol
 import 'package:medistats/features/radiology/presentation/views/radiology_details_edit_view.dart';
 import 'package:medistats/features/radiology/presentation/views/radiology_history_view.dart';
 import 'package:medistats/features/radiology/presentation/views/xray_session_view.dart';
+import 'package:medistats/features/reports/presentation/views/reports_session_view.dart';
 import 'package:medistats/features/reports/presentation/views/reports_view.dart';
 import 'package:medistats/features/sessions/presentation/patient_history_view.dart';
 
@@ -57,9 +58,8 @@ class AppRouter {
       case '/radiology':
         return MaterialPageRoute(
           settings: settings,
-          builder: (context) => RadiologyHistoryView(
-            patientName: settings.arguments as String,
-          ),
+          builder: (context) =>
+              RadiologyHistoryView(patientName: settings.arguments as String),
         );
 
       case '/reports':
@@ -87,6 +87,13 @@ class AppRouter {
                   UpdateRadiologyDetailsCubit(getIt.get<RadiologyRepo>()),
               child: RadiologyDetailsEditView(radiologyModel: radiologyModel),
             );
+          },
+        );
+
+      case '/reports_session_view':
+        return MaterialPageRoute(
+          builder: (context) {
+            return ReportsSessionView();
           },
         );
       // Fallback 404 Route
