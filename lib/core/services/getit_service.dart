@@ -2,6 +2,7 @@ import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
 import 'package:medistats/core/services/cloudinary_storage_service.dart';
 import 'package:medistats/core/services/firestore_service.dart';
+import 'package:medistats/core/services/supabase_storage_service.dart';
 import 'package:medistats/features/patient_management/data/repos/patient_repo.dart';
 import 'package:medistats/features/patient_management/data/repos/patient_repo_impl.dart';
 import 'package:medistats/features/radiology/data/repos/radiology_repo.dart';
@@ -23,4 +24,6 @@ void setupServiceLocator() {
   getIt.registerSingleton<RadiologyRepo>(
     RadiologyRepoImpl(cloudinaryService: getIt.get<CloudinaryService>(), fireStoreService: getIt.get<FireStoreService>()),
   );
+
+  getIt.registerSingleton<SupabaseStorageService>(SupabaseStorageService());
 }

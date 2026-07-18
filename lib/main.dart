@@ -8,6 +8,7 @@ import 'package:medistats/features/patient_management/presentation/managers/add_
 import 'package:medistats/features/patient_management/presentation/managers/delete_patient_cubit/delete_patient_cubit.dart';
 import 'package:medistats/features/patient_management/presentation/managers/get_all_patients_cubit/get_all_patients_cubit.dart';
 import 'package:medistats/features/patient_management/presentation/managers/update_patient_cubit/update_patient_cubit.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'firebase_options.dart';
 
@@ -16,6 +17,11 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await Supabase.initialize(
+    url: 'https://xulmhyugedrlssasyagy.supabase.co',
+    anonKey: 'sb_publishable_dUG93jVAtMq9VE2Vuk9UNg_DvnfkrYa',
+  );
+  
   setupServiceLocator();
   runApp(const MedistatsApp());
 }
