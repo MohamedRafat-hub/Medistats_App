@@ -8,20 +8,9 @@ class SupabaseStorageService {
     required File file,
     required String bucketName,
     required String path,
+    required String contentType,
   }) async {
     try {
-
-      final String extension = file.path.split('.').last.toLowerCase();
-      String contentType = 'application/octet-stream';
-
-      if (extension == 'pdf') {
-        contentType = 'application/pdf';
-      } else if (extension == 'png') {
-        contentType = 'image/png';
-      } else if (extension == 'jpg' || extension == 'jpeg') {
-        contentType = 'image/jpeg';
-      }
-
       await _supabaseClient.storage.from(bucketName).upload(
         path,
         file,

@@ -102,6 +102,7 @@ class AppRouter {
               child: ReportsSessionView(
                 patientName: args['patientName']!,
                 patientId: args['patientId']!,
+                sessionId: args['sessionId']!,
               ),
             );
           },

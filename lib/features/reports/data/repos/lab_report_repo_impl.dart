@@ -17,10 +17,15 @@ class LabReportRepoImpl implements LabReportRepo{
   Future<Either<Failure, String>> uploadFileToStorage({required File file , required String patientId})async {
     try {
       final String fileExtension = file.path.split('.').last;
+      String contentType = 'application/$fileExtension';
+      if (fileExtension == 'jpg' || fileExtension == 'jpeg') {
+        contentType = 'image/jpeg';
+      } else if (fileExtension == 'png') {
+        contentType = 'image/png';
+      }
       final int uniqueId = DateTime.now().millisecondsSinceEpoch;
       final String storagePath = 'patients/$patientId/report_$uniqueId.$fileExtension';
-
-      final fileUrl = await supabaseStorageService.uploadFile(file: file, bucketName: 'lab_reports', path: storagePath);
+      final fileUrl = await supabaseStorageService.uploadFile(file: file, bucketName: 'lab_reports', path: storagePath , contentType: contentType);
       return right(fileUrl);
     } catch (e) {
       return left(ServerFailure(e.toString()));

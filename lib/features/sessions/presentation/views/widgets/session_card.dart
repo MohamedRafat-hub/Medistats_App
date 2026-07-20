@@ -216,6 +216,7 @@ class SessionCard extends StatelessWidget {
                 arguments: {
                   'patientName': patientName,
                   'patientId': session.patientId,
+                  'sessionId': session.sessionId,
                 },
               );
             },
