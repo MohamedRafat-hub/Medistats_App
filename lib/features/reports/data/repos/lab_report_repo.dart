@@ -9,4 +9,6 @@ abstract class LabReportRepo {
   Future<Either<Failure, String>> uploadFileToStorage({required File file , required String patientId});
 
   Future<Either<Failure , String>> uploadLabReportData({required LabReportModel labReportModel});
+
+  Stream<Either<Failure, List<LabReportModel>>> getSessionLabReport({required String sessionId});
 }
