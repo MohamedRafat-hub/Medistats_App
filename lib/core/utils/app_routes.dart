@@ -7,7 +7,7 @@ import 'package:medistats/features/patient_details_directing/presentation/views/
 import 'package:medistats/features/radiology/presentation/managers/update_radiology_details_cubit/update_radiology_details_cubit.dart';
 import 'package:medistats/features/radiology/presentation/views/radiology_details_edit_view.dart';
 import 'package:medistats/features/radiology/presentation/views/radiology_history_view.dart';
-import 'package:medistats/features/radiology/presentation/views/xray_session_view.dart';
+import 'package:medistats/features/radiology/presentation/views/radiology_view.dart';
 import 'package:medistats/features/reports/presentation/managers/get_lab_reports/get_lab_reports_cubit.dart';
 import 'package:medistats/features/reports/presentation/managers/upload_lab_report_cubit/upload_lab_report_cubit.dart';
 import 'package:medistats/features/reports/presentation/views/reports_session_view.dart';
@@ -69,9 +69,8 @@ class AppRouter {
         return MaterialPageRoute(
           settings: settings,
           builder: (context) => BlocProvider(
-            create: (context) =>
-                GetLabReportsCubit(getIt.get<LabReportRepo>())
-                  ..getAllPatientReports(patientId: settings.arguments as String),
+            create: (context) => GetLabReportsCubit(getIt.get<LabReportRepo>())
+              ..getAllPatientReports(patientId: settings.arguments as String),
             child: ReportsView(),
           ),
         );
@@ -79,7 +78,7 @@ class AppRouter {
       case '/xray_session':
         final args = settings.arguments as Map<String, String>;
         return MaterialPageRoute(
-          builder: (context) => XraySessionView(
+          builder: (context) => RadiologyView(
             patientName: args['patientName']!,
             patientId: args['patientId']!,
             sessionId: args['sessionId']!,

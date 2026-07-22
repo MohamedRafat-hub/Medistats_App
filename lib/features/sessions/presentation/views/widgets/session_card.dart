@@ -11,7 +11,7 @@ import 'package:medistats/core/widgets/custom_action_button.dart';
 import 'package:medistats/core/widgets/show_deleted_confirmation_bottom_sheet.dart';
 import 'package:medistats/features/patient_management/presentation/views/widgets/patient_card_menue_button.dart';
 import 'package:medistats/features/radiology/data/repos/radiology_repo.dart';
-import 'package:medistats/features/radiology/presentation/views/xray_session_view.dart';
+import 'package:medistats/features/radiology/presentation/views/radiology_view.dart';
 import 'package:medistats/features/reports/data/repos/lab_report_repo.dart';
 import 'package:medistats/features/reports/presentation/managers/get_lab_reports/get_lab_reports_cubit.dart';
 import 'package:medistats/features/reports/presentation/managers/upload_lab_report_cubit/upload_lab_report_cubit.dart';
@@ -178,7 +178,7 @@ class SessionCard extends StatelessWidget {
                             // 2. بنناديها هنا والـ Provider لسه بيتبني بشكل آمن جداً
                             sessionId: session.sessionId,
                           ),
-                      child: XraySessionView(
+                      child: RadiologyView(
                         patientId: session.patientId,
                         sessionId: session.sessionId,
                         patientName: patientName,

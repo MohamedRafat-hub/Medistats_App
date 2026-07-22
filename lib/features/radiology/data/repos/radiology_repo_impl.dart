@@ -94,7 +94,6 @@ class RadiologyRepoImpl implements RadiologyRepo {
           whereField: 'sessionId',
           isEqualTo: sessionId,
           orderByField: 'uploadedAt',
-          descending: false,
         )
         .map<Either<Failure, List<RadiologyModel>>>((docs) {
           List<RadiologyModel> radiologies = docs
