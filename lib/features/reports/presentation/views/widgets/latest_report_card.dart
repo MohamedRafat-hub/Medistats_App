@@ -6,18 +6,15 @@ class LatestReportCard extends StatelessWidget {
     super.key,
     required this.icon,
     required this.title,
-    required this.labName,
     required this.dateLabel,
-    required this.statusLabel,
     required this.statusColor,
     this.onView,
   });
 
   final IconData icon;
   final String title;
-  final String labName;
+
   final String dateLabel;
-  final String statusLabel;
   final Color statusColor;
   final VoidCallback? onView;
 
@@ -100,36 +97,9 @@ class LatestReportCard extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
-          const SizedBox(height: 4),
-          Text(
-            '$labName  •  $dateLabel',
-            style: TextStyle(
-              color: Colors.white.withOpacity(0.85),
-              fontSize: 13,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
           const SizedBox(height: 18),
           Row(
             children: [
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 5,
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Text(
-                  statusLabel,
-                  style: TextStyle(
-                    color: statusColor,
-                    fontSize: 11.5,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
               const Spacer(),
               InkWell(
                 onTap: onView,

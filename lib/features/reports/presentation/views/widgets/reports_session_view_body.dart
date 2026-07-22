@@ -2,12 +2,11 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:medistats/core/utils/app_theme.dart';
-import 'package:medistats/features/reports/presentation/managers/get_lab_reports/get_lab_reports_cubit.dart';
-import 'package:medistats/features/reports/presentation/views/widgets/reports_list.dart';
-import 'package:medistats/features/reports/presentation/views/widgets/reports_summary_card.dart';
+import 'package:medistats/features/reports/presentation/views/widgets/reports_view_content.dart';
 
-import 'latest_report_card.dart';
+import '../../../../../core/utils/app_theme.dart';
+import '../../managers/get_lab_reports/get_lab_reports_cubit.dart';
+import 'no_reports_found.dart';
 
 class ReportsSessionViewBody extends StatelessWidget {
   const ReportsSessionViewBody({super.key});
@@ -23,43 +22,14 @@ class ReportsSessionViewBody extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        return state is GetLabReportsLoading
-            ? Center(
-                child: CircularProgressIndicator(color: AppColors.primaryColor),
-              )
-            : state is GetLabReportsSuccess ? SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(20, 16, 20, 100),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const ReportsSummaryCard(
-                      reportsCount: 4,
-                      lastUpdated: '10 Jul',
-                    ),
-                    const SizedBox(height: 20),
-                    LatestReportCard(
-                      icon: Icons.picture_as_pdf_outlined,
-                      title: 'Complete Blood Count (CBC)',
-                      labName: 'Central Medical Lab',
-                      dateLabel: '10 July 2026',
-                      statusLabel: 'Normal',
-                      statusColor: const Color(0xFF16A34A),
-                      onView: () {},
-                    ),
-                    const SizedBox(height: 28),
-                    const Text(
-                      'All Reports',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF1E293B),
-                      ),
-                    ),
-                    const SizedBox(height: 14),
-                    const ReportsList(),
-                  ],
-                ),
-              ) : Center(child: const Text('No Reports'));
+        if (state is GetLabReportsLoading) {
+          return Center(
+            child: CircularProgressIndicator(color: AppColors.primaryColor),
+          );
+        } else if (state is GetLabReportsSuccess) {
+          return ReportsViewContent(reports: state.reports); // 👈 سلمنا الداتا للـ Component
+        }
+        return const NoReportsFound();
       },
     );
   }

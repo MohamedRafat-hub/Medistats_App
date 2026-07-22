@@ -1,19 +1,21 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:medistats/core/utils/app_theme.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
 
+import '../../../data/models/lab_report_model.dart';
+
 class ReportTileWidget extends StatefulWidget {
-  final String fileUrl;
-  final String fileName;
-  final String? date;
+  final LabReportModel labReportModel;
+  final VoidCallback? onDelete; // 👈 Callback لزر الحذف
 
   const ReportTileWidget({
     super.key,
-    required this.fileUrl,
-    required this.fileName,
-    this.date,
+    required this.labReportModel,
+    this.onDelete,
   });
 
   @override
@@ -21,35 +23,50 @@ class ReportTileWidget extends StatefulWidget {
 }
 
 class _ReportTileWidgetState extends State<ReportTileWidget> {
-  bool isLoading = false;
-  double downloadProgress = 0.0;
+  bool _isLoading = false;
+  double _downloadProgress = 0.0;
 
-  Future<void> _handlePdfOpen() async {
+  // 1. Helper logic for sanitizing file name and path
+  Future<String> _getDestinationFilePath(String rawFileName) async {
+    final dir = await getApplicationDocumentsDirectory();
+    final sanitizedName = rawFileName.replaceAll(RegExp(r'[^\w\.-]'), '_');
+
+    // إلحاق امتداد الملف إذا لم يكن موجوداً
+    final hasExtension = sanitizedName.contains('.');
+    final ext = widget.labReportModel.fileType == 'pdf' ? '.pdf' : '';
+    final finalFileName = hasExtension ? sanitizedName : '$sanitizedName$ext';
+
+    return "${dir.path}/$finalFileName";
+  }
+
+  // 2. Open / Download Logic
+  Future<void> _handleFileOpen() async {
+    final fileUrl = widget.labReportModel.fileUrl;
+    final reportName = widget.labReportModel.reportName ?? 'Untitled_Report';
+
+    if (fileUrl.isEmpty) return;
+
     setState(() {
-      isLoading = true;
-      downloadProgress = 0.0;
+      _isLoading = true;
+      _downloadProgress = 0.0;
     });
 
     try {
-      final dir = await getApplicationDocumentsDirectory();
-      // تنظيف اسم الملف لتجنب أي مشاكل في المسارات
-      final safeFileName = widget.fileName.replaceAll(RegExp(r'[^\w\.-]'), '_');
-      final filePath = "${dir.path}/$safeFileName";
+      final filePath = await _getDestinationFilePath(reportName);
       final file = File(filePath);
 
-      // 1. لو الملف متخزن محلياً نفتحه مباشرة (Cache)
+      // Cache check
       if (await file.exists()) {
         await OpenFilex.open(filePath);
       } else {
-        // 2. تنزيل الملف بـ Dio
         final dio = Dio();
         await dio.download(
-          widget.fileUrl,
+          fileUrl,
           filePath,
           onReceiveProgress: (received, total) {
-            if (total != -1) {
+            if (total != -1 && mounted) {
               setState(() {
-                downloadProgress = received / total;
+                _downloadProgress = received / total;
               });
             }
           },
@@ -59,13 +76,16 @@ class _ReportTileWidgetState extends State<ReportTileWidget> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('تعذر فتح الملف: ${e.toString()}')),
+          SnackBar(
+            content: Text('Could not open file: ${e.toString()}'),
+            behavior: SnackBarBehavior.floating,
+          ),
         );
       }
     } finally {
       if (mounted) {
         setState(() {
-          isLoading = false;
+          _isLoading = false;
         });
       }
     }
@@ -73,82 +93,129 @@ class _ReportTileWidgetState extends State<ReportTileWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 1.5,
-      margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: InkWell(
-        onTap: isLoading ? null : _handlePdfOpen,
-        borderRadius: BorderRadius.circular(12),
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Row(
-            children: [
-              // 1. أيقونة الملف الإحترافية
-              Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: Colors.red.shade50,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Icon(
-                  Icons.picture_as_pdf_rounded,
-                  color: Colors.red.shade700,
-                  size: 28,
-                ),
-              ),
-              const SizedBox(width: 12),
+    final isPdf = widget.labReportModel.fileType == "pdf";
+    final reportName = widget.labReportModel.reportName ?? "Untitled Report";
+    final uploadedAt = widget.labReportModel.uploadedAt;
 
-              // 2. اسم الملف والتاريخ
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: .start,
-                  children: [
-                    Text(
-                      widget.fileName,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    if (widget.date != null) ...[
-                      const SizedBox(height: 4),
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.03),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        borderRadius: BorderRadius.circular(16),
+        child: InkWell(
+          onTap: _isLoading ? null : _handleFileOpen,
+          borderRadius: BorderRadius.circular(16),
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Row(
+              children: [
+                // Icon Section
+                _ReportTypeAvatar(isPdf: isPdf),
+                const SizedBox(width: 14),
+
+                // Details Section
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
                       Text(
-                        widget.date!,
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.grey.shade600,
+                        reportName,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontSize: 14.5,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xFF1E293B),
                         ),
                       ),
+                      if (uploadedAt != null) ...[
+                        const SizedBox(height: 4),
+                        Text(
+                          DateFormat('dd MMMM yyyy').format(uploadedAt),
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey.shade500,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
                     ],
-                  ],
-                ),
-              ),
-
-              const SizedBox(width: 8),
-
-              // 3. حالة التحميل / زر الأكشن
-              if (isLoading)
-                SizedBox(
-                  width: 24,
-                  height: 24,
-                  child: CircularProgressIndicator(
-                    value: downloadProgress > 0 ? downloadProgress : null,
-                    strokeWidth: 2.5,
-                    color: Colors.red.shade700,
                   ),
-                )
-              else
-                Icon(
-                  Icons.arrow_forward_ios_rounded,
-                  size: 16,
-                  color: Colors.grey.shade400,
                 ),
-            ],
+                const SizedBox(width: 8),
+
+                // Delete Action Button (Redesigned)
+                if (widget.onDelete != null && !_isLoading) ...[
+                  IconButton(
+                    onPressed: widget.onDelete,
+                    icon: Icon(
+                      Icons.delete_outline_rounded,
+                      size: 20,
+                      color: Colors.red.shade400,
+                    ),
+                    splashRadius: 20,
+                    constraints: const BoxConstraints(),
+                    padding: const EdgeInsets.all(8),
+                    tooltip: 'Delete Report',
+                  ),
+                  const SizedBox(width: 4),
+                ],
+
+                // Progress Indicator OR Arrow Action
+                if (_isLoading)
+                  SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(
+                      value: _downloadProgress > 0 ? _downloadProgress : null,
+                      strokeWidth: 2.2,
+                      color: AppColors.primaryColor,
+                    ),
+                  )
+                else
+                  Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    size: 15,
+                    color: AppColors.primaryColor.withOpacity(0.7),
+                  ),
+              ],
+            ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+// Private Sub-widget for cleaner build method
+class _ReportTypeAvatar extends StatelessWidget {
+  final bool isPdf;
+
+  const _ReportTypeAvatar({required this.isPdf});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: AppColors.primaryColor.withOpacity(0.08),
+        shape: BoxShape.circle,
+      ),
+      child: Icon(
+        isPdf ? Icons.picture_as_pdf_outlined : Icons.image_outlined,
+        size: 22,
+        color: AppColors.primaryColor,
       ),
     );
   }
