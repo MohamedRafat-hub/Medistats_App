@@ -5,6 +5,7 @@ import 'package:medistats/core/services/getit_service.dart';
 import 'package:medistats/features/patient_details_directing/presentation/managers/get_sessions_count_cubit/get_sessions_count_cubit.dart';
 import 'package:medistats/features/radiology/data/repos/radiology_repo.dart';
 import 'package:medistats/features/radiology/presentation/views/radiology_history_view.dart';
+import 'package:medistats/features/reports/presentation/managers/get_lab_reports/get_lab_reports_cubit.dart';
 import '../../../../../core/models/patient_model.dart';
 import '../../../../radiology/presentation/managers/get_radiologies_cubit/get_patient_radiologies_cubit.dart';
 import '../../../../sessions/presentation/views/widgets/patient_info_card.dart';
@@ -51,7 +52,8 @@ class DirectingViewBody extends StatelessWidget {
           child: BlocBuilder<GetRadiologiesCubit, GetRadiologiesState>(
             builder: (context, state) {
               return DirectingWidget(
-                itemNumbers: state is GetRadiologiesSuccess ? state.radiologies.length : 0,
+                itemNumbers: state is GetRadiologiesSuccess ? state.radiologies
+                    .length : 0,
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
                     return BlocProvider(
@@ -72,17 +74,24 @@ class DirectingViewBody extends StatelessWidget {
           ),
         ),
         Expanded(
-          child: DirectingWidget(
-            onTap: () {
-              Navigator.pushNamed(
-                context,
-                '/reports',
-                arguments: patientModel.id,
+          child: BlocBuilder<GetLabReportsCubit, GetLabReportsState>(
+            builder: (context, state) {
+              return DirectingWidget(
+                itemNumbers: state is GetLabReportsSuccess ? context
+                    .read<GetLabReportsCubit>()
+                    .numOfReports : 0,
+                onTap: () {
+                  Navigator.pushNamed(
+                    context,
+                    '/reports',
+                    arguments: patientModel.id,
+                  );
+                },
+                image: 'assets/Icons/reports.svg',
+                title: 'Laboratory Reports',
+                subTitle: "Reports",
               );
             },
-            image: 'assets/Icons/reports.svg',
-            title: 'Laboratory Reports',
-            subTitle: "Reports",
           ),
         ),
       ],
