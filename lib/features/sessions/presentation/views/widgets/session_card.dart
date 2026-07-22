@@ -12,6 +12,10 @@ import 'package:medistats/core/widgets/show_deleted_confirmation_bottom_sheet.da
 import 'package:medistats/features/patient_management/presentation/views/widgets/patient_card_menue_button.dart';
 import 'package:medistats/features/radiology/data/repos/radiology_repo.dart';
 import 'package:medistats/features/radiology/presentation/views/xray_session_view.dart';
+import 'package:medistats/features/reports/data/repos/lab_report_repo.dart';
+import 'package:medistats/features/reports/presentation/managers/get_lab_reports/get_lab_reports_cubit.dart';
+import 'package:medistats/features/reports/presentation/managers/upload_lab_report_cubit/upload_lab_report_cubit.dart';
+import 'package:medistats/features/reports/presentation/views/reports_session_view.dart';
 import 'package:medistats/features/sessions/data/models/session_model.dart';
 import 'package:medistats/features/sessions/presentation/managers/add_session_cubit/add_session_cubit.dart';
 import 'package:medistats/features/sessions/presentation/managers/delete_session_cubit/delete_session_cubit.dart';
@@ -110,25 +114,22 @@ class SessionCard extends StatelessWidget {
                             top: Radius.circular(32),
                           ),
                         ),
-                        builder: (modalContext) =>
-                            MultiBlocProvider(
-                              providers: [
-                                BlocProvider(
-                                  create: (context) =>
-                                      UpdateSessionCubit(
-                                          getIt.get<SessionsRepo>()),
-                                ),
-                                BlocProvider(
-                                  create: (context) =>
-                                      AddSessionCubit(
-                                          getIt.get<SessionsRepo>()),
-                                ),
-                              ],
-                              child: AddSessionBottomSheet(
-                                patientId: session.patientId,
-                                sessionModel: session,
-                              ),
+                        builder: (modalContext) => MultiBlocProvider(
+                          providers: [
+                            BlocProvider(
+                              create: (context) =>
+                                  UpdateSessionCubit(getIt.get<SessionsRepo>()),
                             ),
+                            BlocProvider(
+                              create: (context) =>
+                                  AddSessionCubit(getIt.get<SessionsRepo>()),
+                            ),
+                          ],
+                          child: AddSessionBottomSheet(
+                            patientId: session.patientId,
+                            sessionModel: session,
+                          ),
+                        ),
                       );
                     },
                   ),
@@ -171,12 +172,12 @@ class SessionCard extends StatelessWidget {
                   builder: (context) {
                     return BlocProvider(
                       create: (context) =>
-                      GetRadiologiesCubit(
-                        getIt.get<RadiologyRepo>(),
-                      )
-                        ..getPatientRadiologiesSession( // 2. بنناديها هنا والـ Provider لسه بيتبني بشكل آمن جداً
-                          sessionId: session.sessionId,
-                        ),
+                          GetRadiologiesCubit(
+                            getIt.get<RadiologyRepo>(),
+                          )..getPatientRadiologiesSession(
+                            // 2. بنناديها هنا والـ Provider لسه بيتبني بشكل آمن جداً
+                            sessionId: session.sessionId,
+                          ),
                       child: XraySessionView(
                         patientId: session.patientId,
                         sessionId: session.sessionId,
@@ -210,15 +211,39 @@ class SessionCard extends StatelessWidget {
           SizedBox(height: 12),
           CustomActionButton(
             onPressed: () {
-              Navigator.pushNamed(
+              Navigator.push(
                 context,
-                '/reports_session_view',
-                arguments: {
-                  'patientName': patientName,
-                  'patientId': session.patientId,
-                  'sessionId': session.sessionId,
-                },
+                MaterialPageRoute(
+                  builder: (context) {
+                    return MultiBlocProvider(
+  providers: [
+    BlocProvider(
+                      create: (context) =>
+                          GetLabReportsCubit(getIt.get<LabReportRepo>())
+                            ..getLabReports(sessionId: session.sessionId),
+),
+    BlocProvider(
+      create: (context) => UploadLabReportCubit(getIt.get<LabReportRepo>()),
+    ),
+  ],
+  child: ReportsSessionView(
+                        patientName: patientName,
+                        patientId: session.sessionId,
+                        sessionId: session.sessionId,
+                      ),
+);
+                  },
+                ),
               );
+              // Navigator.pushNamed(
+              //   context,
+              //   '/reports_session_view',
+              //   arguments: {
+              //     'patientName': patientName,
+              //     'patientId': session.patientId,
+              //     'sessionId': session.sessionId,
+              //   },
+              // );
             },
             widget: Row(
               mainAxisAlignment: MainAxisAlignment.center,

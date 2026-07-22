@@ -24,11 +24,11 @@ class LabReportModel {
       id: docId,
       patientId: json['patientId'] as String,
       sessionId: json['sessionId'] as String,
-      reportName: json['reportName'] as String,
+      reportName: json['reportName'] as String?,
       fileUrl: json['fileUrl'] as String,
       fileType: json['fileType'] as String,
       uploadedAt: DateTime.parse(json['uploadedAt'] as String),
-      reportDescription: json['reportDescription'] as String,
+      reportDescription: json['reportDescription'] as String?,
     );
   }
 

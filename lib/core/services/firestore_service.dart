@@ -32,7 +32,7 @@ class FireStoreService {
       query = query.where(whereField, isEqualTo: isEqualTo);
     }
     if (orderByField != null && orderByField.isNotEmpty) {
-      query = query.orderBy(orderByField, descending: false);
+      query = query.orderBy(orderByField, descending: descending);
     }
 
     return query.snapshots().map((querySnapshot) => querySnapshot.docs);

@@ -8,6 +8,7 @@ import 'package:medistats/features/radiology/presentation/managers/update_radiol
 import 'package:medistats/features/radiology/presentation/views/radiology_details_edit_view.dart';
 import 'package:medistats/features/radiology/presentation/views/radiology_history_view.dart';
 import 'package:medistats/features/radiology/presentation/views/xray_session_view.dart';
+import 'package:medistats/features/reports/presentation/managers/get_lab_reports/get_lab_reports_cubit.dart';
 import 'package:medistats/features/reports/presentation/managers/upload_lab_report_cubit/upload_lab_report_cubit.dart';
 import 'package:medistats/features/reports/presentation/views/reports_session_view.dart';
 import 'package:medistats/features/reports/presentation/views/reports_view.dart';
@@ -93,12 +94,21 @@ class AppRouter {
         );
 
       case '/reports_session_view':
-        final args = settings.arguments as Map<String, String>;
+        final args = settings.arguments as Map<String, dynamic>;
         return MaterialPageRoute(
           builder: (context) {
-            return BlocProvider(
-              create: (context) =>
-                  UploadLabReportCubit(getIt.get<LabReportRepo>()),
+            return MultiBlocProvider(
+              providers: [
+                BlocProvider(
+                  create: (context) =>
+                      UploadLabReportCubit(getIt.get<LabReportRepo>()),
+                ),
+                BlocProvider(
+                  create: (context) =>
+                      GetLabReportsCubit(getIt.get<LabReportRepo>())
+                        ..getLabReports(sessionId: args['sessionId']!),
+                ),
+              ],
               child: ReportsSessionView(
                 patientName: args['patientName']!,
                 patientId: args['patientId']!,

@@ -1,124 +1,152 @@
+import 'dart:io';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:medistats/features/reports/presentation/views/widgets/report_status_bage.dart';
+import 'package:open_filex/open_filex.dart';
+import 'package:path_provider/path_provider.dart';
 
-import 'report_type_icon.dart';
+class ReportTileWidget extends StatefulWidget {
+  final String fileUrl;
+  final String fileName;
+  final String? date;
 
-class ReportTile extends StatelessWidget {
-  const ReportTile({
+  const ReportTileWidget({
     super.key,
-    required this.icon,
-    required this.iconColor,
-    required this.title,
-    required this.labName,
-    required this.dateLabel,
-    required this.statusLabel,
-    required this.statusColor,
-    this.onTap,
+    required this.fileUrl,
+    required this.fileName,
+    this.date,
   });
 
-  final IconData icon;
-  final Color iconColor;
-  final String title;
-  final String labName;
-  final String dateLabel;
-  final String statusLabel;
-  final Color statusColor;
-  final VoidCallback? onTap;
+  @override
+  State<ReportTileWidget> createState() => _ReportTileWidgetState();
+}
+
+class _ReportTileWidgetState extends State<ReportTileWidget> {
+  bool isLoading = false;
+  double downloadProgress = 0.0;
+
+  Future<void> _handlePdfOpen() async {
+    setState(() {
+      isLoading = true;
+      downloadProgress = 0.0;
+    });
+
+    try {
+      final dir = await getApplicationDocumentsDirectory();
+      // تنظيف اسم الملف لتجنب أي مشاكل في المسارات
+      final safeFileName = widget.fileName.replaceAll(RegExp(r'[^\w\.-]'), '_');
+      final filePath = "${dir.path}/$safeFileName";
+      final file = File(filePath);
+
+      // 1. لو الملف متخزن محلياً نفتحه مباشرة (Cache)
+      if (await file.exists()) {
+        await OpenFilex.open(filePath);
+      } else {
+        // 2. تنزيل الملف بـ Dio
+        final dio = Dio();
+        await dio.download(
+          widget.fileUrl,
+          filePath,
+          onReceiveProgress: (received, total) {
+            if (total != -1) {
+              setState(() {
+                downloadProgress = received / total;
+              });
+            }
+          },
+        );
+        await OpenFilex.open(filePath);
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('تعذر فتح الملف: ${e.toString()}')),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
-      child: Material(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(18),
-        child: InkWell(
-          borderRadius: BorderRadius.circular(18),
-          onTap: onTap,
-          child: Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(18),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.03),
-                  blurRadius: 12,
-                  offset: const Offset(0, 4),
+    return Card(
+      elevation: 1.5,
+      margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: InkWell(
+        onTap: isLoading ? null : _handlePdfOpen,
+        borderRadius: BorderRadius.circular(12),
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Row(
+            children: [
+              // 1. أيقونة الملف الإحترافية
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Colors.red.shade50,
+                  borderRadius: BorderRadius.circular(10),
                 ),
-              ],
-            ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ReportTypeIcon(
-                  icon: icon,
-                  color: iconColor,
-                  size: 24,
-                  padding: 12,
+                child: Icon(
+                  Icons.picture_as_pdf_rounded,
+                  color: Colors.red.shade700,
+                  size: 28,
                 ),
-                const SizedBox(width: 14),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+              ),
+              const SizedBox(width: 12),
+
+              // 2. اسم الملف والتاريخ
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: .start,
+                  children: [
+                    Text(
+                      widget.fileName,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    if (widget.date != null) ...[
+                      const SizedBox(height: 4),
                       Text(
-                        title,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          fontSize: 15.5,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF1E293B),
+                        widget.date!,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.grey.shade600,
                         ),
                       ),
-                      const SizedBox(height: 6),
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.science_outlined,
-                            size: 13,
-                            color: Colors.grey.shade500,
-                          ),
-                          const SizedBox(width: 5),
-                          Flexible(
-                            child: Text(
-                              labName,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontSize: 12.5,
-                                color: Colors.grey.shade500,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 6),
-                          Text('•', style: TextStyle(color: Colors.grey.shade400)),
-                          const SizedBox(width: 6),
-                          Text(
-                            dateLabel,
-                            style: TextStyle(
-                              fontSize: 12.5,
-                              color: Colors.grey.shade500,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
-                      ),
                     ],
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    ReportStatusBadge(label: statusLabel, color: statusColor),
-                    const SizedBox(height: 10),
-                    Icon(Icons.chevron_right_rounded, color: Colors.grey.shade400),
                   ],
                 ),
-              ],
-            ),
+              ),
+
+              const SizedBox(width: 8),
+
+              // 3. حالة التحميل / زر الأكشن
+              if (isLoading)
+                SizedBox(
+                  width: 24,
+                  height: 24,
+                  child: CircularProgressIndicator(
+                    value: downloadProgress > 0 ? downloadProgress : null,
+                    strokeWidth: 2.5,
+                    color: Colors.red.shade700,
+                  ),
+                )
+              else
+                Icon(
+                  Icons.arrow_forward_ios_rounded,
+                  size: 16,
+                  color: Colors.grey.shade400,
+                ),
+            ],
           ),
         ),
       ),

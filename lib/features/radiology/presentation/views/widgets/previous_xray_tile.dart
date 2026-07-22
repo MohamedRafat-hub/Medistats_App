@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:medistats/core/utils/app_theme.dart';
@@ -7,7 +9,6 @@ class PreviousXrayTile extends StatelessWidget {
   const PreviousXrayTile({super.key, required this.radiologyModel});
 
   final RadiologyModel radiologyModel;
-
   @override
   Widget build(BuildContext context) {
     return Padding(
