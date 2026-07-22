@@ -16,7 +16,9 @@ class ReportsViewContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (reports.isEmpty) {
-      return const NoReportsFound();
+      return const NoReportsFound(
+        readOnly: false,
+      );
     }
 
     return SingleChildScrollView(

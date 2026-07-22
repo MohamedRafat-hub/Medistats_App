@@ -29,7 +29,9 @@ class ReportsSessionViewBody extends StatelessWidget {
         } else if (state is GetLabReportsSuccess) {
           return ReportsViewContent(reports: state.reports); // 👈 سلمنا الداتا للـ Component
         }
-        return const NoReportsFound();
+        return const NoReportsFound(
+          readOnly: false,
+        );
       },
     );
   }

@@ -77,6 +77,7 @@ class DirectingViewBody extends StatelessWidget {
               Navigator.pushNamed(
                 context,
                 '/reports',
+                arguments: patientModel.id,
               );
             },
             image: 'assets/Icons/reports.svg',

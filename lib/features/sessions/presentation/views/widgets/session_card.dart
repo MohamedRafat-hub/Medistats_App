@@ -216,22 +216,23 @@ class SessionCard extends StatelessWidget {
                 MaterialPageRoute(
                   builder: (context) {
                     return MultiBlocProvider(
-  providers: [
-    BlocProvider(
-                      create: (context) =>
-                          GetLabReportsCubit(getIt.get<LabReportRepo>())
-                            ..getLabReports(sessionId: session.sessionId),
-),
-    BlocProvider(
-      create: (context) => UploadLabReportCubit(getIt.get<LabReportRepo>()),
-    ),
-  ],
-  child: ReportsSessionView(
+                      providers: [
+                        BlocProvider(
+                          create: (context) =>
+                              GetLabReportsCubit(getIt.get<LabReportRepo>())
+                                ..getLabReports(sessionId: session.sessionId),
+                        ),
+                        BlocProvider(
+                          create: (context) =>
+                              UploadLabReportCubit(getIt.get<LabReportRepo>()),
+                        ),
+                      ],
+                      child: ReportsSessionView(
                         patientName: patientName,
-                        patientId: session.sessionId,
+                        patientId: session.patientId,
                         sessionId: session.sessionId,
                       ),
-);
+                    );
                   },
                 ),
               );

@@ -4,9 +4,9 @@ import '../../../../../core/utils/app_theme.dart';
 
 class NoReportsFound extends StatelessWidget {
   const NoReportsFound({
-    super.key,
+    super.key, required this.readOnly,
   });
-
+  final bool readOnly;
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -43,7 +43,7 @@ class NoReportsFound extends StatelessWidget {
             const SizedBox(height: 8),
 
             // 3. Subtitle / Helper text
-            Text(
+            readOnly ? SizedBox() : Text(
               "Tap the button below to upload your first medical report",
               textAlign: TextAlign.center,
               style: TextStyle(

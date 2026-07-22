@@ -68,7 +68,12 @@ class AppRouter {
       case '/reports':
         return MaterialPageRoute(
           settings: settings,
-          builder: (context) => ReportsView(),
+          builder: (context) => BlocProvider(
+            create: (context) =>
+                GetLabReportsCubit(getIt.get<LabReportRepo>())
+                  ..getAllPatientReports(patientId: settings.arguments as String),
+            child: ReportsView(),
+          ),
         );
 
       case '/xray_session':

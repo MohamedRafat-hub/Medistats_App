@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:medistats/core/errors/failure.dart';
-import 'package:medistats/core/helper_functions/handle_firestore_errors.dart';
 import 'package:medistats/core/services/firestore_service.dart';
 import 'package:medistats/core/services/supabase_storage_service.dart';
 import 'package:medistats/core/utils/backend_endpoint.dart';
@@ -88,6 +87,30 @@ class LabReportRepoImpl implements LabReportRepo {
       yield left(ServerFailure(e.message ?? e.toString()));
     } catch (e) {
       yield left(ServerFailure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<LabReportModel>>> getPatientLabReports({
+    required String patientId,
+  }) async {
+    try {
+      var result = await fireStoreService.getFutureCollection(
+        collectionName: BackendEndpoint.reports,
+        whereField: 'patientId',
+        isEqualTo: patientId,
+        orderByField: 'uploadedAt',
+      );
+
+      List<LabReportModel> reports = result.docs
+          .map((doc) => LabReportModel.fromJson(doc.data(), doc.id))
+          .toList();
+      log("The id of the patient to get all reports is $patientId");
+      return right(reports);
+    } on FirebaseException catch (e) {
+      return left(ServerFailure(e.message ?? e.toString()));
+    } catch (e) {
+      return left(ServerFailure(e.toString()));
     }
   }
 }
