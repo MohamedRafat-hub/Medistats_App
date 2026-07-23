@@ -28,7 +28,7 @@ class ReportsViewContent extends StatelessWidget {
         child: Column(
           crossAxisAlignment: .start,
           children: [
-            if (reports.length > 1) ...[
+            if (reports.length > 0) ...[
               ReportsSummaryCard(
                 reportsCount: reports.length,
                 lastUpdated: DateFormat('dd MMMM yyyy').format(

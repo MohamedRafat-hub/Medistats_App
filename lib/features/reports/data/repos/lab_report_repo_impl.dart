@@ -92,27 +92,38 @@ class LabReportRepoImpl implements LabReportRepo {
   }
 
   @override
-  Future<Either<Failure, List<LabReportModel>>> getPatientLabReports({
+  Stream<Either<Failure, List<LabReportModel>>> getPatientLabReports({
     required String patientId,
-  }) async {
-    try {
-      var result = await fireStoreService.getFutureCollection(
+  }) async* {
+
+      var stream = await fireStoreService.getStreamCollection(
         collectionName: BackendEndpoint.reports,
         whereField: 'patientId',
         isEqualTo: patientId,
         orderByField: 'uploadedAt',
       );
 
-      List<LabReportModel> reports = result.docs
-          .map((doc) => LabReportModel.fromJson(doc.data(), doc.id))
-          .toList();
-      log("The id of the patient to get all reports is $patientId");
-      return right(reports);
-    } on FirebaseException catch (e) {
-      return left(ServerFailure(e.message ?? e.toString()));
-    } catch (e) {
-      return left(ServerFailure(e.toString()));
+      try {
+        await for (final docs in stream)
+          {
+            try {
+              List<LabReportModel> reports = docs
+                  .map((doc) => LabReportModel.fromJson(doc.data(), doc.id))
+                  .toList();
+              log("The id of the patient to get all reports is $patientId");
+              yield right(reports);
+            }catch (e) {
+              yield left(ServerFailure('خطأ في تحويل البيانات: ${e.toString()}'));
+            }
+          }
+      } on FirebaseException catch (e) {
+        yield left(ServerFailure(e.message ?? e.toString()));
+      }catch(e)
+    {
+      yield left(ServerFailure(e.toString()));
     }
+
+
   }
 
   @override

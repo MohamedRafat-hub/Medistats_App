@@ -21,13 +21,13 @@ class GetLabReportsCubit extends Cubit<GetLabReportsState> {
     _streamSubscription = labReportRepo
         .getSessionLabReport(sessionId: sessionId)
         .listen((result) {
-      if (isClosed) return;
+          if (isClosed) return;
 
-      result.fold(
+          result.fold(
             (error) => emit(GetLabReportsError(error.message)),
             (reports) => emit(GetLabReportsSuccess(reports)),
-      );
-    });
+          );
+        });
   }
 
   @override
@@ -36,16 +36,23 @@ class GetLabReportsCubit extends Cubit<GetLabReportsState> {
     return super.close();
   }
 
-  Future<void> getAllPatientReports({required String patientId}) async {
+  void getAllPatientReports({required String patientId}) async {
     emit(GetLabReportsLoading());
 
-    var result = await labReportRepo.getPatientLabReports(patientId: patientId);
-
-    result.fold((error) {
-      emit(GetLabReportsError(error.message));
-    }, (reports) {
-      numOfReports = reports.length;
-      emit(GetLabReportsSuccess(reports));
-    });
+    _streamSubscription?.cancel();
+    _streamSubscription = labReportRepo
+        .getPatientLabReports(patientId: patientId)
+        .listen((result) {
+          if (isClosed) return;
+          result.fold(
+            (error) {
+              emit(GetLabReportsError(error.message));
+            },
+            (reports) {
+              numOfReports = reports.length;
+              emit(GetLabReportsSuccess(reports));
+            },
+          );
+        });
   }
 }

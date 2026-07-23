@@ -12,7 +12,7 @@ abstract class LabReportRepo {
 
   Stream<Either<Failure, List<LabReportModel>>> getSessionLabReport({required String sessionId});
 
-  Future<Either<Failure , List<LabReportModel>>> getPatientLabReports({required String patientId});
+  Stream<Either<Failure , List<LabReportModel>>> getPatientLabReports({required String patientId});
 
   Future<Either<Failure , void>> deleteLabReport({required String reportId});
 }
