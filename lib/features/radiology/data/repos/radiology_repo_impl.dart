@@ -123,15 +123,31 @@ class RadiologyRepoImpl implements RadiologyRepo {
         orderByField: 'uploadedAt',
       );
 
-      List<RadiologyModel> radiologies = query.docs.map<RadiologyModel>((doc){
-       return RadiologyModel.fromJson(doc.data() as Map<String , dynamic>, doc.id);
+      List<RadiologyModel> radiologies = query.docs.map<RadiologyModel>((doc) {
+        return RadiologyModel.fromJson(doc.data(), doc.id);
       }).toList();
 
       return right(radiologies);
     } on FirebaseException catch (e) {
       return left(ServerFailure(handleFirebaseError(e)));
-    }catch(e)
-    {
+    } catch (e) {
+      return left(ServerFailure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> deleteRadiology({
+    required String radiologyId,
+  }) async {
+    try {
+      await fireStoreService.deleteDocument(
+        collectionName: BackendEndpoint.reports,
+        docId: radiologyId,
+      );
+      return right(null);
+    } on FirebaseException catch (e) {
+      return left(ServerFailure(handleFirebaseError(e)));
+    } catch (e) {
       return left(ServerFailure(e.toString()));
     }
   }
