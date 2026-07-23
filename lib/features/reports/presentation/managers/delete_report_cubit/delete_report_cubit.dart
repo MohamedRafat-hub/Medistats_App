@@ -15,7 +15,8 @@ class DeleteReportCubit extends Cubit<DeleteReportState> {
 
     var result = await labReportRepo.deleteLabReport(reportId: reportId);
 
-    result.fold((error) =>
-        emit(DeleteReportError(error.message)), (success) =>
+    if (isClosed) return;
+    result.fold((error) => emit(DeleteReportError(error.message)), (error) =>
         emit(DeleteReportSuccess()));
   }
+}

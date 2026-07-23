@@ -15,37 +15,40 @@ class ReportsViewContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (reports.isEmpty) {
-      return const NoReportsFound(
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 400),
+      child: reports.isEmpty
+          ? const NoReportsFound(
+        key: ValueKey('empty_reports'),
         readOnly: false,
-      );
-    }
-
-    return SingleChildScrollView(
-      padding: const EdgeInsets.fromLTRB(20, 16, 20, 100),
-      child: Column(
-        crossAxisAlignment: .start,
-        children: [
-          if (reports.length > 1) ...[
-            ReportsSummaryCard(
-              reportsCount: reports.length,
-              lastUpdated: DateFormat('dd MMMM yyyy').format(
-                reports.last.uploadedAt,
+      )
+          : SingleChildScrollView(
+        key: const ValueKey('reports_content'),
+        padding: const EdgeInsets.fromLTRB(20, 16, 20, 100),
+        child: Column(
+          crossAxisAlignment: .start,
+          children: [
+            if (reports.length > 1) ...[
+              ReportsSummaryCard(
+                reportsCount: reports.length,
+                lastUpdated: DateFormat('dd MMMM yyyy').format(
+                  reports.last.uploadedAt,
+                ),
+              ),
+              const SizedBox(height: 28),
+            ],
+            const Text(
+              'All Reports',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF1E293B),
               ),
             ),
-            const SizedBox(height: 28),
+            const SizedBox(height: 14),
+            ReportsList(reports: reports),
           ],
-          const Text(
-            'All Reports',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Color(0xFF1E293B),
-            ),
-          ),
-          const SizedBox(height: 14),
-          ReportsList(reports: reports),
-        ],
+        ),
       ),
     );
   }
