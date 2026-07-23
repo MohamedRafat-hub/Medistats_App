@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:medistats/core/errors/failure.dart';
+import 'package:medistats/core/helper_functions/handle_firestore_errors.dart';
 import 'package:medistats/core/services/firestore_service.dart';
 import 'package:medistats/core/services/supabase_storage_service.dart';
 import 'package:medistats/core/utils/backend_endpoint.dart';
@@ -107,6 +108,24 @@ class LabReportRepoImpl implements LabReportRepo {
           .toList();
       log("The id of the patient to get all reports is $patientId");
       return right(reports);
+    } on FirebaseException catch (e) {
+      return left(ServerFailure(e.message ?? e.toString()));
+    } catch (e) {
+      return left(ServerFailure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> deleteLabReport({
+    required String reportId,
+  }) async {
+    try {
+      await fireStoreService.deleteDocument(
+        collectionName: BackendEndpoint.reports,
+        docId: reportId,
+      );
+
+      return right(null);
     } on FirebaseException catch (e) {
       return left(ServerFailure(e.message ?? e.toString()));
     } catch (e) {
