@@ -112,26 +112,33 @@ class RadiologyRepoImpl implements RadiologyRepo {
   }
 
   @override
-  Future<Either<Failure, List<RadiologyModel>>> getPatientRadiologies({
+  Stream<Either<Failure, List<RadiologyModel>>> getPatientRadiologies({
     required String patientId,
-  }) async {
+  }) async* {
+    final querySnapshot = fireStoreService.getStreamCollection(
+      collectionName: BackendEndpoint.radiology,
+      whereField: 'patientId',
+      isEqualTo: patientId,
+      orderByField: 'uploadedAt',
+    );
+
     try {
-      final query = await fireStoreService.getFutureCollection(
-        collectionName: BackendEndpoint.radiology,
-        whereField: 'patientId',
-        isEqualTo: patientId,
-        orderByField: 'uploadedAt',
-      );
+      await for (var snapshot in querySnapshot) {
+        try {
+          List<RadiologyModel> radiologies = snapshot
+              .map((doc) => RadiologyModel.fromJson(doc.data(), doc.id))
+              .toList();
 
-      List<RadiologyModel> radiologies = query.docs.map<RadiologyModel>((doc) {
-        return RadiologyModel.fromJson(doc.data(), doc.id);
-      }).toList();
-
-      return right(radiologies);
+          yield right(radiologies);
+        } on Exception catch (e) {
+          yield left(ServerFailure("An error occurred while fetching radiologies."));
+        }
+      }
     } on FirebaseException catch (e) {
-      return left(ServerFailure(handleFirebaseError(e)));
-    } catch (e) {
-      return left(ServerFailure(e.toString()));
+      yield left(ServerFailure(e.message ?? e.toString()));
+    }catch(e)
+    {
+      yield left(ServerFailure(e.toString()));
     }
   }
 
@@ -141,7 +148,7 @@ class RadiologyRepoImpl implements RadiologyRepo {
   }) async {
     try {
       await fireStoreService.deleteDocument(
-        collectionName: BackendEndpoint.reports,
+        collectionName: BackendEndpoint.radiology,
         docId: radiologyId,
       );
       return right(null);

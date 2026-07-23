@@ -14,7 +14,7 @@ abstract class RadiologyRepo {
 
   Stream<Either<Failure , List<RadiologyModel>>>getPatientRadiologiesSession({required String sessionId});
 
-  Future<Either<Failure , List<RadiologyModel>>>getPatientRadiologies({required String patientId});
+  Stream<Either<Failure , List<RadiologyModel>>>getPatientRadiologies({required String patientId});
 
   Future<Either<Failure , void>> deleteRadiology({required String radiologyId});
 }

@@ -16,7 +16,7 @@ class DeleteRadioCubit extends Cubit<DeleteRadioState> {
     var result = await radiologyRepo.deleteRadiology(radiologyId: radiologyId);
 
     result.fold((error){
-      emit(DeleteRadioError(error.message));
+      emit(DeleteRadioFailure(error.message));
     }, (success){
       emit(DeleteRadioSuccess());
     });

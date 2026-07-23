@@ -33,20 +33,25 @@ class GetRadiologiesCubit extends Cubit<GetRadiologiesState> {
     });
   }
 
-  Future<void> getAllPatientRadiologies({required String patientId}) async
+  void getAllPatientRadiologies({required String patientId})
   {
     emit(GetRadiologiesLoading());
+    _streamSubscription?.cancel();
 
-    var result =await radiologyRepo.getPatientRadiologies(patientId: patientId);
 
-    result.fold((error){
-      log("🔴 Radiology Stream Error: ${error.message}");
-      emit(GetPatientRadiologiesSessionFailure(error.message));
-    }, (radiologies){
-      numOfRadiologies = radiologies.length;
-      log("🟢 Radiology Stream Success! Items count: ${radiologies.length}");
-      emit(GetRadiologiesSuccess(radiologies));
+    final request =  radiologyRepo.getPatientRadiologies(patientId: patientId);
+
+    _streamSubscription = request.listen((result){
+      result.fold((error){
+        log("🔴 Radiology Stream Error: ${error.message}");
+        emit(GetPatientRadiologiesSessionFailure(error.message));
+      }, (radiologies){
+        numOfRadiologies = radiologies.length;
+        log("🟢 Radiology Stream Success! Items count: ${radiologies.length}"); // 👈 zitten هنا
+        emit(GetRadiologiesSuccess(radiologies));
+      });
     });
+
   }
 
 
