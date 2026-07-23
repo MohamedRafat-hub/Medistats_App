@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:medistats/core/errors/failure.dart';
-import 'package:medistats/core/helper_functions/handle_firestore_errors.dart';
 import 'package:medistats/core/services/firestore_service.dart';
 import 'package:medistats/core/services/supabase_storage_service.dart';
 import 'package:medistats/core/utils/backend_endpoint.dart';

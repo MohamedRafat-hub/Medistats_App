@@ -1,14 +1,11 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:medistats/core/utils/app_theme.dart';
 import 'package:medistats/features/radiology/data/models/radiology_model.dart';
 import 'package:medistats/features/radiology/presentation/views/widgets/previous_xrays_list.dart';
 import 'package:medistats/features/radiology/presentation/views/widgets/xray_summary_card.dart';
 
-import '../managers/get_radiologies_cubit/get_patient_radiologies_cubit.dart';
 
 class RadiologyViewContent extends StatelessWidget {
   final List<RadiologyModel> radiologies;

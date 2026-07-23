@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'radiology_image_card.dart';
 
 class RadiologyImagesGrid extends StatelessWidget {
   const RadiologyImagesGrid({super.key});

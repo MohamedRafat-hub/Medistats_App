@@ -187,7 +187,7 @@ class _ReportTileWidgetState extends State<ReportTileWidget> {
                   Icon(
                     Icons.arrow_forward_ios_rounded,
                     size: 15,
-                    color: AppColors.primaryColor.withOpacity(0.7),
+                    color: AppColors.primaryColor,
                   ),
               ],
             ),

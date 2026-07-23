@@ -1,5 +1,4 @@
 import 'package:get_it/get_it.dart';
-import 'package:http/http.dart';
 import 'package:medistats/core/services/cloudinary_storage_service.dart';
 import 'package:medistats/core/services/firestore_service.dart';
 import 'package:medistats/core/services/supabase_storage_service.dart';

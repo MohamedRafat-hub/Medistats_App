@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:medistats/core/utils/app_theme.dart';
-import 'package:medistats/features/radiology/presentation/views/widgets/previous_xrays_list.dart';
 import 'package:medistats/features/radiology/presentation/views/widgets/radiology_history_content.dart';
-import 'package:medistats/features/radiology/presentation/views/widgets/xray_summary_card.dart';
-import '../../../data/models/radiology_model.dart';
 import '../../managers/get_radiologies_cubit/get_patient_radiologies_cubit.dart';
 import 'radiology_history_app_bar.dart';
 

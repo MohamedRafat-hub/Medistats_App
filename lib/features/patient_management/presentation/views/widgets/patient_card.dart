@@ -16,8 +16,8 @@ class PatientCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool hasDiabetes = patientModel.hasDiabetes ?? false;
-    final bool hasHypertension = patientModel.hasHighBloodPressure ?? false;
+    final bool hasDiabetes = patientModel.hasDiabetes;
+    final bool hasHypertension = patientModel.hasHighBloodPressure;
     final bool hasAnyChronicDisease = hasDiabetes || hasHypertension;
 
     return Container(

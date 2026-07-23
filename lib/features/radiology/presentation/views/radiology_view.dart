@@ -7,7 +7,6 @@ import 'package:medistats/features/radiology/presentation/views/widgets/upload_x
 import 'package:medistats/features/radiology/presentation/views/widgets/xray_session_app_bar.dart';
 
 import '../../data/repos/radiology_repo.dart';
-import 'radiology_session_view_body.dart';
 
 class RadiologyView extends StatelessWidget {
   const RadiologyView({

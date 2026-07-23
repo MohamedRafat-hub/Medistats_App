@@ -17,7 +17,7 @@ class PreviousXraysList extends StatelessWidget {
       physics: isScrollable ? null : NeverScrollableScrollPhysics(),
       itemCount: previousXrays.length,
       itemBuilder: (context, index) {
-        return PreviousXrayTile(radiologyModel: previousXrays[index]);
+        return PreviousXrayTile(radiologyModel: previousXrays[index] ,  onDelete: (){},);
       },
     );
   }
